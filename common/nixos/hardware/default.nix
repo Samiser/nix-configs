@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ./bluetooth.nix
-    ./nvidia-optimus.nix
-    ./pulseaudio.nix
-    ./opengl.nix
-  ];
+  imports =
+    [ ./bluetooth.nix ./nvidia-optimus.nix ./pulseaudio.nix ./opengl.nix ];
 }

@@ -1,12 +1,10 @@
 { lib, pkgs, ... }:
 
 {
-  imports = [
-    <nixos-hardware/common/gpu/nvidia/prime.nix>
-  ];
+  imports = [ <nixos-hardware/common/gpu/nvidia/prime.nix> ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  boot.blacklistedKernelModules =  [ "nouveau" ];
+  boot.blacklistedKernelModules = [ "nouveau" ];
   boot.kernelParams = lib.mkDefault [ "acpi_rev_override" ];
 
   hardware.nvidia = {
@@ -25,6 +23,6 @@
 
     modesetting.enable = true;
     powerManagement.enable = true;
-    powerManagement.finegrained = true;    
+    powerManagement.finegrained = true;
   };
 }

@@ -1,7 +1,7 @@
 { lib, config, pkgs, ... }:
 
-with lib; with types;
-{
+with lib;
+with types; {
   options = {
     hostConfig = {
       autologin = {

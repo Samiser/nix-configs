@@ -3,8 +3,7 @@
 with lib;
 
 let cfg = config.sam.alacritty;
-in 
-{
+in {
   options.sam.alacritty.enable = mkEnableOption "alacritty config";
 
   config = mkIf cfg.enable {
@@ -13,8 +12,8 @@ in
       settings = {
         font.size = 7;
         window = {
-          padding.x = 10; 
-          padding.y = 10; 
+          padding.x = 10;
+          padding.y = 10;
           opacity = 0.9;
         };
         env.TERM = "xterm-256color";

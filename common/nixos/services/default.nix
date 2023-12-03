@@ -1,10 +1,8 @@
 { lib, config, pkgs, ... }:
 
-with lib; with types;
-{
-  imports = [
-    ./config.nix
-  ];
+with lib;
+with types; {
+  imports = [ ./config.nix ];
 
   services = {
     xserver = {

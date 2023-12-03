@@ -1,14 +1,13 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # common stuff
-      ../../common
-      # hardware-specific features
-      ../../common/nixos/hardware
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    # common stuff
+    ../../common
+    # hardware-specific features
+    ../../common/nixos/hardware
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

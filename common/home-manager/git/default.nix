@@ -3,8 +3,7 @@
 with lib;
 
 let cfg = config.sam.git;
-in 
-{
+in {
   options.sam.git.enable = mkEnableOption "git config";
 
   config = mkIf cfg.enable {

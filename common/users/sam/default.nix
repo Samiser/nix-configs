@@ -1,12 +1,10 @@
-{ config, pkgs, ... }: 
+{ config, pkgs, ... }:
 
 {
   home.username = "sam";
   home.homeDirectory = "/home/sam";
 
-  imports = [
-    ../../home-manager
-  ];
+  imports = [ ../../home-manager ];
 
   sam = {
     zsh.enable = true;

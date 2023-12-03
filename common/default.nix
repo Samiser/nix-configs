@@ -9,7 +9,5 @@ with lib; {
     ./nixos/services
   ];
 
-  options.hostConfig = {
-    gui.enable = mkEnableOption "enable GUI programs";
-  };
+  options.hostConfig = { gui.enable = mkEnableOption "enable GUI programs"; };
 }

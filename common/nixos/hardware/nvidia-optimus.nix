@@ -1,7 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, nixos-hardware, ... }:
 
 {
-  imports = [ <nixos-hardware/common/gpu/nvidia/prime.nix> ];
+  imports = [ nixos-hardware.nixosModules.common-gpu-nvidia ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
   boot.blacklistedKernelModules = [ "nouveau" ];

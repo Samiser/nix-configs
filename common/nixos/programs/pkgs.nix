@@ -66,13 +66,13 @@
   ];
 
   # fonts
-  fonts.fonts = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" ]; }) ];
+  fonts.packages = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" ]; }) ];
 
   # allow unfree
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.config.permittedInsecurePackages =
-    [ "python-2.7.18.6" "electron-24.8.6" ];
+    [ "python-2.7.18.7" "electron-24.8.6" ];
 
   nix = {
     package = pkgs.nixFlakes;

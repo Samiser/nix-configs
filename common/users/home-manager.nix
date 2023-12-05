@@ -1,7 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, home-manager, ... }:
 
 {
-  imports = [ <home-manager/nixos> ];
+  imports = [ home-manager.nixosModules.default ];
 
+  home-manager.useGlobalPkgs = true;
   home-manager.users.sam = (import ./sam);
 }

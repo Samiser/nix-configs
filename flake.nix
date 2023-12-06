@@ -6,19 +6,32 @@
     deploy-rs.url = "github:serokell/deploy-rs";
   };
 
-  outputs = { self, nixpkgs, deploy-rs, ... }@attrs: {
-    nixosConfigurations.imperium = nixpkgs.lib.nixosSystem {
+  outputs = { self, nixpkgs, deploy-rs, ... }@attrs: let
+    mkSystem = hostname: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = attrs;
-      modules = [ ./hosts/imperium/configuration.nix ];
+      modules = [ ./hosts/${hostname}/configuration.nix ];
     };
+    mkNode = hostname: {
+      inherit hostname;
+      sshUser = "root";
+      magicRollback = false;
 
-    deploy.nodes.imperium = {
-      hostname = "imperium";
       profiles.system = {
         user = "root";
-        path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.imperium;
+        path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.${hostname};
       };
+    };
+  in
+  {
+    nixosConfigurations = {
+      imperium = mkSystem "imperium";
+      nix-lab = mkSystem "nix-lab";
+    };
+
+    deploy.nodes = {
+      imperium = mkNode "imperium";
+      nix-lab = mkNode "nix-lab";
     };
 
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;

@@ -16,7 +16,7 @@ with types; {
       layout = "gb";
 
       displayManager = {
-        lightdm.enable = true;
+        lightdm.greeter.enable = false;
         autoLogin.enable = true;
         autoLogin.user = config.hostConfig.autologin.user;
         defaultSession = config.hostConfig.autologin.session;

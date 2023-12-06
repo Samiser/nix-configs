@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.hostConfig.i3;
 in {
-  options.hostConfig.i3 = { enable = mkEnableOption "i3"; };
+  options.hostConfig.i3.enable = mkEnableOption "i3";
 
   config = mkIf cfg.enable {
     services.xserver.windowManager.i3 = {

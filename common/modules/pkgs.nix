@@ -1,12 +1,13 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  guiEnabled = config.hostConfig.gui.enable;
+in
 {
   environment.systemPackages = with pkgs; [
     # cli tools
     _1password
     acpi
-    bc
-    bubblewrap
     deploy-rs
     dig
     fd
@@ -18,7 +19,6 @@
     playerctl
     pv
     ripgrep
-    starship
     stow
     sysstat
     tree
@@ -43,9 +43,7 @@
     neofetch
     nix-tree
     tmux
-
-    # gui
-    _1password-gui
+  ] ++ lib.optionals guiEnabled [
     alacritty
     arandr
     chromium
@@ -65,8 +63,13 @@
     virt-manager
   ];
 
-  # fonts
-  fonts.packages = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" ]; }) ];
+  programs = {
+    steam.enable = true;
+    nm-applet.enable = true;
+    dconf.enable = true;
+    zsh.enable = true;
+    starship.enable = true;
+  };
 
   # allow unfree
   nixpkgs.config.allowUnfree = true;
@@ -79,15 +82,6 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-  };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  programs = {
-    steam.enable = true;
-    nm-applet.enable = true;
-    dconf.enable = true;
-    zsh.enable = true;
   };
 
   virtualisation.libvirtd.enable = true;

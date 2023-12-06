@@ -1,13 +1,8 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [ # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    # common stuff
-    ../../common
-    # hardware-specific features
-    ../../common/nixos/hardware
-  ];
+  imports =
+    [ ./hardware-configuration.nix ../../common ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -16,9 +11,6 @@
   systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
 
-  # Set time zone.
-  time.timeZone = "Europe/London";
-
   # Configure wifi interface
   networking = {
     hostName = "imperium";
@@ -26,14 +18,15 @@
     networkmanager.enable = true;
   };
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
-
   # Console settings
   console = {
     font = "latarcyrheb-sun32";
     keyMap = "uk";
   };
+
+  i18n.defaultLocale = "en_GB.UTF-8";
+  time.timeZone = "Europe/London";
+  services.ntp.enable = true;
 
   # Custom host config
   hostConfig = {
@@ -44,6 +37,10 @@
       session = "none+i3";
     };
   };
+
+  security.pam.enableSSHAgentAuth = true;
+  security.pam.services.sudo.sshAgentAuth = true;
+  programs.ssh.startAgent = true;
 
   system.stateVersion = "21.05";
 }

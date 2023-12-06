@@ -7,6 +7,8 @@ in {
   options.sam.zsh.enable = mkEnableOption "zsh config";
 
   config = mkIf cfg.enable {
+    programs.starship.enable = true;
+
     programs.zsh = {
       enable = true;
       shellAliases = {

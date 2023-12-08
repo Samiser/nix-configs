@@ -1,5 +1,8 @@
 { lib, ... }: {
-  imports = [ ./caddy.nix ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ../../common/modules/services/nomad.nix
+  ];
 
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {

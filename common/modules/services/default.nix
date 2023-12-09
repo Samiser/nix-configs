@@ -2,7 +2,7 @@
 
 with lib;
 with types; {
-  imports = [ ./config.nix ];
+  imports = [ ./config.nix ./tailscale.nix ./openssh.nix ];
 
   services = {
     xserver = {
@@ -29,8 +29,4 @@ with types; {
   };
 
   services.printing.enable = true;
-
-  services.openssh.enable = true;
-
-  services.tailscale.enable = true;
 }

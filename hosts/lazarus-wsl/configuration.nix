@@ -5,6 +5,8 @@
     nixos-wsl.nixosModules.wsl
     ../../common/users
     ../../common/users/home-manager.nix
+    ../../common/modules/services/tailscale.nix
+    ../../common/modules/services/openssh.nix
     ../../common/config.nix
     ../../common/modules/pkgs.nix
   ];

@@ -1,13 +1,10 @@
 { config, lib, pkgs, ... }:
 
-with lib; {
+{
   imports = [
     ./users
     ./users/home-manager.nix
     ./modules
+    ./config.nix
   ];
-
-  options.hostConfig = { 
-    gui.enable = mkEnableOption "enable GUI programs";
-  };
 }

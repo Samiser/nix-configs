@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/master";
+    nixos-wsl.url = "github:nix-community/nixos-wsl/main";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     deploy-rs.url = "github:serokell/deploy-rs";
   };
@@ -27,6 +28,7 @@
     nixosConfigurations = {
       imperium = mkSystem "imperium";
       nix-lab = mkSystem "nix-lab";
+      lazarus-wsl = mkSystem "lazarus-wsl";
     };
 
     deploy.nodes = {

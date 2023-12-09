@@ -19,6 +19,7 @@ in
     playerctl
     pv
     ripgrep
+    starship
     stow
     sysstat
     tree
@@ -26,6 +27,7 @@ in
     wget
     wireguard-tools
     xclip
+    zsh
 
     # dev
     direnv
@@ -47,6 +49,7 @@ in
     alacritty
     arandr
     chromium
+    dconf
     discord
     feh
     gimp
@@ -61,15 +64,9 @@ in
     scrot
     spotify
     virt-manager
+    steam
+    nm-applet
   ];
-
-  programs = {
-    steam.enable = true;
-    nm-applet.enable = true;
-    dconf.enable = true;
-    zsh.enable = true;
-    starship.enable = true;
-  };
 
   # allow unfree
   nixpkgs.config.allowUnfree = true;

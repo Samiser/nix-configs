@@ -1,6 +1,4 @@
 { config, pkgs, ... }: {
-  imports = [ ./home-manager.nix ];
-
   users.mutableUsers = false;
 
   programs.zsh.enable = true;

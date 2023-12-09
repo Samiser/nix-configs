@@ -6,8 +6,13 @@ compinit
 _comp_options+=(globdots)
 
 # pywal colours
-(cat ~/.cache/wal/sequences &)
-source ~/.cache/wal/colors-tty.sh
+if [ -f ~/.cache/wal/sequences ]; then
+    (cat ~/.cache/wal/sequences &)
+fi
+
+if [ -f ~/.cache/wal/colors-tty.sh ]; then
+    source ~/.cache/wal/colors-tty.sh
+fi
 
 # run ssh-agent
 eval $(ssh-agent) > /dev/null

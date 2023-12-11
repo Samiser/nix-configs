@@ -4,6 +4,8 @@
     ../../common/modules/services/nomad.nix
   ];
 
+  virtualisation.docker.enable = true;
+
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "eth0";

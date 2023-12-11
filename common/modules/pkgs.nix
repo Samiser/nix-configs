@@ -65,7 +65,7 @@ in
     spotify
     virt-manager
     steam
-    nm-applet
+    networkmanagerapplet
   ];
 
   # allow unfree

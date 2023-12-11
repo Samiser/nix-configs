@@ -32,7 +32,6 @@
     };
 
     deploy.nodes = {
-      imperium = mkNode "imperium";
       nix-lab = mkNode "nix-lab";
     };
 

@@ -4,7 +4,7 @@
     ../../common/modules/services/nomad.nix
   ];
 
-  virtualisation.docker.enable = true;
+  virtualisation.podman.enable = true;
 
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {

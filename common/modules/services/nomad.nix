@@ -3,8 +3,8 @@
 {
   services.nomad = {
     enable = true;
-    enableDocker = true;
-    dropPrivileges = true;
+    extraSettingsPlugins = [ pkgs.nomad-driver-podman ];
+    dropPrivileges = false;
     settings = {
       bind_addr = "100.104.0.9";
       server = {
@@ -13,6 +13,9 @@
       };
       client = {
         enabled = true;
+        options = {
+          "driver.podman.enable" = "1";
+        };
       };
     };
   };

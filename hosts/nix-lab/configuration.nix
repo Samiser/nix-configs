@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ lib, pkgs, ... }: {
   imports = [
     ./hardware-configuration.nix
     ../../common/modules/services/nomad.nix
@@ -14,10 +14,24 @@
 
   nomad.bind_addr = "100.104.0.9";
 
-  systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
 
   services.tailscale.enable = true;
+
+  age.secrets.nomad-samba-credentials = {
+    file = ../../secrets/nomad-samba-credentials.age;
+    path = "/etc/nixos/smb-secrets";
+  };
+
+  environment.systemPackages = [ pkgs.cifs-utils ];
+  fileSystems."/mnt/hz" = {
+    device = "//u361974-sub2.your-storagebox.de/u361974-sub2";
+    fsType = "cifs";
+    options = let
+      # this line prevents hanging on network split
+      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in ["${automount_opts},credentials=/etc/nixos/smb-secrets"];
+  };
 
   boot.cleanTmpDir = true;
   zramSwap.enable = true;

@@ -5,13 +5,20 @@
     nixos-wsl.url = "github:nix-community/nixos-wsl/main";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     deploy-rs.url = "github:serokell/deploy-rs";
+    agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = { self, nixpkgs, deploy-rs, ... }@attrs: let
+  outputs = { self, nixpkgs, deploy-rs, agenix, ... }@attrs: let
     mkSystem = hostname: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = attrs;
-      modules = [ ./hosts/${hostname}/configuration.nix ];
+      modules = [ 
+        ./hosts/${hostname}/configuration.nix
+        agenix.nixosModules.default
+        {
+          environment.systemPackages = [ agenix.packages."x86_64-linux".default ];
+        }
+      ];
     };
     mkNode = hostname: {
       inherit hostname;

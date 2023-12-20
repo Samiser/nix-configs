@@ -22,26 +22,25 @@
     path = "/etc/nixos/smb-secrets";
   };
 
-  environment.systemPackages = with pkgs; [ 
-    cifs-utils
-    neovim
-    tmux
-  ];
+  environment.systemPackages = with pkgs; [ cifs-utils neovim tmux ];
   fileSystems."/mnt/hz" = {
     device = "//u361974-sub2.your-storagebox.de/u361974-sub2";
     fsType = "cifs";
     options = let
       # this line prevents hanging on network split
-      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-    in ["${automount_opts},credentials=/etc/nixos/smb-secrets,uid=1000,gid=1000"];
+      automount_opts =
+        "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in [
+      "${automount_opts},credentials=/etc/nixos/smb-secrets,uid=1000,gid=1000"
+    ];
   };
 
   systemd.services.storageRoute = {
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     description = "Route requests to my Hetzner storage box via default routes";
-    path = [pkgs.bash pkgs.iproute];
-    script = '' 
+    path = [ pkgs.bash pkgs.iproute ];
+    script = ''
       if ! (ip rule | grep "46.4.0.0" -q); then
         ip rule add to 46.4.0.0/16 lookup main pref 5000
         ip rule add to 46.4.0.0/16 lookup default pref 5010

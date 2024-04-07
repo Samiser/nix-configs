@@ -53,7 +53,7 @@
     };
   };
 
-  boot.cleanTmpDir = true;
+  boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
   networking.hostName = "nix-lab";
   networking.domain = "";

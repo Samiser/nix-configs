@@ -35,9 +35,10 @@ in
     entr
     git
     hcloud
-    nixfmt
+    nixfmt-rfc-style
     python
     rust-analyzer
+    tcpdump
 
     # tui
     gotop
@@ -72,7 +73,7 @@ in
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.config.permittedInsecurePackages =
-    [ "python-2.7.18.7" "electron-24.8.6" ];
+    [ "python-2.7.18.7" "python-2.7.18.8" "electron-24.8.6" ];
 
   nix = {
     package = pkgs.nixFlakes;

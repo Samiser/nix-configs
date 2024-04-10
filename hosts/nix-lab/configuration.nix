@@ -13,7 +13,11 @@
     networkConfig.DHCP = "yes";
   };
 
-  nomad.bind_addr = "100.104.0.9";
+  nomad = {
+    bind_addr = "100.104.0.9";
+    server = true;
+    client = true;
+  }
 
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
 

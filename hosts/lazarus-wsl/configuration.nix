@@ -5,12 +5,18 @@
     nixos-wsl.nixosModules.wsl
     ../../common/users
     ../../common/users/home-manager.nix
+    ../../common/modules/services/nomad.nix
     ../../common/modules/services/tailscale.nix
     ../../common/modules/services/openssh.nix
     ../../common/config.nix
     ../../common/modules/pkgs.nix
     ./wsl-nvidia-cdi.nix
   ];
+
+  nomad = {
+    bind_addr = "100.120.228.44";
+    client = true;
+  };
 
   wsl.enable = true;
   wsl.defaultUser = "sam";

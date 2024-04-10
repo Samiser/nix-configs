@@ -9,6 +9,7 @@
     ../../common/modules/services/openssh.nix
     ../../common/config.nix
     ../../common/modules/pkgs.nix
+    ./wsl-nvidia-cdi.nix
   ];
 
   wsl.enable = true;

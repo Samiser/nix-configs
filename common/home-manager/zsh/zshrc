@@ -41,8 +41,7 @@ bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
 
-source "$(fzf-share)/key-bindings.zsh"
-source "$(fzf-share)/completion.zsh"
+eval "$(fzf --zsh)"
 
 # edit line in vim with ctrl e
 autoload edit-command-line; zle -N edit-command-line

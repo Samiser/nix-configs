@@ -8,6 +8,8 @@
   virtualisation.podman.enable = true;
 
   systemd.network.enable = true;
+  networking.useNetworkd = true;
+
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "eth0";
     networkConfig.DHCP = "yes";

@@ -10,6 +10,7 @@
   environment.variables = lib.mkForce {
     NIX_LD_LIBRARY_PATH = "/usr/lib/wsl/lib/";
     NIX_LD = "${pkgs.glibc}/lib/ld-linux-x86-64.so.2";
+    PATH = "{PATH}:/bin";
   };
 
   # this is insane and will likely break at some point. created by running

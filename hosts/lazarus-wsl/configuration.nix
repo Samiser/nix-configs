@@ -16,10 +16,16 @@
   nomad = {
     bind_addr = "100.120.228.44";
     client = true;
+    nvidia = true;
   };
 
-  wsl.enable = true;
-  wsl.defaultUser = "sam";
+  wsl = {
+    enable = true;
+    defaultUser = "sam";
+    extraBin = [{
+      src = "/usr/lib/wsl/lib/nvidia-smi";
+    }];
+  };
   
   networking.hostName = "lazarus-wsl";
 

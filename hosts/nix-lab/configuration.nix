@@ -17,9 +17,11 @@
     bind_addr = "100.104.0.9";
     server = true;
     client = true;
-  }
+  };
 
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
+
+  nixpkgs.config.allowUnfree = true;
 
   age.secrets.nomad-samba-credentials = {
     file = ../../secrets/nomad-samba-credentials.age;

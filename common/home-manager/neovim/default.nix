@@ -14,6 +14,7 @@ in {
         supertab
         bufferline-nvim
         nvim-web-devicons
+        fzf-lua
 
         # rust
         nvim-lspconfig

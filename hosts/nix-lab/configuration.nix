@@ -1,10 +1,10 @@
 { lib, pkgs, ... }: {
   imports = [
     ./hardware-configuration.nix
-    ../../common/users
-    ../../common/users/home-manager.nix
     ../../common/config.nix
+    ../../common/users
     ../../common/modules/pkgs.nix
+    ../../common/modules/services/tailscale.nix
   ];
 
   virtualisation.podman.enable = true;

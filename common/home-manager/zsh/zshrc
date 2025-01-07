@@ -7,7 +7,7 @@ _comp_options+=(globdots)
 
 # pywal colours
 if [ -f ~/.cache/wal/sequences ]; then
-    (cat ~/.cache/wal/sequences &)
+    cat ~/.cache/wal/sequences
 fi
 
 if [ -f ~/.cache/wal/colors-tty.sh ]; then

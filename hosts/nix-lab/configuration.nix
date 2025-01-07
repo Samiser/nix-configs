@@ -1,8 +1,10 @@
 { lib, pkgs, ... }: {
   imports = [
     ./hardware-configuration.nix
-    ../../common/modules/services/nomad.nix
-    ../../common/modules/services/tailscale.nix
+    ../../common/users
+    ../../common/users/home-manager.nix
+    ../../common/config.nix
+    ../../common/modules/pkgs.nix
   ];
 
   virtualisation.podman.enable = true;
@@ -15,10 +17,9 @@
     networkConfig.DHCP = "yes";
   };
 
-  nomad = {
-    bind_addr = "100.104.0.9";
-    server = true;
-    client = true;
+  # Custom host config
+  hostConfig = {
+    gui.enable = false;
   };
 
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;

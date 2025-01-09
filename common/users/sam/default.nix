@@ -5,7 +5,7 @@
 
   home-manager.useGlobalPkgs = true;
   home-manager.users.sam = {
-    imports = [ ./home-manager.nix ];
+    imports = [ ./home.nix ];
     gui.enable = config.hostConfig.gui.enable;
   };
 

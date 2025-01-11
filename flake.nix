@@ -6,20 +6,29 @@
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     deploy-rs.url = "github:serokell/deploy-rs";
     agenix.url = "github:ryantm/agenix";
+    my-neovim.url = "github:Samiser/neovim-config";
   };
 
-  outputs = { self, nixpkgs, deploy-rs, agenix, ... }@attrs: let
-    mkSystem = hostname: nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = attrs;
-      modules = [ 
-        ./hosts/${hostname}/configuration.nix
-        agenix.nixosModules.default
-        {
-          environment.systemPackages = [ agenix.packages."x86_64-linux".default ];
-        }
-      ];
-    };
+  outputs = {
+    self,
+    nixpkgs,
+    deploy-rs,
+    agenix,
+    my-neovim,
+    ...
+  } @ attrs: let
+    mkSystem = hostname:
+      nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = attrs // {inherit my-neovim;};
+        modules = [
+          ./hosts/${hostname}/configuration.nix
+          agenix.nixosModules.default
+          {
+            environment.systemPackages = [agenix.packages."x86_64-linux".default];
+          }
+        ];
+      };
     mkNode = hostname: {
       inherit hostname;
       sshUser = "root";
@@ -30,8 +39,7 @@
         path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.${hostname};
       };
     };
-  in
-  {
+  in {
     nixosConfigurations = {
       imperium = mkSystem "imperium";
       nix-lab = mkSystem "nix-lab";

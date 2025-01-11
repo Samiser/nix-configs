@@ -13,7 +13,6 @@
     self,
     nixpkgs,
     deploy-rs,
-    agenix,
     my-neovim,
     ...
   } @ attrs: let
@@ -23,10 +22,6 @@
         specialArgs = attrs // {inherit my-neovim;};
         modules = [
           ./hosts/${hostname}/configuration.nix
-          agenix.nixosModules.default
-          {
-            environment.systemPackages = [agenix.packages."x86_64-linux".default];
-          }
         ];
       };
     mkNode = hostname: {

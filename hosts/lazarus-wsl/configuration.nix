@@ -1,10 +1,7 @@
-{ config, lib, pkgs, nixos-wsl, ... }:
-
-{
+{nixos-wsl, ...}: {
   imports = [
     nixos-wsl.nixosModules.wsl
     ../../common/users
-    ../../common/users/home-manager.nix
     ../../common/modules/services/nomad.nix
     ../../common/modules/services/tailscale.nix
     ../../common/modules/services/openssh.nix
@@ -22,11 +19,13 @@
   wsl = {
     enable = true;
     defaultUser = "sam";
-    extraBin = [{
-      src = "/usr/lib/wsl/lib/nvidia-smi";
-    }];
+    extraBin = [
+      {
+        src = "/usr/lib/wsl/lib/nvidia-smi";
+      }
+    ];
   };
-  
+
   networking.hostName = "lazarus-wsl";
 
   # Custom host config

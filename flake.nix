@@ -23,11 +23,9 @@
       };
   in {
     nixosConfigurations = {
-      "x86_64-linux" = {
-        imperium = mkSystem "imperium";
-        nix-lab = mkSystem "nix-lab";
-        lazarus-wsl = mkSystem "lazarus-wsl";
-      };
+      imperium = mkSystem "imperium";
+      nix-lab = mkSystem "nix-lab";
+      lazarus-wsl = mkSystem "lazarus-wsl";
     };
   };
 }

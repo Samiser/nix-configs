@@ -9,7 +9,7 @@ in {
   environment.systemPackages = with pkgs;
     [
       # cli tools
-      _1password
+      _1password-cli
       acpi
       dig
       fd
@@ -78,13 +78,12 @@ in {
   nixpkgs.config.permittedInsecurePackages = ["python-2.7.18.7" "python-2.7.18.8" "electron-24.8.6"];
 
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
   };
 
   virtualisation.libvirtd.enable = true;
-  virtualisation.docker.enable = true;
   virtualisation.podman.enable = true;
 }

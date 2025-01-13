@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
     ../../common/config.nix
     ../../common/users
-    ../../common/garnix.nix
+    ../../common/modules/garnix.nix
     ../../common/modules/pkgs.nix
     ../../common/modules/agenix.nix
     ../../common/modules/services/tailscale.nix
@@ -28,7 +28,7 @@
       wantedBy = ["multi-user.target"];
       after = ["network.target"];
       description = "Route requests to my Hetzner storage box via default routes";
-      path = [pkgs.bash pkgs.iproute];
+      path = [pkgs.bash pkgs.iproute2];
       script = ''
         if ! (ip rule | grep "46.4.0.0" -q); then
           ip rule add to 46.4.0.0/16 lookup main pref 5000

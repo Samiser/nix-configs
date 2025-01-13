@@ -7,6 +7,7 @@
     ./hardware-configuration.nix
     ../../common/config.nix
     ../../common/users
+    ../../common/garnix.nix
     ../../common/modules/pkgs.nix
     ../../common/modules/agenix.nix
     ../../common/modules/services/tailscale.nix

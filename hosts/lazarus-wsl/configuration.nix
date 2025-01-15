@@ -5,6 +5,7 @@
     ../../common/modules/services/nomad.nix
     ../../common/modules/services/tailscale.nix
     ../../common/modules/services/openssh.nix
+    ../../common/modules/garnix.nix
     ../../common/config.nix
     ../../common/modules/pkgs.nix
     ./wsl-nvidia-cdi.nix

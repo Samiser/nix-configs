@@ -1,5 +1,0 @@
-servers:
-  - configuration: nix-lab
-    deployment:
-      type: on-branch
-      branch: main

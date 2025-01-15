@@ -60,9 +60,6 @@
     file = ../../secrets/nomad-samba-credentials.age;
     path = "/etc/nixos/smb-secrets";
   };
-  age.identityPaths = [
-    "/var/garnix/keys/repo-key"
-  ];
 
   environment.systemPackages = with pkgs; [cifs-utils neovim tmux];
   fileSystems."/mnt/hz" = {

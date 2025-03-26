@@ -43,6 +43,7 @@
     casks = [
       "1password"
       "colemak-dh"
+      "discord"
       "ghostty"
       "google-chrome"
       "godot"

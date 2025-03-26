@@ -1,13 +1,17 @@
-{ lib, nixos-hardware, ... }:
-
 {
-  imports = [ nixos-hardware.nixosModules.common-gpu-nvidia ];
+  lib,
+  nixos-hardware,
+  ...
+}: {
+  imports = [nixos-hardware.nixosModules.common-gpu-nvidia];
 
-  services.xserver.videoDrivers = [ "nvidia" ];
-  boot.blacklistedKernelModules = [ "nouveau" ];
-  boot.kernelParams = lib.mkDefault [ "acpi_rev_override" ];
+  services.xserver.videoDrivers = ["nvidia"];
+  boot.blacklistedKernelModules = ["nouveau"];
+  boot.kernelParams = lib.mkDefault ["acpi_rev_override"];
 
   hardware.nvidia = {
+    open = false;
+
     prime = {
       offload = {
         enable = true;

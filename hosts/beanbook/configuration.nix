@@ -9,9 +9,10 @@
     # TODO: refactor generic packages out of this config
     _1password-cli
     my-neovim.packages.${system}.default
-    tmux
     neofetch
+    ripgrep
     tailscale
+    tmux
   ];
 
   imports = [
@@ -44,6 +45,8 @@
       "colemak-dh"
       "ghostty"
       "google-chrome"
+      "godot"
+      "bitwig-studio"
       "obsidian"
       "utm"
     ];

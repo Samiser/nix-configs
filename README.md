@@ -12,5 +12,7 @@ my nixos/nix-darwin stuff :)
   - home-manager users
 - `common/modules`
   - nixos modules
+- `common/darwin-modules`
+  - nix-darwin modules
 - `secrets`
   - agenix secrets

@@ -14,8 +14,6 @@
   outputs = {
     nixpkgs,
     nix-darwin,
-    home-manager,
-    my-neovim,
     ...
   } @ attrs: let
     mkSystem = hostname: system: let
@@ -27,12 +25,10 @@
     in
       builder {
         inherit system;
-        specialArgs = attrs // {inherit my-neovim;};
-        modules =
-          [
-            ./hosts/${hostname}/configuration.nix
-          ]
-          ++ nixpkgs.lib.optional isDarwin home-manager.darwinModules.home-manager;
+        specialArgs = attrs;
+        modules = [
+          ./hosts/${hostname}/configuration.nix
+        ];
       };
   in {
     nixosConfigurations = {

@@ -4,8 +4,6 @@ my nixos/nix-darwin stuff :)
 
 ## folder structure
 
-- `hosts/`
-  - host-specific configuration
 - `common/home-manager`
   - home-manager modules
 - `common/users`
@@ -14,6 +12,10 @@ my nixos/nix-darwin stuff :)
   - nixos modules
 - `common/darwin-modules`
   - nix-darwin modules
+- `hosts/`
+  - host-specific configuration
+- `lib/`
+  - nix helpers
 - `secrets`
   - agenix secrets
 

@@ -16,7 +16,7 @@ my nixos/nix-darwin stuff :)
   - host-specific configuration
 - `lib/`
   - nix helpers
-- `secrets`
+- `secrets/`
   - agenix secrets
 
 ## systems.nix

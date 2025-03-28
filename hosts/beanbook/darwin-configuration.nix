@@ -8,11 +8,13 @@
   environment.systemPackages = with pkgs; [
     # TODO: refactor generic packages out of this config
     _1password-cli
+    fd
     my-neovim.packages.${system}.default
     neofetch
     ripgrep
     tailscale
     tmux
+    tree
   ];
 
   imports = [
@@ -42,13 +44,14 @@
     brews = [];
     casks = [
       "1password"
+      "bitwig-studio"
       "colemak-dh"
       "discord"
       "ghostty"
-      "google-chrome"
       "godot"
-      "bitwig-studio"
+      "google-chrome"
       "obsidian"
+      "spotify"
       "utm"
     ];
   };

@@ -1,7 +1,7 @@
 {lib, ...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../common/modules
+    ../../nixos-modules
   ];
 
   # Use the systemd-boot EFI boot loader.

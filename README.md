@@ -4,11 +4,11 @@ my nixos/nix-darwin stuff :)
 
 ## folder structure
 
-- `common/home-manager`
+- `home-manager/`
   - home-manager modules
-- `common/modules`
+- `nixos-modules/`
   - nixos modules
-- `common/darwin-modules`
+- `darwin-modules/`
   - nix-darwin modules
 - `hosts/`
   - host-specific configuration

@@ -5,12 +5,12 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ../../common/modules/config.nix
-    ../../common/modules/users.nix
-    ../../common/modules/garnix.nix
-    ../../common/modules/pkgs.nix
-    ../../common/modules/agenix.nix
-    ../../common/modules/services/tailscale.nix
+    ../../nixos-modules/config.nix
+    ../../nixos-modules/users.nix
+    ../../nixos-modules/garnix.nix
+    ../../nixos-modules/pkgs.nix
+    ../../nixos-modules/agenix.nix
+    ../../nixos-modules/services/tailscale.nix
   ];
 
   virtualisation.podman.enable = true;

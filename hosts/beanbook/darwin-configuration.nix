@@ -18,8 +18,8 @@
   ];
 
   imports = [
-    ../../common/home-manager/darwin.nix
-    ../../common/darwin-modules
+    ../../home-manager/darwin.nix
+    ../../darwin-modules
   ];
 
   sam = {

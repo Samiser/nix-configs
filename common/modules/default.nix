@@ -6,6 +6,7 @@
     ./i3.nix
     ./nvidia-optimus.nix
     ./opengl.nix
+    ./users.nix
     ./pkgs.nix
     ./pulseaudio.nix
     ./services

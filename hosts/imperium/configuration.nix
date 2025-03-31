@@ -2,7 +2,6 @@
   imports = [
     ./hardware-configuration.nix
     ../../common/modules
-    ../../common/home-manager
   ];
 
   # Use the systemd-boot EFI boot loader.

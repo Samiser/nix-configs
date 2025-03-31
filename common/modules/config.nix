@@ -1,7 +1,6 @@
-{ config, lib, pkgs, ... }:
-
+{lib, ...}:
 with lib; {
-  options.hostConfig = { 
+  options.hostConfig = {
     gui.enable = mkEnableOption "enable GUI programs";
   };
 }

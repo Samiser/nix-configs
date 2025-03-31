@@ -5,8 +5,8 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ../../common/config.nix
-    ../../common/users
+    ../../common/modules/config.nix
+    ../../common/modules/users.nix
     ../../common/modules/garnix.nix
     ../../common/modules/pkgs.nix
     ../../common/modules/agenix.nix

@@ -6,8 +6,6 @@ my nixos/nix-darwin stuff :)
 
 - `common/home-manager`
   - home-manager modules
-- `common/users`
-  - home-manager users
 - `common/modules`
   - nixos modules
 - `common/darwin-modules`

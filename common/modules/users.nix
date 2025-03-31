@@ -1,19 +1,14 @@
 {
-  config,
   pkgs,
   home-manager,
-  my-neovim,
   ...
 }: {
-  imports = [home-manager.nixosModules.default];
-  home-manager = {
-    extraSpecialArgs = {inherit my-neovim;};
-    useGlobalPkgs = true;
-    users.sam = {
-      imports = [./home.nix];
-      gui.enable = config.hostConfig.gui.enable;
-    };
-  };
+  imports = [
+    home-manager.nixosModules.default
+    {
+      imports = [../../home-manager/home.nix];
+    }
+  ];
 
   users.mutableUsers = false;
 

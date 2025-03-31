@@ -1,7 +1,5 @@
-{ config, lib, pkgs, ... }:
-
-{
-  options.gui = { 
+{lib, ...}: {
+  options.gui = {
     enable = lib.mkEnableOption "enable GUI programs";
   };
 }

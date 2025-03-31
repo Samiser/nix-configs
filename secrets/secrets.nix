@@ -3,4 +3,5 @@ let
   nix-lab = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG5M3ta0q0C6t80ntESGSWCKkCVuRyjYoQBSpLyK4zqe root@nix-lab";
 in {
   "nomad-samba-credentials.age".publicKeys = [sam nix-lab];
+  "hcloud-token.age".publicKeys = [sam];
 }

@@ -22,8 +22,6 @@
     ../../common/darwin-modules
   ];
 
-  nix.linux-builder.enable = true;
-
   sam = {
     services = {
       tailscale.enable = true;
@@ -66,6 +64,7 @@
   nix = {
     settings = {
       experimental-features = "nix-command flakes";
+      sandbox = true;
       trusted-users = ["root" "sam" "@admin"];
     };
   };

@@ -1,8 +1,9 @@
-{ config, pkgs, lib, ... }:
-
-{
-  imports =
-    [ ./hardware-configuration.nix ../../common ];
+{lib, ...}: {
+  imports = [
+    ./hardware-configuration.nix
+    ../../common/modules
+    ../../common/home-manager
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

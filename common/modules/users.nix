@@ -6,7 +6,7 @@
   imports = [
     home-manager.nixosModules.default
     {
-      imports = [../../home-manager/home.nix];
+      imports = [../home-manager/home.nix];
     }
   ];
 

@@ -20,6 +20,7 @@
   imports = [
     ../../home-manager/darwin.nix
     ../../darwin-modules
+    ../../shared-modules/garnix.nix
   ];
 
   sam = {

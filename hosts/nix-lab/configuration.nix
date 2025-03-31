@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
     ../../nixos-modules/config.nix
     ../../nixos-modules/users.nix
-    ../../nixos-modules/garnix.nix
+    ../../shared-modules/garnix.nix
     ../../nixos-modules/pkgs.nix
     ../../nixos-modules/agenix.nix
     ../../nixos-modules/services/tailscale.nix

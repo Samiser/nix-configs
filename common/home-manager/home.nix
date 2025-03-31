@@ -17,7 +17,7 @@ in {
         agenix.homeManagerModules.default
         ./hcloud.nix
         ./alacritty.nix
-        ./config.nix
+        # ./config.nix
         ./git.nix
         ./i3
         ./neovim.nix

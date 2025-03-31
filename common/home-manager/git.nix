@@ -1,8 +1,10 @@
-{ lib, config, nixosConfig, pkgs, ... }:
-
-with lib;
-
-let cfg = config.sam.git;
+{
+  lib,
+  config,
+  ...
+}:
+with lib; let
+  cfg = config.sam.git;
 in {
   options.sam.git.enable = mkEnableOption "git config";
 

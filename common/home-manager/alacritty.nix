@@ -1,8 +1,10 @@
-{ lib, config, nixosConfig, pkgs, ... }:
-
-with lib;
-
-let cfg = config.sam.alacritty;
+{
+  lib,
+  config,
+  ...
+}:
+with lib; let
+  cfg = config.sam.alacritty;
 in {
   options.sam.alacritty.enable = mkEnableOption "alacritty config";
 

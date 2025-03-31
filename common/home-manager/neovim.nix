@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   my-neovim,
   ...
 }:
@@ -19,7 +20,7 @@ in {
   config = mkIf cfg.enable {
     home.packages =
       if cfg.minimal
-      then [my-neovim.packages."x86_64-linux".minimal]
-      else [my-neovim.packages."x86_64-linux".default];
+      then [my-neovim.packages."${pkgs.system}".minimal]
+      else [my-neovim.packages."${pkgs.system}".default];
   };
 }

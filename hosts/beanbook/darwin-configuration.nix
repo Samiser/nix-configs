@@ -63,11 +63,6 @@
     hostName = "beanbook";
   };
 
-  security.pam.services.sudo_local = {
-    reattach = true;
-    touchIdAuth = true;
-  };
-
   nix = {
     settings = {
       experimental-features = "nix-command flakes";

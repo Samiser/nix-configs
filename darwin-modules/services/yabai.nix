@@ -31,12 +31,14 @@ in {
 
         # show shadows only for floating windows
         window_shadow = "float";
+        menubar_opacity = "0.0";
       };
       extraConfig = ''
         yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
         sudo yabai --load-sa
 
         yabai -m rule --add app="^System Settings$" manage=off
+        yabai -m rule --add app="^Raycast$" manage=off
       '';
     };
   };

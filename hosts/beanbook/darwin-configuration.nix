@@ -41,14 +41,22 @@
     enable = true;
     onActivation.cleanup = "zap";
 
-    taps = [];
-    brews = [];
+    taps = ["FelixKratz/formulae"];
+    brews = [
+      {
+        name = "sketchybar";
+        start_service = true;
+        restart_service = "changed";
+      }
+    ];
     casks = [
       "1password"
       "bitwig-studio"
       "colemak-dh"
+      "font-hack-nerd-font"
       "discord"
       "ghostty"
+      "raycast"
       "godot"
       "google-chrome"
       "obsidian"

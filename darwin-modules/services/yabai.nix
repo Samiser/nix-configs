@@ -20,7 +20,7 @@ in {
         window_placement = "second_child";
 
         # set all padding and gaps to 15pt
-        top_padding = 15;
+        top_padding = 8;
         bottom_padding = 15;
         left_padding = 15;
         right_padding = 15;

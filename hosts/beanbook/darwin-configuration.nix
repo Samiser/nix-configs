@@ -53,7 +53,7 @@
       "1password"
       "bitwig-studio"
       "colemak-dh"
-      "font-hack-nerd-font"
+      "font-jetbrains-mono-nerd-font"
       "discord"
       "ghostty"
       "raycast"
@@ -62,6 +62,7 @@
       "obsidian"
       "spotify"
       "utm"
+      "iina"
     ];
   };
 

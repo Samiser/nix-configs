@@ -24,7 +24,6 @@
     gui.enable = true;
     i3.enable = true;
     vm = true;
-    hostname = "utm-vm";
   };
 
   users.users.root.openssh.authorizedKeys.keys = [

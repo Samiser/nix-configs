@@ -2,6 +2,8 @@
   imports = [
     ./hardware-configuration.nix
     ../../nixos-modules
+    ../../nixos-modules/bluetooth.nix
+    ../../nixos-modules/nvidia-optimus.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -18,6 +20,17 @@
     networkmanager.enable = true;
   };
 
+  services = {
+    libinput.enable = true;
+
+    xserver = {
+      videoDrivers = ["modesetting"];
+      monitorSection = ''
+        DisplaySize 508 286
+      '';
+    };
+  };
+
   # Console settings
   console = {
     font = "latarcyrheb-sun32";
@@ -32,13 +45,9 @@
   hostConfig = {
     gui.enable = true;
     i3.enable = true;
-    autologin = {
-      user = "sam";
-      session = "none+i3";
-    };
   };
 
-  security.pam.enableSSHAgentAuth = true;
+  security.pam.sshAgentAuth.enable = true;
   security.pam.services.sudo.sshAgentAuth = true;
   programs.ssh.startAgent = true;
 

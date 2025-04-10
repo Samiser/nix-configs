@@ -1,6 +1,8 @@
 {pkgs, ...}: {
-  hardware.pulseaudio = {
+  services.pulseaudio = {
     enable = false;
     package = pkgs.pulseaudioFull;
   };
+
+  environment.systemPackages = with pkgs; [pavucontrol];
 }

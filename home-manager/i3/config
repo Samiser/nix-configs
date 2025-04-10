@@ -15,9 +15,9 @@ gaps outer 0
 
 # get pywal colours from Xresources
 # im just using the colours at either end of the lightness spectrum
-set_from_resource $fg i3wm.color7 #f0f0f0
-set_from_resource $alert i3wm.color1 #f0f0f0
-set_from_resource $bg i3wm.color0 #f0f0f0
+set $fg #f0f0f0
+set $alert #f0f0f0
+set $bg #000000
 
 # set i3 colour scheme
 # this is kind of simple but I like how it looks
@@ -33,7 +33,7 @@ client.background       $bg
 set $mod Mod4
 
 # Set font
-font pango:Monospace 10
+font pango:Monospace 12
 
 # No title bars
 new_window 1pixel

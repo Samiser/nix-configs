@@ -21,7 +21,6 @@ in {
       playerctl
       pv
       ripgrep
-      starship
       stow
       sysstat
       tree
@@ -36,10 +35,8 @@ in {
       docker-compose
       entr
       git
-      hcloud
       nixfmt-rfc-style
       python
-      rust-analyzer
       tcpdump
 
       # tui
@@ -53,29 +50,28 @@ in {
       alacritty
       arandr
       chromium
-      dconf
-      discord
       feh
       gimp
       godot_4
-      mesa-demos
       mpv
       mupdf
-      obsidian
-      pavucontrol
-      peek
-      prismlauncher
       scrot
+      obsidian
+      peek
+      #virt-manager
+      #networkmanagerapplet
+    ]
+    ++ lib.optionals (pkgs.system
+      == "x86_64-linux") [
       spotify
-      virt-manager
       steam
-      networkmanagerapplet
+      discord
     ];
 
   # allow unfree
   nixpkgs.config.allowUnfree = true;
 
-  nixpkgs.config.permittedInsecurePackages = ["python-2.7.18.7" "python-2.7.18.8" "electron-24.8.6"];
+  nixpkgs.config.permittedInsecurePackages = ["python-2.7.18.8" "electron-24.8.6"];
 
   nix = {
     package = pkgs.nixVersions.stable;
@@ -84,6 +80,6 @@ in {
     '';
   };
 
-  virtualisation.libvirtd.enable = true;
-  virtualisation.podman.enable = true;
+  #virtualisation.libvirtd.enable = true;
+  virtualisation.docker.enable = true;
 }

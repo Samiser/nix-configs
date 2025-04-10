@@ -1,3 +1,3 @@
-{
-  hardware.opengl.enable = true;
+{config, ...}: {
+  hardware.graphics.enable = config.hostConfig.gui.enable;
 }

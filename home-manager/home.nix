@@ -11,6 +11,7 @@ in {
     extraSpecialArgs = {inherit my-neovim;};
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "backup";
 
     users.sam = {
       imports = [
@@ -22,7 +23,6 @@ in {
         ./i3
         ./neovim.nix
         ./ghostty.nix
-        ./pywal.nix
         ./zsh
       ];
 
@@ -44,7 +44,6 @@ in {
         ghostty.enable = pkgs.stdenv.isDarwin;
         alacritty.enable = pkgs.stdenv.isLinux && gui;
         i3.enable = pkgs.stdenv.isLinux && gui;
-        pywal.enable = pkgs.stdenv.isLinux && gui;
       };
     };
   };

@@ -12,7 +12,7 @@ in {
     programs.alacritty = {
       enable = true;
       settings = {
-        font.size = 7;
+        font.size = 10;
         window = {
           padding.x = 10;
           padding.y = 10;

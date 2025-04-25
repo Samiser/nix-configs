@@ -3,22 +3,26 @@
 
   systemTypes = {
     darwin = {
-      system = "aarch64-darwin";
+      defaultSystem = "aarch64-darwin";
       builder = nix-darwin.lib.darwinSystem;
       configFile = "darwin-configuration.nix";
     };
     nixos = {
-      system = "x86_64-linux";
+      defaultSystem = "x86_64-linux";
       builder = nixpkgs.lib.nixosSystem;
       configFile = "configuration.nix";
     };
   };
 
   mkSystem = hostname: systemType: let
-    inherit (systemTypes.${systemType}) system builder configFile;
+    inherit (systemType) defaultSystem builder configFile;
+    systemPath = ../hosts/${hostname}/system.nix;
   in
     builder {
-      inherit system;
+      system =
+        if builtins.pathExists systemPath
+        then (import ../hosts/${hostname}/system.nix).system
+        else defaultSystem;
       specialArgs = inputs;
       modules = [
         ../hosts/${hostname}/${configFile}
@@ -44,8 +48,8 @@
           systemType = getSystemType "${hostsDir}/${hostname}";
         in {
           inherit systemType;
-          name = hostname;
-          value = mkSystem hostname systemType;
+          name = "${hostname}";
+          value = mkSystem hostname systemTypes."${systemType}";
         }
       )
       hosts;

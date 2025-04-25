@@ -1,5 +1,5 @@
 # spawn a terminal
-cmd - return : open -n -a "Ghostty"
+lalt - return : open -n -a "Ghostty"
 
 # move focus to a space
 lalt - 1 : yabai -m space --focus 1
@@ -36,12 +36,6 @@ shift + alt - h : yabai -m window --swap west
 shift + alt - j : yabai -m window --swap south
 shift + alt - k : yabai -m window --swap north
 shift + alt - l : yabai -m window --swap east
-
-# move window
-shift + cmd - h : yabai -m window --warp west
-shift + cmd - j : yabai -m window --warp south
-shift + cmd - k : yabai -m window --warp north
-shift + cmd - l : yabai -m window --warp east
 
 # toggle window fullscreen zoom
 alt - f : yabai -m window --toggle zoom-fullscreen

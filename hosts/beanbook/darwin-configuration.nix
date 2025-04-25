@@ -53,16 +53,17 @@
       "1password"
       "bitwig-studio"
       "colemak-dh"
-      "font-jetbrains-mono-nerd-font"
       "discord"
+      "font-jetbrains-mono-nerd-font"
       "ghostty"
-      "raycast"
+      "gimp"
       "godot"
       "google-chrome"
+      "iina"
       "obsidian"
+      "raycast"
       "spotify"
       "utm"
-      "iina"
     ];
   };
 

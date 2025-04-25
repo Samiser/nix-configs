@@ -21,6 +21,7 @@ in {
         ./git.nix
         ./i3
         ./neovim.nix
+        ./ghostty.nix
         ./pywal.nix
         ./zsh
       ];
@@ -40,6 +41,7 @@ in {
         git.enable = true;
         neovim.enable = true;
         sketchybar.enable = pkgs.stdenv.isDarwin;
+        ghostty.enable = pkgs.stdenv.isDarwin;
         alacritty.enable = pkgs.stdenv.isLinux && gui;
         i3.enable = pkgs.stdenv.isLinux && gui;
         pywal.enable = pkgs.stdenv.isLinux && gui;

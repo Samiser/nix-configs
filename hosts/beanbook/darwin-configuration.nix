@@ -12,7 +12,6 @@
     my-neovim.packages.${system}.default
     neofetch
     ripgrep
-    tailscale
     tmux
     tree
   ];
@@ -25,7 +24,7 @@
 
   sam = {
     services = {
-      tailscale.enable = true;
+      #tailscale.enable = true;
       yabai.enable = true;
       jankyborders.enable = true;
       skhd.enable = true;
@@ -50,6 +49,7 @@
       }
     ];
     casks = [
+      "tailscale"
       "1password"
       "bitwig-studio"
       "colemak-dh"

@@ -14,6 +14,7 @@
     ripgrep
     tmux
     tree
+    ffmpeg
   ];
 
   imports = [

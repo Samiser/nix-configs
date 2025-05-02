@@ -15,6 +15,8 @@
     tmux
     tree
     ffmpeg
+    colima
+    docker
   ];
 
   imports = [

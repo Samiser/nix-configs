@@ -27,7 +27,6 @@
 
   sam = {
     services = {
-      #tailscale.enable = true;
       yabai.enable = true;
       jankyborders.enable = true;
       skhd.enable = true;

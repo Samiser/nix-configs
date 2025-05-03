@@ -1,16 +1,10 @@
 {
-  config,
-  lib,
-  ...
-}:
-# only configure the builder if tailscale is enabled
-lib.mkIf config.services.tailscale.enable {
   nix = {
     distributedBuilds = true;
 
     buildMachines = [
       {
-        hostName = "nix-lab";
+        hostName = "nix-lab.dove-delta.ts.net";
         sshUser = "sam";
         systems = ["x86_64-linux"];
         protocol = "ssh-ng";

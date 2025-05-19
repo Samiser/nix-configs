@@ -1,13 +1,13 @@
 {nixos-wsl, ...}: {
   imports = [
     nixos-wsl.nixosModules.wsl
-    ../../common/users
-    ../../common/modules/services/nomad.nix
-    ../../common/modules/services/tailscale.nix
-    ../../common/modules/services/openssh.nix
-    ../../common/modules/garnix.nix
-    ../../common/config.nix
-    ../../common/modules/pkgs.nix
+    ../../nixos-modules/users.nix
+    ../../nixos-modules/services/nomad.nix
+    ../../nixos-modules/services/tailscale.nix
+    ../../nixos-modules/services/openssh.nix
+    ../../shared-modules/garnix.nix
+    ../../nixos-modules/config.nix
+    ../../nixos-modules/pkgs.nix
     ./wsl-nvidia-cdi.nix
   ];
 

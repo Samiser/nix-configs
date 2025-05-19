@@ -12,19 +12,21 @@
     my-neovim.packages.${system}.default
     neofetch
     ripgrep
-    tailscale
     tmux
     tree
+    ffmpeg
+    colima
+    docker
   ];
 
   imports = [
-    ../../common/home-manager/darwin.nix
-    ../../common/darwin-modules
+    ../../home-manager/darwin.nix
+    ../../darwin-modules
+    ../../shared-modules/garnix.nix
   ];
 
   sam = {
     services = {
-      tailscale.enable = true;
       yabai.enable = true;
       jankyborders.enable = true;
       skhd.enable = true;
@@ -40,17 +42,28 @@
     enable = true;
     onActivation.cleanup = "zap";
 
-    taps = [];
-    brews = [];
+    taps = ["FelixKratz/formulae"];
+    brews = [
+      {
+        name = "sketchybar";
+        start_service = true;
+        restart_service = "changed";
+      }
+    ];
     casks = [
+      "tailscale"
       "1password"
       "bitwig-studio"
       "colemak-dh"
       "discord"
+      "font-jetbrains-mono-nerd-font"
       "ghostty"
+      "gimp"
       "godot"
       "google-chrome"
+      "iina"
       "obsidian"
+      "raycast"
       "spotify"
       "utm"
     ];
@@ -61,15 +74,11 @@
     hostName = "beanbook";
   };
 
-  security.pam.services.sudo_local = {
-    reattach = true;
-    touchIdAuth = true;
-  };
-
   nix = {
     settings = {
       experimental-features = "nix-command flakes";
-      trusted-users = ["root" "sam"];
+      sandbox = true;
+      trusted-users = ["root" "sam" "@admin"];
     };
   };
 

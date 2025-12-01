@@ -36,7 +36,7 @@ in {
       entr
       git
       nixfmt-rfc-style
-      python
+      python3
       tcpdump
 
       # tui
@@ -61,7 +61,7 @@ in {
       #virt-manager
       #networkmanagerapplet
     ]
-    ++ lib.optionals (pkgs.system
+    ++ lib.optionals (pkgs.stdenv.hostPlatform.system
       == "x86_64-linux") [
       spotify
       steam

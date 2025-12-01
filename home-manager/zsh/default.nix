@@ -21,7 +21,7 @@ in {
           rebuild = "sudo nixos-rebuild switch";
         };
         defaultKeymap = "viins";
-        initExtra = builtins.readFile ./zshrc;
+        initContent = builtins.readFile ./zshrc;
       };
     };
   };

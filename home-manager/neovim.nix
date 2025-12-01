@@ -20,7 +20,7 @@ in {
   config = mkIf cfg.enable {
     home.packages =
       if cfg.minimal
-      then [my-neovim.packages."${pkgs.system}".minimal]
-      else [my-neovim.packages."${pkgs.system}".default];
+      then [my-neovim.packages."${pkgs.stdenv.hostPlatform.system}".minimal]
+      else [my-neovim.packages."${pkgs.stdenv.hostPlatform.system}".default];
   };
 }

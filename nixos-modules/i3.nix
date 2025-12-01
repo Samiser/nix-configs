@@ -25,7 +25,7 @@ in {
       };
       windowManager.i3 = {
         enable = true;
-        package = pkgs.i3-gaps;
+        package = pkgs.i3;
         extraPackages = with pkgs; [rofi dunst picom i3blocks i3lock-fancy];
       };
     };

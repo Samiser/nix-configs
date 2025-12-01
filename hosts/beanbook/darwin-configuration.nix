@@ -9,7 +9,7 @@
     # TODO: refactor generic packages out of this config
     _1password-cli
     fd
-    my-neovim.packages.${system}.default
+    my-neovim.packages.${stdenv.hostPlatform.system}.default
     neofetch
     ripgrep
     tmux
@@ -85,6 +85,7 @@
   system = {
     # Used for backwards compatibility, please read the changelog before changing.
     # $ darwin-rebuild changelog
+    primaryUser = "sam";
     stateVersion = 6;
   };
 

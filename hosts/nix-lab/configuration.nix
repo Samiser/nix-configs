@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  static-site-compiler,
   ...
 }: {
   imports = [
@@ -11,9 +12,9 @@
     ../../nixos-modules/pkgs.nix
     ../../nixos-modules/agenix.nix
     ../../nixos-modules/services/tailscale.nix
+    ./caddy.nix
   ];
 
-  virtualisation.podman.enable = true;
   systemd = {
     network.enable = true;
 
@@ -23,24 +24,6 @@
     };
 
     services.systemd-networkd-wait-online.enable = lib.mkForce false;
-
-    services.storageRoute = {
-      wantedBy = ["multi-user.target"];
-      after = ["network.target"];
-      description = "Route requests to my Hetzner storage box via default routes";
-      path = [pkgs.bash pkgs.iproute2];
-      script = ''
-        if ! (ip rule | grep "46.4.0.0" -q); then
-          ip rule add to 46.4.0.0/16 lookup main pref 5000
-          ip rule add to 46.4.0.0/16 lookup default pref 5010
-        fi
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        User = "root";
-        Restart = "no";
-      };
-    };
   };
 
   networking = {
@@ -56,22 +39,9 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  age.secrets.nomad-samba-credentials = {
-    file = ../../secrets/nomad-samba-credentials.age;
-    path = "/etc/nixos/smb-secrets";
-  };
-
-  environment.systemPackages = with pkgs; [cifs-utils neovim tmux];
-  fileSystems."/mnt/hz" = {
-    device = "//u361974-sub2.your-storagebox.de/u361974-sub2";
-    fsType = "cifs";
-    options = let
-      # this line prevents hanging on network split
-      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-    in [
-      "${automount_opts},credentials=/etc/nixos/smb-secrets,uid=1000,gid=1000"
-    ];
-  };
+  environment.systemPackages = [
+    static-site-compiler.packages.${pkgs.system}.default
+  ];
 
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;

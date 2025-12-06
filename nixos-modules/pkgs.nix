@@ -61,7 +61,8 @@ in {
       #virt-manager
       #networkmanagerapplet
     ]
-    ++ lib.optionals (pkgs.stdenv.hostPlatform.system
+    ++ lib.optionals (guiEnabled
+      && pkgs.stdenv.hostPlatform.system
       == "x86_64-linux") [
       spotify
       steam

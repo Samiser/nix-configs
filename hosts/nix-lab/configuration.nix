@@ -1,9 +1,4 @@
-{
-  lib,
-  pkgs,
-  static-site-compiler,
-  ...
-}: {
+{lib, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../nixos-modules/config.nix
@@ -13,6 +8,7 @@
     ../../nixos-modules/agenix.nix
     ../../nixos-modules/services/tailscale.nix
     ./caddy.nix
+    ./ssc.nix
   ];
 
   systemd = {
@@ -38,10 +34,6 @@
   };
 
   nixpkgs.config.allowUnfree = true;
-
-  environment.systemPackages = [
-    static-site-compiler.packages.${pkgs.system}.default
-  ];
 
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;

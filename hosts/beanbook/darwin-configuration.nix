@@ -6,17 +6,7 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    # TODO: refactor generic packages out of this config
-    _1password-cli
-    fd
     my-neovim.packages.${stdenv.hostPlatform.system}.default
-    neofetch
-    ripgrep
-    tmux
-    tree
-    ffmpeg
-    colima
-    docker
   ];
 
   imports = [

@@ -2,7 +2,7 @@
   imports = [
     ./config.nix
     ./users.nix
-    ./pkgs.nix
+    ../shared-modules/pkgs.nix
     ./services
     ./vm-guest.nix
     ./i3.nix

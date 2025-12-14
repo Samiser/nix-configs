@@ -1,7 +1,7 @@
 {
   imports = [
     ./nix/build-machines.nix
-    ./pkgs.nix
+    ../shared-modules/pkgs.nix
     ./system
     ./services
   ];

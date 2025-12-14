@@ -4,47 +4,56 @@
   lib,
   ...
 }: let
-  guiEnabled = config.hostConfig.gui.enable;
+  guiEnabled = config.hostConfig.gui.enable or false;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
 in {
   environment.systemPackages = with pkgs;
     [
       # cli tools
       _1password-cli
-      acpi
-      dig
       fd
       ffmpeg
       fzf
-      imagemagick
       jq
-      pciutils
-      playerctl
       pv
       ripgrep
-      stow
-      sysstat
       tree
       unzip
       wget
-      wireguard-tools
-      xclip
-      zsh
+      neofetch
+      tmux
 
       # dev
       direnv
-      docker-compose
       entr
       git
       nixfmt-rfc-style
       python3
+    ]
+    ++ lib.optionals (!isDarwin) [
+      # Linux-specific cli tools
+      acpi
+      dig
+      imagemagick
+      pciutils
+      playerctl
+      stow
+      sysstat
+      wireguard-tools
+      xclip
+      zsh
+      docker-compose
       tcpdump
 
-      # tui
+      # Linux tui
       gotop
       htop
-      neofetch
       nix-tree
-      tmux
+    ]
+    ++ lib.optionals isDarwin [
+      # Darwin-specific packages
+      colima
+      docker
     ]
     ++ lib.optionals guiEnabled [
       alacritty
@@ -81,6 +90,6 @@ in {
     '';
   };
 
-  #virtualisation.libvirtd.enable = true;
-  virtualisation.docker.enable = true;
+  # Linux-specific virtualisation
+  virtualisation.docker.enable = lib.mkIf (!isDarwin) true;
 }

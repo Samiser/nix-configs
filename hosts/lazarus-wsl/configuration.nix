@@ -2,7 +2,6 @@
   imports = [
     nixos-wsl.nixosModules.wsl
     ../../nixos-modules/users.nix
-    ../../nixos-modules/services/nomad.nix
     ../../nixos-modules/services/tailscale.nix
     ../../nixos-modules/services/openssh.nix
     ../../shared-modules/garnix.nix
@@ -10,12 +9,6 @@
     ../../nixos-modules/pkgs.nix
     ./wsl-nvidia-cdi.nix
   ];
-
-  nomad = {
-    bind_addr = "100.120.228.44";
-    client = true;
-    nvidia = true;
-  };
 
   wsl = {
     enable = true;

@@ -17,6 +17,7 @@
     ffmpeg
     colima
     docker
+    claude-code
   ];
 
   imports = [

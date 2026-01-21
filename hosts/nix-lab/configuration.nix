@@ -9,6 +9,7 @@
     ../../nixos-modules/services/tailscale.nix
     ./caddy.nix
     ./ssc.nix
+    ./gpa-calc.nix
   ];
 
   systemd = {

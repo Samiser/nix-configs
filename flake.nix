@@ -13,7 +13,8 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
     my-neovim.url = "github:Samiser/neovim-config";
-    my-neovim.inputs.nixpkgs.follows = "nixpkgs";
+    # Tracking: https://github.com/NixOS/nixpkgs/issues/483584
+    # my-neovim.inputs.nixpkgs.follows = "nixpkgs";
     static-site-compiler.url = "github:Samiser/static-site-compiler";
     static-site-compiler.inputs.nixpkgs.follows = "nixpkgs";
   };

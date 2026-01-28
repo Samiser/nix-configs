@@ -35,7 +35,7 @@ in {
       docker-compose
       entr
       git
-      nixfmt-rfc-style
+      nixfmt
       python3
       tcpdump
 

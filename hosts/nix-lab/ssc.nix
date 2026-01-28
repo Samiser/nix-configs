@@ -4,7 +4,7 @@
   static-site-compiler,
   ...
 }: let
-  ssc = static-site-compiler.packages.${pkgs.system}.default;
+  ssc = static-site-compiler.packages.${pkgs.stdenv.hostPlatform.system}.default;
   contentDir = "/var/lib/ssc/site-content";
   siteDir = "/srv/blog";
 in {

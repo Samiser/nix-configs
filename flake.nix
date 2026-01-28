@@ -17,6 +17,12 @@
     # my-neovim.inputs.nixpkgs.follows = "nixpkgs";
     static-site-compiler.url = "github:Samiser/static-site-compiler";
     static-site-compiler.inputs.nixpkgs.follows = "nixpkgs";
+
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    nix-minecraft.inputs.nixpkgs.follows = "nixpkgs";
+
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs: let

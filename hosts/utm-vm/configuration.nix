@@ -1,17 +1,14 @@
 {...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../shared-modules/garnix.nix
-    ../../nixos-modules/modules
-    ../../nixos-modules/profiles/base.nix
-    ../../nixos-modules/profiles/desktop.nix
-    ../../nixos-modules/profiles/pkgs.nix
   ];
 
-  hostConfig = {
-    i3.enable = true;
+  host.profile = {
+    desktop = true;
     vm = true;
   };
+
+  hostConfig.i3.enable = true;
 
   boot = {
     loader.systemd-boot.enable = true;

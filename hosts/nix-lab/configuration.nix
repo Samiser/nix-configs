@@ -1,28 +1,30 @@
 {...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../nixos-modules/modules
-    ../../nixos-modules/profiles/base.nix
-    ../../nixos-modules/profiles/server.nix
-    ../../shared-modules/garnix.nix
   ];
 
-  services.tailscale-local.enable = true;
-  services.caddy.enable = true;
-
-  services.ssc = {
-    enable = true;
-    domain = "samiser.xyz";
+  host.profile = {
+    dev = true;
+    server = true;
   };
 
-  services.gpa-calc = {
-    enable = true;
-    domain = "gpa-calc.samiser.xyz";
-  };
+  services = {
+    caddy.enable = true;
 
-  services.miniflux-local = {
-    enable = true;
-    host = "nix-lab";
+    ssc = {
+      enable = true;
+      domain = "samiser.xyz";
+    };
+
+    gpa-calc = {
+      enable = true;
+      domain = "gpa-calc.samiser.xyz";
+    };
+
+    miniflux-local = {
+      enable = true;
+      host = "nix-lab";
+    };
   };
 
   networking.hostName = "nix-lab";

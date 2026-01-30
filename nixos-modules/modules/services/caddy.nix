@@ -2,13 +2,15 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  caddyCfg = config.services.caddy;
+in {
   networking.firewall.allowedTCPPorts = [80 443];
 
   age.secrets.caddy-cloudflare-key = {
     file = ../../../secrets/caddy-cloudflare-key.age;
-    owner = config.services.caddy.user;
-    group = config.services.caddy.group;
+    owner = caddyCfg.user;
+    inherit (caddyCfg) group;
   };
 
   systemd.services.caddy.serviceConfig = {

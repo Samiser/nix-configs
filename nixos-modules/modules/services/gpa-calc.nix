@@ -36,7 +36,7 @@ in {
     }];
 
     virtualisation.oci-containers.containers.gpa-calc = {
-      image = cfg.image;
+      inherit (cfg) image;
       autoStart = true;
       ports = ["127.0.0.1:${toString cfg.port}:${toString cfg.port}"];
     };

@@ -3,10 +3,7 @@
   my-neovim,
   ...
 }: {
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    # TODO: refactor generic packages out of this config
     _1password-cli
     fd
     my-neovim.packages.${stdenv.hostPlatform.system}.default
@@ -18,12 +15,6 @@
     colima
     docker
     claude-code
-  ];
-
-  imports = [
-    ../../home-manager/darwin.nix
-    ../../darwin-modules
-    ../../shared-modules/garnix.nix
   ];
 
   sam = {
@@ -84,14 +75,11 @@
   };
 
   system = {
-    # Used for backwards compatibility, please read the changelog before changing.
-    # $ darwin-rebuild changelog
     primaryUser = "sam";
     stateVersion = 6;
   };
 
   nixpkgs = {
-    # The platform the configuration will be used on.
     hostPlatform = "aarch64-darwin";
     config.allowUnfree = true;
   };

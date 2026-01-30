@@ -1,14 +1,10 @@
 {nixos-wsl, ...}: {
   imports = [
     nixos-wsl.nixosModules.wsl
-    ../../nixos-modules/modules
-    ../../nixos-modules/profiles/base.nix
-    ../../nixos-modules/profiles/pkgs.nix
-    ../../shared-modules/garnix.nix
     ./wsl-nvidia-cdi.nix
   ];
 
-  services.tailscale-local.enable = true;
+  host.profile.dev = true;
 
   wsl = {
     enable = true;

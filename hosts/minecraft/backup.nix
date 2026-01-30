@@ -1,10 +1,5 @@
-{
-  pkgs,
-  config,
-  ...
-}: let
+{pkgs, ...}: let
   backupDir = "/var/lib/minecraft-backups";
-  worldDir = "/srv/minecraft/minecraft/world";
 
   backupScript = pkgs.writeShellScript "minecraft-backup" ''
     set -euo pipefail

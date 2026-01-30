@@ -1,10 +1,15 @@
 {lib, ...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../nixos-modules
-    ../../nixos-modules/bluetooth.nix
-    ../../nixos-modules/nvidia-optimus.nix
+    ../../nixos-modules/modules
+    ../../nixos-modules/profiles/base.nix
+    ../../nixos-modules/profiles/desktop.nix
+    ../../nixos-modules/profiles/pkgs.nix
+    ../../nixos-modules/hardware/bluetooth.nix
+    ../../nixos-modules/hardware/nvidia-optimus.nix
   ];
+
+  hostConfig.i3.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -40,12 +45,6 @@
   i18n.defaultLocale = "en_GB.UTF-8";
   time.timeZone = "Europe/London";
   services.ntp.enable = true;
-
-  # Custom host config
-  hostConfig = {
-    gui.enable = true;
-    i3.enable = true;
-  };
 
   security.pam.sshAgentAuth.enable = true;
   security.pam.services.sudo.sshAgentAuth = true;

@@ -1,13 +1,11 @@
+# Server profile - headless servers
 {pkgs, ...}: {
   boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
-  services.openssh.enable = true;
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
-  environment.systemPackages = [
-    pkgs.ghostty.terminfo
-    pkgs.tmux
+  environment.systemPackages = with pkgs; [
+    ghostty.terminfo
+    tmux
   ];
 
   users.users.root.openssh.authorizedKeys.keys = [

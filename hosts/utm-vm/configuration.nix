@@ -2,8 +2,16 @@
   imports = [
     ./hardware-configuration.nix
     ../../shared-modules/garnix.nix
-    ../../nixos-modules
+    ../../nixos-modules/modules
+    ../../nixos-modules/profiles/base.nix
+    ../../nixos-modules/profiles/desktop.nix
+    ../../nixos-modules/profiles/pkgs.nix
   ];
+
+  hostConfig = {
+    i3.enable = true;
+    vm = true;
+  };
 
   boot = {
     loader.systemd-boot.enable = true;
@@ -16,14 +24,6 @@
   networking = {
     useNetworkd = true;
     hostName = "utm-vm";
-    domain = "";
-  };
-
-  # Custom host config
-  hostConfig = {
-    gui.enable = true;
-    i3.enable = true;
-    vm = true;
   };
 
   users.users.root.openssh.authorizedKeys.keys = [

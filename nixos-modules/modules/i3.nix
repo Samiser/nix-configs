@@ -3,13 +3,12 @@
   pkgs,
   lib,
   ...
-}:
-with lib; let
+}: let
   cfg = config.hostConfig.i3;
 in {
-  options.hostConfig.i3.enable = mkEnableOption "i3";
+  options.hostConfig.i3.enable = lib.mkEnableOption "i3 window manager";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.displayManager.defaultSession = "xfce+i3";
     services.xserver = {
       enable = true;

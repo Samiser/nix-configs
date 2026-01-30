@@ -1,42 +1,30 @@
-{lib, ...}: {
+{...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../nixos-modules/config.nix
-    ../../nixos-modules/users.nix
-    ../../nixos-modules/server.nix
+    ../../nixos-modules/modules
+    ../../nixos-modules/profiles/base.nix
+    ../../nixos-modules/profiles/server.nix
     ../../shared-modules/garnix.nix
-    ../../nixos-modules/pkgs.nix
-    ../../nixos-modules/agenix.nix
-    ../../nixos-modules/services/tailscale.nix
-    ./caddy.nix
-    ./ssc.nix
-    ./gpa-calc.nix
-    ./miniflux.nix
   ];
 
-  systemd = {
-    network.enable = true;
+  services.tailscale-local.enable = true;
+  services.caddy.enable = true;
 
-    network.networks."10-wan" = {
-      matchConfig.Name = "eth0";
-      networkConfig.DHCP = "yes";
-    };
-
-    services.systemd-networkd-wait-online.enable = lib.mkForce false;
+  services.ssc = {
+    enable = true;
+    domain = "samiser.xyz";
   };
 
-  networking = {
-    useNetworkd = true;
-    hostName = "nix-lab";
-    domain = "";
+  services.gpa-calc = {
+    enable = true;
+    domain = "gpa-calc.samiser.xyz";
   };
 
-  # Custom host config
-  hostConfig = {
-    gui.enable = false;
+  services.miniflux-local = {
+    enable = true;
+    host = "nix-lab";
   };
 
-  nixpkgs.config.allowUnfree = true;
-
+  networking.hostName = "nix-lab";
   system.stateVersion = "24.05";
 }

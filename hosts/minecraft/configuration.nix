@@ -3,15 +3,15 @@
     ./hardware-configuration.nix
     disko.nixosModules.disko
     ./disko.nix
-    ../../nixos-modules/config.nix
-    ../../nixos-modules/users.nix
-    ../../nixos-modules/agenix.nix
-    ../../nixos-modules/server.nix
+    ../../nixos-modules/modules
+    ../../nixos-modules/profiles/base.nix
+    ../../nixos-modules/profiles/server.nix
     ../../shared-modules/garnix.nix
     ./minecraft-server.nix
-    ./caddy.nix
     ./backup.nix
   ];
+
+  services.caddy.enable = true;
 
   boot.loader.grub.enable = true;
   boot.loader.grub.efiSupport = true;

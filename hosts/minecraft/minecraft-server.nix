@@ -2,7 +2,9 @@
   pkgs,
   nix-minecraft,
   ...
-}: {
+}: let
+  inherit (import ../../shared-modules/lib.nix) cloudflareTls;
+in {
   imports = [nix-minecraft.nixosModules.minecraft-servers];
 
   nixpkgs.overlays = [nix-minecraft.overlay];
@@ -67,4 +69,10 @@
       jvmOpts = "-Xms6G -Xmx6G";
     };
   };
+
+  services.caddy.virtualHosts."mc.samiser.xyz".extraConfig = cloudflareTls ''
+    handle {
+      reverse_proxy localhost:8100
+    }
+  '';
 }

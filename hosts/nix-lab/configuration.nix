@@ -11,6 +11,7 @@
     ./caddy.nix
     ./ssc.nix
     ./gpa-calc.nix
+    ./miniflux.nix
   ];
 
   systemd = {

@@ -7,4 +7,5 @@ in {
   "hcloud-token.age".publicKeys = [sam];
   "caddy-cloudflare-key.age".publicKeys = [sam nix-lab minecraft];
   "ssc-secrets.age".publicKeys = [sam nix-lab];
+  "miniflux-admin-credentials.age".publicKeys = [sam nix-lab];
 }

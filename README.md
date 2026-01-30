@@ -4,30 +4,27 @@ my nixos/nix-darwin stuff :)
 
 ## folder structure
 
-- `home-manager/`
-  - home-manager modules
-- `nixos-modules/`
-  - nixos modules
-- `darwin-modules/`
-  - nix-darwin modules
-- `hosts/`
-  - host-specific configuration
-- `lib/`
-  - nix helpers
-- `secrets/`
-  - agenix secrets
+- `hosts/` - host-specific configuration
+- `nixos-modules/` - nixos modules and profiles
+- `darwin-modules/` - nix-darwin modules
+- `home-manager/` - home-manager modules
+- `shared-modules/` - modules shared between nixos and darwin
+- `lib/` - flake output generation
+- `secrets/` - agenix secrets
 
-## systems.nix
+## hosts
 
-the flake outputs are determined by the directory structure and filenames in the
-`hosts/` directory, similar to
-[blueprint](https://github.com/numtide/blueprint).
+flake outputs are determined by the `hosts/` directory structure. each
+subdirectory is a host, and the config filename determines the system type:
 
-each directory contains a host configuration, and the filename of the main
-configuration file determines which type of system to build:
+- `configuration.nix` → nixos
+- `darwin-configuration.nix` → darwin
 
-- `configuration.nix`: nixos (x86_64-linux)
-- `darwin-configuration.nix`: darwin (aarch64-darwin)
+## deployment
 
-i'm currently assuming that nixos hosts will be x86 and darwin arm, so if i ever
-want to build eg. arm nixos i'll have to do some rewriting.
+hosts with `host.deploy.enable = true` can be deployed via deploy-rs:
+
+```bash
+nix develop
+deploy .#hostname
+```

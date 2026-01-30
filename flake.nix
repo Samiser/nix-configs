@@ -28,8 +28,5 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs: let
-    systems = import ./lib/systems.nix {inherit inputs;};
-  in
-    systems {inherit inputs;};
+  outputs = inputs: import ./lib {inherit inputs;};
 }

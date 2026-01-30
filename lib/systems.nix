@@ -1,5 +1,5 @@
 {inputs}: let
-  inherit (inputs) nixpkgs nix-darwin agenix home-manager;
+  inherit (inputs) nixpkgs nix-darwin agenix home-manager deploy-rs;
 
   nixosModules = [
     ../nixos-modules/modules
@@ -62,6 +62,14 @@
     then "darwin"
     else null;
 
+  mkDeployNode = nixosConfig: {
+    hostname = nixosConfig.config.networking.hostName;
+    profiles.system = {
+      sshUser = "root";
+      path = deploy-rs.lib.x86_64-linux.activate.nixos nixosConfig;
+    };
+  };
+
   configurations = let
     allConfigs =
       builtins.map (
@@ -78,9 +86,30 @@
     filterConfigs = type:
       builtins.listToAttrs
       (builtins.filter (config: config.systemType == type) allConfigs);
+
+    nixosConfigs = filterConfigs "nixos";
+    darwinConfigs = filterConfigs "darwin";
+
+    deployNodes =
+      builtins.listToAttrs
+      (builtins.filter (x: x != null)
+        (builtins.map (
+            hostname: let
+              nixosConfig = nixosConfigs.${hostname} or null;
+            in
+              if nixosConfig != null && nixosConfig.config.host.deploy.enable
+              then {
+                name = hostname;
+                value = mkDeployNode nixosConfig;
+              }
+              else null
+          )
+          hosts));
   in {
-    nixosConfigurations = filterConfigs "nixos";
-    darwinConfigurations = filterConfigs "darwin";
+    nixosConfigurations = nixosConfigs;
+    darwinConfigurations = darwinConfigs;
+    deploy.nodes = deployNodes;
+    checks = builtins.mapAttrs (_: deployLib: deployLib.deployChecks inputs.self.deploy) deploy-rs.lib;
   };
 in {
   __functor = _: _: configurations;

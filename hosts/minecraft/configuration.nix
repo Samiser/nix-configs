@@ -7,15 +7,12 @@
     ./backup.nix
   ];
 
-  host.profile.server = true;
+  host = {
+    deploy.enable = true;
+    profile.server = true;
+  };
 
   services.caddy.enable = true;
-
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-  };
 
   networking.hostName = "minecraft";
 

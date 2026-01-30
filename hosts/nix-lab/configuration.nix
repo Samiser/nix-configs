@@ -3,9 +3,12 @@
     ./hardware-configuration.nix
   ];
 
-  host.profile = {
-    dev = true;
-    server = true;
+  host = {
+    deploy.enable = true;
+    profile = {
+      dev = true;
+      server = true;
+    };
   };
 
   services = {

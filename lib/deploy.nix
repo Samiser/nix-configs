@@ -31,5 +31,4 @@
         hosts));
 in {
   deploy.nodes = deployNodes;
-  checks = builtins.mapAttrs (_: deployLib: deployLib.deployChecks inputs.self.deploy) deploy-rs.lib;
 }

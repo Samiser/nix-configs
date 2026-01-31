@@ -8,6 +8,6 @@
   shells = import ./shells.nix {inherit inputs;};
 in {
   inherit (hosts) nixosConfigurations darwinConfigurations;
-  inherit (deploy) deploy checks;
+  inherit (deploy) deploy;
   devShells = shells;
 }

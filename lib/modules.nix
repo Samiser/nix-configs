@@ -9,7 +9,7 @@ in {
     {_module.args = {inherit keys;};}
     ../nixos-modules/modules
     ../nixos-modules/profiles
-    ../shared-modules/garnix.nix
+    ../shared-modules/nix.nix
     agenix.nixosModules.default
     home-manager.nixosModules.default
     {imports = [../home-manager/home.nix];}
@@ -18,7 +18,7 @@ in {
   darwin = [
     {_module.args = {inherit keys;};}
     ../darwin-modules
-    ../shared-modules/garnix.nix
+    ../shared-modules/nix.nix
     agenix.darwinModules.default
     home-manager.darwinModules.default
     {imports = [../home-manager/darwin.nix];}

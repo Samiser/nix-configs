@@ -35,13 +35,6 @@
     onActivation.cleanup = "zap";
 
     taps = ["FelixKratz/formulae"];
-    brews = [
-      {
-        name = "sketchybar";
-        start_service = true;
-        restart_service = "changed";
-      }
-    ];
     casks = [
       "tailscale"
       "1password"
@@ -66,12 +59,9 @@
     hostName = "beanbook";
   };
 
-  nix = {
-    settings = {
-      experimental-features = "nix-command flakes";
-      sandbox = true;
-      trusted-users = ["root" "sam" "@admin"];
-    };
+  nix.settings = {
+    sandbox = true;
+    trusted-users = ["root" "sam" "@admin"];
   };
 
   system = {

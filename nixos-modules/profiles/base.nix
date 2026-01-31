@@ -30,12 +30,7 @@
     tailscale.enable = true;
   };
 
-  nix = {
-    package = pkgs.nixVersions.stable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
+  nix.package = pkgs.nixVersions.stable;
 
   nixpkgs.config.allowUnfree = true;
 

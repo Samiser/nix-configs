@@ -6,8 +6,10 @@ let
   machines = {
     nix-lab = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJef7As8sWLQRWC5FZ2WUPO/V3WLOWZJz9VKo/oZUqBl root@nix-lab";
     minecraft = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2NfWwHXQmUtnW0WreClMlOAI9uvyeLWOF0+ot3RNvX root@minecraft";
+    jelly = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7fnOY+8QVBpGMkmd7e1SCodBu+XkV6+GfAA/iJqct8 root@jelly";
+    radar = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpm+FNLZBtMWrnnNLxmnPHSO3UBMEGteYcJ2s0FihCw root@radar";
   };
 in {
   inherit (users) sam;
-  inherit (machines) nix-lab minecraft;
+  inherit (machines) nix-lab minecraft jelly radar;
 }

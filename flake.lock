@@ -241,11 +241,11 @@
         "pyproject-nix": "pyproject-nix"
       },
       "locked": {
-        "lastModified": 1772725989,
-        "narHash": "sha256-QocYBARa3MUq6MSuCIAciInRU9F0NJRESjwk/Ikls7M=",
+        "lastModified": 1772731346,
+        "narHash": "sha256-GDvEXcVnxwSJ3N/nSNetzScdlsuB5IZOaxCzXj5York=",
         "owner": "samiser",
         "repo": "markovi",
-        "rev": "85b935510f06d607b7d35de8d1a16a1c821ed3db",
+        "rev": "ed7a950fe9e1f94e7627dafb72e515c35e2508a6",
         "type": "github"
       },
       "original": {

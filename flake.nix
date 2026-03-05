@@ -37,6 +37,10 @@
       url = "github:samiser/static-site-compiler";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    markovi = {
+      url = "github:samiser/markovi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs: import ./lib {inherit inputs;};

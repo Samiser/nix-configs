@@ -10,6 +10,7 @@
         pkgs.nixfmt
         pkgs.statix
         pkgs.deadnix
+        pkgs.nixos-rebuild
       ];
     };
 in {

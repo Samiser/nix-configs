@@ -6,5 +6,6 @@
     ./services/ssc.nix
     ./services/gpa-calc.nix
     ./services/miniflux.nix
+    ./services/markovi.nix
   ];
 }

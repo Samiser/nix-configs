@@ -28,6 +28,8 @@
       enable = true;
       host = "nix-lab";
     };
+
+    markovi.enable = true;
   };
 
   networking.hostName = "nix-lab";

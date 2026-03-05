@@ -10,4 +10,5 @@ in {
   "storagebox-credentials.age".publicKeys = [sam jelly radar];
   "tailscale-auth-key.age".publicKeys = [sam radar];
   "mullvad-privkey.age".publicKeys = [sam radar];
+  "markovi-discord-token.age".publicKeys = [sam nix-lab];
 }

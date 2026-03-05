@@ -233,6 +233,27 @@
         "type": "github"
       }
     },
+    "markovi": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pyproject-nix": "pyproject-nix"
+      },
+      "locked": {
+        "lastModified": 1772725989,
+        "narHash": "sha256-QocYBARa3MUq6MSuCIAciInRU9F0NJRESjwk/Ikls7M=",
+        "owner": "samiser",
+        "repo": "markovi",
+        "rev": "85b935510f06d607b7d35de8d1a16a1c821ed3db",
+        "type": "github"
+      },
+      "original": {
+        "owner": "samiser",
+        "repo": "markovi",
+        "type": "github"
+      }
+    },
     "mnw": {
       "locked": {
         "lastModified": 1768701608,
@@ -443,12 +464,34 @@
         "type": "github"
       }
     },
+    "pyproject-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "markovi",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771518446,
+        "narHash": "sha256-nFJSfD89vWTu92KyuJWDoTQJuoDuddkJV3TlOl1cOic=",
+        "owner": "pyproject-nix",
+        "repo": "pyproject.nix",
+        "rev": "eb204c6b3335698dec6c7fc1da0ebc3c6df05937",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pyproject-nix",
+        "repo": "pyproject.nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "home-manager": "home-manager_2",
+        "markovi": "markovi",
         "my-neovim": "my-neovim",
         "nix-darwin": "nix-darwin",
         "nix-minecraft": "nix-minecraft",

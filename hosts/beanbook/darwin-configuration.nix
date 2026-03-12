@@ -43,9 +43,14 @@
     enable = true;
     onActivation.cleanup = "zap";
 
-    taps = ["FelixKratz/formulae"];
+    taps = ["FelixKratz/formulae" "gromgit/fuse"];
+    brews = [
+      "gromgit/fuse/ext4fuse-mac"
+    ];
     casks = [
-      "tailscale"
+      "macfuse"
+      "steam"
+      "tailscale-app"
     ];
   };
 

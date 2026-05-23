@@ -1,4 +1,8 @@
-{config, pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   age.secrets.storagebox-credentials.file = ../../secrets/storagebox-credentials.age;
 
   fileSystems."/mnt/storagebox" = {
@@ -13,6 +17,11 @@
       "x-systemd.automount"
       "noauto"
       "_netdev"
+      "hard"
+      "actimeo=60"
+      "cache=loose"
+      "rsize=4194304"
+      "wsize=4194304"
     ];
   };
 

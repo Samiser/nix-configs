@@ -1,4 +1,8 @@
-{config, pkgs, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   vpnInterface = "wg-mullvad";
 in {
   age.secrets.mullvad-privkey = {
@@ -13,12 +17,14 @@ in {
     address = ["10.71.159.207/32"];
     privateKeyFile = config.age.secrets.mullvad-privkey.path;
 
-    peers = [{
-      publicKey = "veLqpZazR9j/Ol2G8TfrO32yEhc1i543MCN8rpy1FBA=";
-      allowedIPs = ["0.0.0.0/0" "::/0"];
-      endpoint = "185.204.1.203:51820";
-      persistentKeepalive = 25;
-    }];
+    peers = [
+      {
+        publicKey = "2S3G7Sm9DVG6+uJtlDu4N6ed5V97sTbA5dCSkUelWyk=";
+        allowedIPs = ["0.0.0.0/0" "::/0"];
+        endpoint = "193.138.7.137:51820";
+        persistentKeepalive = 25;
+      }
+    ];
 
     # Don't route all traffic through VPN, only traffic from qbittorrent
     # We'll use a separate routing table for this
@@ -40,7 +46,7 @@ in {
     isSystemUser = true;
     uid = 888;
     group = "qbittorrent";
-    extraGroups = ["radarr"];  # For storagebox access
+    extraGroups = ["radarr"]; # For storagebox access
     home = "/var/lib/qbittorrent";
     createHome = true;
   };

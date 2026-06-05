@@ -34,7 +34,7 @@ let
       _1password-cli
       ffmpeg
       imagemagick
-      neofetch
+      fastfetch
       pandoc
     ];
 

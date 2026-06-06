@@ -60,7 +60,6 @@
   };
 
   nix.settings = {
-    sandbox = "relaxed";
     trusted-users = ["root" "sam" "@admin"];
   };
 

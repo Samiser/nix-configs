@@ -41,6 +41,10 @@
       url = "github:samiser/markovi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-github-actions = {
+      url = "github:nix-community/nix-github-actions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs: import ./lib {inherit inputs;};

@@ -11,4 +11,5 @@ in {
   "tailscale-auth-key.age".publicKeys = [sam radar];
   "mullvad-privkey.age".publicKeys = [sam radar];
   "markovi-discord-token.age".publicKeys = [sam nix-lab];
+  "attic-jwt-secret.age".publicKeys = [sam nix-lab];
 }

@@ -7,5 +7,6 @@
     ./services/gpa-calc.nix
     ./services/miniflux.nix
     ./services/markovi.nix
+    ./services/attic.nix
   ];
 }

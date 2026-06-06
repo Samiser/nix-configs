@@ -25,6 +25,7 @@ let
       docker
       docker-compose
       entr
+      gh
       nix-tree
       nixfmt
       python3

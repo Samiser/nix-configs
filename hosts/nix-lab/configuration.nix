@@ -31,6 +31,8 @@
     };
 
     markovi.enable = true;
+
+    attic-cache.enable = true;
   };
 
   networking.hostName = "nix-lab";

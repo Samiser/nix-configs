@@ -19,7 +19,8 @@ let
 
   dev = {pkgs}:
     with pkgs; [
-      claude-code
+      # broken on nix-darwin sandbox builds
+      #claude-code
       direnv
       docker
       docker-compose

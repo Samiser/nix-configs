@@ -4,27 +4,9 @@
   ...
 }: let
   inherit (import ../../shared-modules/lib.nix) cloudflareTls;
-
-  # lazymc 0.2.11 in nixpkgs has a bug where it doesn't detect when the
-  # minecraft server finishes starting, causing clients to timeout while
-  # waiting. 0.2.10 doesn't have this issue.
-  # see: https://github.com/timvisee/lazymc/issues/65
-  lazymc = pkgs.rustPlatform.buildRustPackage rec {
-    pname = "lazymc";
-    version = "0.2.10";
-    src = pkgs.fetchFromGitHub {
-      owner = "timvisee";
-      repo = "lazymc";
-      rev = "v${version}";
-      hash = "sha256-IObLjxuMJDjZ3M6M1DaPvmoRqAydbLKdpTQ3Vs+B9Oo=";
-    };
-    cargoHash = "sha256-Tx+Bof4NtVd7AlYMS6veLiT/9vBXPIRVpMecoW7SpfM=";
-    meta.mainProgram = "lazymc";
-  };
 in {
   imports = [
     nix-minecraft.nixosModules.minecraft-servers
-    nix-minecraft.nixosModules.minecraft-lazymc
   ];
 
   nixpkgs.overlays = [nix-minecraft.overlay];
@@ -36,16 +18,17 @@ in {
       servers.minecraft = {
         enable = true;
         package = pkgs.paperServers.paper;
-        openFirewall = false;
+        openFirewall = true;
 
         serverProperties = {
-          server-port = 25566;
+          server-port = 25565;
           difficulty = "normal";
           gamemode = "survival";
           max-players = 20;
           motd = "\\u00A7bsam's \\u00A7ocool\\u00A7r\\u00A7b server :)";
           white-list = true;
           enable-command-block = true;
+          level-seed = "lol";
         };
 
         whitelist = {
@@ -77,6 +60,10 @@ in {
             url = "https://hangarcdn.papermc.io/plugins/EngineHub/WorldEdit/versions/7.4.0/PAPER/worldedit-bukkit-7.4.0.jar";
             sha256 = "sha256-KEGOxSIjeFrT3bD6u+00YOrLf9nXd0yEL0Q/tcf7STc=";
           };
+          "plugins/treeforce.jar" = pkgs.fetchurl {
+            url = "https://hangarcdn.papermc.io/plugins/demi/TreeForce/versions/1.0/PAPER/TreeForce-1.0.jar";
+            sha256 = "sha256-FJcqyQQE/UU9jdkAoD62RRvb3QuQb15qwf7luOXcQpA=";
+          };
           "plugins/BlueMap/webserver.conf" = pkgs.writeText "webserver.conf" ''
             enabled: true
             webroot: "bluemap/web"
@@ -95,21 +82,6 @@ in {
         };
 
         jvmOpts = "-Dpaperclip.patchdir=./cache -Xms6G -Xmx6G";
-      };
-    };
-
-    minecraft-lazymc.servers.minecraft = {
-      enable = true;
-      package = lazymc;
-      publicAddress = "0.0.0.0:25565";
-      openFirewall = true;
-      extraConfig = {
-        time.sleep_after = 300; # 5 minutes idle
-        motd.sleeping = "§3§oserver is sleepy... connect to wake it up...";
-        server.directory = "/srv/minecraft/minecraft";
-        # https://minecraft.wiki/w/Protocol_version
-        public.version = "Paper 1.21.11";
-        public.protocol = 774;
       };
     };
 

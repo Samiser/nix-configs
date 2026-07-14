@@ -6,6 +6,8 @@
 }: let
   cfg = config.services.sambee-fps;
   pck = "/var/lib/sambee/SambeeFPS.pck";
+  # ENet (UDP) listen port, from Networking/network_manager.gd.
+  port = 8910;
 in {
   options.services.sambee-fps = {
     enable = lib.mkEnableOption "Sambee FPS dedicated Godot server";
@@ -27,6 +29,12 @@ in {
         RestartSec = 3;
       };
     };
+
+    # Godot clients reach the dedicated server over ENet/UDP.
+    networking.firewall.allowedUDPPorts = [port];
+
+    # polkit must be enabled for the rule below to be consulted at all.
+    security.polkit.enable = true;
 
     # Let the CI runner restart the server after deploying a new build.
     security.polkit.extraConfig = ''

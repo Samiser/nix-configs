@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.services.sambee-runner;
@@ -28,8 +29,13 @@ in {
       tokenFile = config.age.secrets.github-runner-sambee.path;
       user = "sambee-runner";
       group = "sambee-runner";
-      # Allow deploy jobs to write to the app's state directory.
-      serviceOverrides.ReadWritePaths = ["/var/lib/sambee"];
+      serviceOverrides = {
+        # Allow deploy jobs to write to the app's state directory.
+        ReadWritePaths = ["/var/lib/sambee"];
+        # Point <nixpkgs> at the same source that builds this system so
+        # build jobs (nix-shell / import <nixpkgs>) can resolve it.
+        Environment = ["NIX_PATH=nixpkgs=${pkgs.path}"];
+      };
     };
   };
 }

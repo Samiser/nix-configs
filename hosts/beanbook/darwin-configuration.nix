@@ -11,7 +11,8 @@
       pkgs._1password-gui
       pkgs.discord
       pkgs.ghostty-bin
-      pkgs.godot
+      # TODO: re-add once https://github.com/NixOS/nixpkgs/pull/541794 reaches nixpkgs-unstable
+      # pkgs.godot
       pkgs.google-chrome
       pkgs.obsidian
       pkgs.prismlauncher

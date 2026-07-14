@@ -33,6 +33,8 @@
     markovi.enable = true;
 
     attic-cache.enable = true;
+
+    sambee-runner.enable = true;
   };
 
   networking.hostName = "nix-lab";

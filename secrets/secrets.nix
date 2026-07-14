@@ -12,4 +12,5 @@ in {
   "mullvad-privkey.age".publicKeys = [sam radar];
   "markovi-discord-token.age".publicKeys = [sam nix-lab];
   "attic-jwt-secret.age".publicKeys = [sam nix-lab];
+  "github-runner-sambee.age".publicKeys = [sam nix-lab];
 }

@@ -8,5 +8,6 @@
     ./services/miniflux.nix
     ./services/markovi.nix
     ./services/attic.nix
+    ./services/github-runner.nix
   ];
 }

@@ -15,6 +15,11 @@ in {
       file = ../../../secrets/github-runner-sambee.age;
     };
 
+    # Deploy target: the runner writes builds here, sambee-fps.service reads them.
+    systemd.tmpfiles.rules = [
+      "d /var/lib/sambee 0755 sambee-runner sambee-runner -"
+    ];
+
     users.users.sambee-runner = {
       isSystemUser = true;
       group = "sambee-runner";

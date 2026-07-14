@@ -35,6 +35,7 @@
     attic-cache.enable = true;
 
     sambee-runner.enable = true;
+    sambee-fps.enable = true;
   };
 
   networking.hostName = "nix-lab";

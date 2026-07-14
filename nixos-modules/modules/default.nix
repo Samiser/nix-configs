@@ -9,5 +9,6 @@
     ./services/markovi.nix
     ./services/attic.nix
     ./services/github-runner.nix
+    ./services/sambee-fps.nix
   ];
 }

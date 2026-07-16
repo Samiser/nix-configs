@@ -2,6 +2,7 @@
   imports = [
     ./host-config.nix
     ./i3.nix
+    ./hyprland.nix
     ./services/caddy.nix
     ./services/ssc.nix
     ./services/gpa-calc.nix

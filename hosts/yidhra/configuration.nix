@@ -119,8 +119,19 @@
     google-chrome
     git
     pavucontrol
-    discord
+    vesktop
     claude-code
+  ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-40.10.5"
+  ];
+
+  assertions = [
+    {
+      assertion = pkgs.vesktop.version == "1.6.5";
+      message = "vesktop is now ${pkgs.vesktop.version}, check whether the permittedInsecurePackages exception is still needed. https://github.com/NixOS/nixpkgs/issues/542512";
+    }
   ];
 
   fonts = {

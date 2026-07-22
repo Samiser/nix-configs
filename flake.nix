@@ -1,8 +1,11 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixos-hardware.url = "github:nixos/nixos-hardware/master";
 
+    nixos-hardware = {
+      url = "github:nixos/nixos-hardware/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-wsl = {
       url = "github:nix-community/nixos-wsl/main";
       inputs.nixpkgs.follows = "nixpkgs";

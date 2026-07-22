@@ -11,8 +11,7 @@
       pkgs._1password-gui
       pkgs.discord
       pkgs.ghostty-bin
-      # TODO: re-add once https://github.com/NixOS/nixpkgs/pull/541794 reaches nixpkgs-unstable
-      # pkgs.godot
+      pkgs.godot
       pkgs.google-chrome
       pkgs.obsidian
       pkgs.prismlauncher
@@ -30,6 +29,7 @@
       yabai.enable = true;
       jankyborders.enable = true;
       skhd.enable = true;
+      codesign.enable = true;
     };
   };
 

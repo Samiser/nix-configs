@@ -9,7 +9,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      # url = "github:nix-community/home-manager/master";
+      url = "github:samiser/home-manager/launchd-wait-for-nix-store";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {

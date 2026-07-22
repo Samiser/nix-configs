@@ -24,6 +24,10 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-github-actions = {
+      url = "github:nix-community/nix-github-actions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-minecraft = {
       url = "github:samiser/nix-minecraft/lazymc-module";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,8 +47,8 @@
       url = "github:samiser/markovi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-github-actions = {
-      url = "github:nix-community/nix-github-actions";
+    closured = {
+      url = "github:samiser/closured";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -1,11 +1,13 @@
 {
   pkgs,
   noctalia,
+  closured,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix
     noctalia.nixosModules.default
+    closured.nixosModules.default
   ];
 
   boot.loader = {
@@ -24,6 +26,7 @@
     xserver.videoDrivers = ["nvidia"];
     openssh.enable = true;
     upower.enable = true;
+    closured.enable = true;
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -121,6 +124,9 @@
     pavucontrol
     vesktop
     claude-code
+    nnn
+    feh
+    mupdf
   ];
 
   nixpkgs.config.permittedInsecurePackages = [

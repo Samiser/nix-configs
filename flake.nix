@@ -30,6 +30,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    noctalia.url = "github:noctalia-dev/noctalia";
+
     my-neovim = {
       url = "github:samiser/neovim-config";
       inputs.nixpkgs.follows = "nixpkgs";

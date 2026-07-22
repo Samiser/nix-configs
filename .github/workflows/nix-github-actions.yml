@@ -29,7 +29,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           nix run --inputs-from . nixpkgs#nix-eval-jobs -- \
-            --workers 4 --max-memory-size 3500 --force-recurse --check-cache-status \
+            --workers 2 --max-memory-size 3500 --force-recurse --check-cache-status \
             --flake '.#checks' > jobs.jsonl
 
           if jq -es 'map(select(.error)) | length > 0' jobs.jsonl > /dev/null; then

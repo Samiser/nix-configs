@@ -61,8 +61,6 @@ jobs:
           nix profile install --inputs-from . nixpkgs#attic-client
           attic login cache https://cache.samiser.xyz ${{ secrets.ATTIC_TOKEN }}
           jq -r 'select(.error | not) | select(.isCached | not) | .drvPath' jobs.jsonl \
-            | xargs nix-store --query --requisites \
-            | sort -u \
             | xargs attic push main
 
   nix-build:
@@ -79,8 +77,6 @@ jobs:
           extra_nix_config: |
             extra-substituters = https://cache.samiser.xyz/main
             extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk=
-      - name: Fetch derivation from cache
-        run: nix copy --from https://cache.samiser.xyz/main '${{ matrix.drvPath }}'
       - name: Build
         run: nix build -L --no-link '${{ matrix.drvPath }}^*'
       - name: Push to Attic cache

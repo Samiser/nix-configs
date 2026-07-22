@@ -3,12 +3,10 @@ _: {
     experimental-features = ["nix-command" "flakes"];
     substituters = [
       "https://cache.samiser.xyz/main"
-      "https://cache.garnix.io"
       "https://noctalia.cachix.org"
     ];
     trusted-public-keys = [
       "main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk="
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
     ];
   };

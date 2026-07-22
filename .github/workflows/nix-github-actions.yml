@@ -23,12 +23,13 @@ jobs:
           extra_nix_config: |
             extra-substituters = https://cache.samiser.xyz/main
             extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk=
+            eval-cache = false
       - id: eval
         name: Evaluate flake and generate matrix
         run: |
           set -Eeuo pipefail
-          nix run nixpkgs#nix-eval-jobs -- \
-            --workers 2 --force-recurse --check-cache-status \
+          nix run --inputs-from . nixpkgs#nix-eval-jobs -- \
+            --workers 4 --max-memory-size 3500 --force-recurse --check-cache-status \
             --flake '.#checks' > jobs.jsonl
 
           if jq -es 'map(select(.error)) | length > 0' jobs.jsonl > /dev/null; then
@@ -57,7 +58,7 @@ jobs:
         if: steps.eval.outputs.uncached != '0'
         run: |
           set -Eeuo pipefail
-          nix profile install nixpkgs#attic-client
+          nix profile install --inputs-from . nixpkgs#attic-client
           attic login cache https://cache.samiser.xyz ${{ secrets.ATTIC_TOKEN }}
           jq -r 'select(.error | not) | select(.isCached | not) | .drvPath' jobs.jsonl \
             | xargs attic push main

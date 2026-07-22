@@ -61,6 +61,8 @@ jobs:
           nix profile install --inputs-from . nixpkgs#attic-client
           attic login cache https://cache.samiser.xyz ${{ secrets.ATTIC_TOKEN }}
           jq -r 'select(.error | not) | select(.isCached | not) | .drvPath' jobs.jsonl \
+            | xargs nix-store --query --requisites \
+            | sort -u \
             | xargs attic push main
 
   nix-build:

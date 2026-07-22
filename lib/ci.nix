@@ -1,11 +1,8 @@
 {
-  inputs,
   nixosConfigurations,
   darwinConfigurations,
   devShells,
 }: let
-  inherit (inputs) nix-github-actions;
-
   prefixAttrs = prefix: attrs:
     builtins.listToAttrs (builtins.map (name: {
       name = "${prefix} ${name}";
@@ -48,5 +45,4 @@
     allSystems);
 in {
   inherit checks;
-  githubActions = nix-github-actions.lib.mkGithubMatrix {inherit checks;};
 }

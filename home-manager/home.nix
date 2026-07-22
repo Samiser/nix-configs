@@ -46,6 +46,14 @@ in {
         alacritty.enable = pkgs.stdenv.isLinux && i3;
         i3.enable = pkgs.stdenv.isLinux && i3;
       };
+
+      launchd.agents = pkgs.lib.mkIf pkgs.stdenv.isDarwin {
+        activate-agenix.waitForNixStore = false;
+        colima-default = {
+          waitForNixStore = false;
+          domain = "gui";
+        };
+      };
     };
   };
 }

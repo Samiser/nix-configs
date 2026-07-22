@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   cfg = config.sam.services.yabai;
@@ -11,7 +10,6 @@ in {
     services.yabai = {
       enable = true;
       enableScriptingAddition = true;
-      package = pkgs.yabai;
       config = {
         # yabai should manage windows
         layout = "bsp";

@@ -29,6 +29,7 @@
       yabai.enable = true;
       jankyborders.enable = true;
       skhd.enable = true;
+      codesign.enable = true;
     };
   };
 

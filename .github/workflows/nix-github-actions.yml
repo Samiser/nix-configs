@@ -54,14 +54,16 @@ jobs:
 
           echo "$(jq -r '.include | length' <<< "$matrix") uncached job(s):"
           jq -r '.include[] | "  \(.name) (\(.system))"' <<< "$matrix"
-      - name: Push derivations to Attic cache
-        if: steps.eval.outputs.uncached != '0'
+      - name: Push flake inputs and derivations to Attic cache
         run: |
           set -Eeuo pipefail
           nix profile install --inputs-from . nixpkgs#attic-client
           attic login cache https://cache.samiser.xyz ${{ secrets.ATTIC_TOKEN }}
-          jq -r 'select(.error | not) | select(.isCached | not) | .drvPath' jobs.jsonl \
+          nix flake archive --json \
+            | jq -r '[.. | .path? | strings] | unique[]' \
             | xargs attic push main
+          jq -r 'select(.error | not) | select(.isCached | not) | .drvPath' jobs.jsonl \
+            | xargs -r attic push main
 
   nix-build:
     name: ${{ matrix.name }} (${{ matrix.system }})

@@ -315,11 +315,11 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1784735538,
-        "narHash": "sha256-xNh6tOXJtDZYZGXBvkymO/NCaJgfOdjySzPNxCFRXCc=",
+        "lastModified": 1784813285,
+        "narHash": "sha256-oQ2u2EIgMj4HMZGQnlkyfDNaQqVeMcFPctuMxOIk6hg=",
         "owner": "samiser",
         "repo": "neovim-config",
-        "rev": "f82e17b18c68df0286e842b0524b1747c8a86a7c",
+        "rev": "ebc534ee011610349741a36d36e977f11fae3c7f",
         "type": "github"
       },
       "original": {

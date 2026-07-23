@@ -36,7 +36,7 @@ in {
       serviceConfig = {
         Type = "simple";
         DynamicUser = true;
-        ExecStart = "${markovi.packages.${pkgs.system}.default}/bin/markovi";
+        ExecStart = "${markovi.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/markovi";
         Restart = "always";
         RestartSec = 10;
         EnvironmentFile = config.age.secrets.markovi-discord-token.path;

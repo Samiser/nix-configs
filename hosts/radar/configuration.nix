@@ -1,4 +1,4 @@
-{disko, ...}: {
+{ disko, ... }: {
   imports = [
     ./hardware-configuration.nix
     disko.nixosModules.disko
@@ -9,7 +9,7 @@
     ./prowlarr.nix
     ./storagebox.nix
     ./qbittorrent.nix
-    ./jellyseerr.nix
+    ./seerr.nix
     ./flaresolverr.nix
     ./dashboard.nix
   ];

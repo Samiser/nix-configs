@@ -1,7 +1,8 @@
 {
   inputs,
   modules,
-}: let
+}:
+let
   inherit (inputs) nixpkgs nix-darwin;
 
   hostsDir = ../hosts;
@@ -22,48 +23,62 @@
     };
   };
 
-  getSystemType = hostPath: let
-    files = builtins.attrNames (builtins.readDir hostPath);
-  in
-    if builtins.elem "configuration.nix" files
-    then "nixos"
-    else if builtins.elem "darwin-configuration.nix" files
-    then "darwin"
-    else null;
+  getSystemType =
+    hostPath:
+    let
+      files = builtins.attrNames (builtins.readDir hostPath);
+    in
+    if builtins.elem "configuration.nix" files then
+      "nixos"
+    else if builtins.elem "darwin-configuration.nix" files then
+      "darwin"
+    else
+      null;
 
-  mkSystem = hostname: systemType: let
-    inherit (systemType) defaultSystem builder configFile commonModules;
-    systemPath = ../hosts/${hostname}/system.nix;
-  in
+  hostSystem =
+    hostname: systemType:
+    if builtins.pathExists ../hosts/${hostname}/system.nix then
+      (import ../hosts/${hostname}/system.nix).system
+    else
+      systemType.defaultSystem;
+
+  mkSystem =
+    hostname: systemType:
+    let
+      inherit (systemType) builder configFile commonModules;
+    in
     builder {
-      system =
-        if builtins.pathExists systemPath
-        then (import ../hosts/${hostname}/system.nix).system
-        else defaultSystem;
+      system = hostSystem hostname systemType;
       specialArgs = inputs;
-      modules =
-        commonModules
-        ++ [
-          ../hosts/${hostname}/${configFile}
-        ];
+      modules = commonModules ++ [
+        ../hosts/${hostname}/${configFile}
+      ];
     };
 
-  allConfigs =
-    builtins.map (
-      hostname: let
-        systemType = getSystemType "${hostsDir}/${hostname}";
-      in {
-        inherit systemType;
-        name = hostname;
-        value = mkSystem hostname systemTypes.${systemType};
-      }
-    )
-    hosts;
+  allConfigs = builtins.map (
+    hostname:
+    let
+      systemType = getSystemType "${hostsDir}/${hostname}";
+    in
+    {
+      inherit systemType;
+      name = hostname;
+      value = mkSystem hostname systemTypes.${systemType};
+    }
+  ) hosts;
 
-  filterConfigs = type:
-    builtins.listToAttrs
-    (builtins.filter (config: config.systemType == type) allConfigs);
-in {
+  filterConfigs =
+    type: builtins.listToAttrs (builtins.filter (config: config.systemType == type) allConfigs);
+
+  hostSystems = builtins.listToAttrs (
+    builtins.map (hostname: {
+      name = hostname;
+      value = hostSystem hostname systemTypes.${getSystemType "${hostsDir}/${hostname}"};
+    }) hosts
+  );
+in
+{
   nixosConfigurations = filterConfigs "nixos";
   darwinConfigurations = filterConfigs "darwin";
+  inherit hostSystems;
 }

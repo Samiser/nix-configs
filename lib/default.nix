@@ -7,12 +7,12 @@
   };
   shells = import ./shells.nix {inherit inputs;};
   ci = import ./ci.nix {
-    inherit (hosts) nixosConfigurations darwinConfigurations;
+    inherit (hosts) nixosConfigurations darwinConfigurations hostSystems;
     devShells = shells;
   };
 in {
   inherit (hosts) nixosConfigurations darwinConfigurations;
   inherit (deploy) deploy;
-  inherit (ci) checks;
+  inherit (ci) checks ciMatrix;
   devShells = shells;
 }

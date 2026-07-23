@@ -11,11 +11,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  nix-eval:
+  discover:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.eval.outputs.matrix }}
-      uncached: ${{ steps.eval.outputs.uncached }}
+      matrix: ${{ steps.discover.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
@@ -23,38 +22,29 @@ jobs:
           extra_nix_config: |
             extra-substituters = https://cache.samiser.xyz/main https://noctalia.cachix.org
             extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk= noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
-            eval-cache = false
-      - id: eval
-        name: Evaluate flake and generate matrix
+      - id: discover
+        name: Generate check matrix
         run: |
           set -Eeuo pipefail
-          nix run --inputs-from . nixpkgs#nix-eval-jobs -- \
-            --workers 2 --max-memory-size 3500 --force-recurse --check-cache-status \
-            --flake '.#checks' > jobs.jsonl
-
-          if jq -es 'map(select(.error)) | length > 0' jobs.jsonl > /dev/null; then
-            echo "Evaluation errors:" >&2
-            jq -r 'select(.error) | "\(.attr): \(.error)"' jobs.jsonl >&2
-            exit 1
-          fi
-
-          matrix="$(jq -cs '
+          matrix="$(nix eval --json .#ciMatrix | jq -c '
             {"x86_64-linux": "ubuntu-latest",
              "aarch64-linux": "ubuntu-24.04-arm",
              "x86_64-darwin": "macos-13",
              "aarch64-darwin": "macos-latest"} as $os |
-            {include: map(select(.isCached | not) | {
-              name: (.attrPath | last),
-              system: .system,
-              os: $os[.system],
-              drvPath: .drvPath
-            })}' jobs.jsonl)"
+            {include: map(. + {os: $os[.system]})}')"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
-          echo "uncached=$(jq -r '.include | length' <<< "$matrix")" >> "$GITHUB_OUTPUT"
-
-          echo "$(jq -r '.include | length' <<< "$matrix") uncached job(s):"
           jq -r '.include[] | "  \(.name) (\(.system))"' <<< "$matrix"
-      - name: Push flake inputs and derivations to Attic cache
+
+  push-inputs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            extra-substituters = https://cache.samiser.xyz/main https://noctalia.cachix.org
+            extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk= noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
+      - name: Push flake inputs to Attic cache
         run: |
           set -Eeuo pipefail
           nix profile install --inputs-from . nixpkgs#attic-client
@@ -62,27 +52,38 @@ jobs:
           nix flake archive --json \
             | jq -r '[.. | .path? | strings] | unique[]' \
             | xargs attic push main
-          jq -r 'select(.error | not) | select(.isCached | not) | .drvPath' jobs.jsonl \
-            | xargs -r attic push main
 
-  nix-build:
+  check:
     name: ${{ matrix.name }} (${{ matrix.system }})
-    needs: nix-eval
-    if: needs.nix-eval.outputs.uncached != '0'
+    needs: discover
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.nix-eval.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
     steps:
+      - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
             extra-substituters = https://cache.samiser.xyz/main https://noctalia.cachix.org
             extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk= noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
-      - name: Build
-        run: nix build -L --no-link '${{ matrix.drvPath }}^*'
-      - name: Push to Attic cache
+      - name: Evaluate, build if uncached, push
         run: |
-          nix profile install nixpkgs#attic-client
+          set -Eeuo pipefail
+          attr='.#checks."${{ matrix.system }}"."${{ matrix.name }}"'
+          eval="$(nix eval --json "$attr" --apply 'd: { drv = d.drvPath; out = d.outPath; }')"
+          drv="$(jq -r '.drv' <<< "$eval")"
+          out="$(jq -r '.out' <<< "$eval")"
+          hash="$(basename "$out" | cut -d- -f1)"
+
+          if curl -sf -o /dev/null "https://cache.samiser.xyz/main/$hash.narinfo"; then
+            echo "$out already cached, nothing to do"
+            exit 0
+          fi
+
+          nix build -L --no-link "$drv^*"
+
+          nix profile install --inputs-from . nixpkgs#attic-client
           attic login cache https://cache.samiser.xyz ${{ secrets.ATTIC_TOKEN }}
-          nix build --no-link --print-out-paths '${{ matrix.drvPath }}^*' | xargs attic push main
+          attic push main "$drv"
+          nix build --no-link --print-out-paths "$drv^*" | xargs attic push main

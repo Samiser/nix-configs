@@ -2,7 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     disko.nixosModules.disko
-    ./disko.nix
+    ../../nixos-modules/disko.nix
     ./tailscale.nix
     ./radarr.nix
     ./sonarr.nix

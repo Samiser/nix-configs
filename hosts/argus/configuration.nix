@@ -3,8 +3,6 @@
     ./hardware-configuration.nix
     disko.nixosModules.disko
     ../../nixos-modules/disko.nix
-    ./jellyfin.nix
-    ./storagebox.nix
   ];
 
   host = {
@@ -12,9 +10,7 @@
     profile.server = true;
   };
 
-  services.caddy.enable = true;
+  networking.hostName = "argus";
 
-  networking.hostName = "jelly";
-
-  system.stateVersion = "24.11";
+  system.stateVersion = "26.05";
 }

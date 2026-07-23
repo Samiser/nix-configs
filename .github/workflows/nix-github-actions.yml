@@ -21,15 +21,15 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
-            extra-substituters = https://cache.samiser.xyz/main
-            extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk=
+            extra-substituters = https://cache.samiser.xyz/main https://noctalia.cachix.org
+            extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk= noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
             eval-cache = false
       - id: eval
         name: Evaluate flake and generate matrix
         run: |
           set -Eeuo pipefail
           nix run --inputs-from . nixpkgs#nix-eval-jobs -- \
-            --workers 2 --max-memory-size 3500 --force-recurse --check-cache-status \
+            --workers 3 --max-memory-size 3500 --force-recurse --check-cache-status \
             --flake '.#checks' > jobs.jsonl
 
           if jq -es 'map(select(.error)) | length > 0' jobs.jsonl > /dev/null; then
@@ -75,8 +75,8 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
-            extra-substituters = https://cache.samiser.xyz/main
-            extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk=
+            extra-substituters = https://cache.samiser.xyz/main https://noctalia.cachix.org
+            extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk= noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
       - name: Build
         run: nix build -L --no-link '${{ matrix.drvPath }}^*'
       - name: Push to Attic cache

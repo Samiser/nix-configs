@@ -8,8 +8,9 @@ let
     minecraft = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2NfWwHXQmUtnW0WreClMlOAI9uvyeLWOF0+ot3RNvX root@minecraft";
     jelly = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7fnOY+8QVBpGMkmd7e1SCodBu+XkV6+GfAA/iJqct8 root@jelly";
     radar = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpm+FNLZBtMWrnnNLxmnPHSO3UBMEGteYcJ2s0FihCw root@radar";
+    argus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFZGVeNFpfKz6bVXGQJ92IXRfSHZb0xDX5hwyODWCID6 root@argus";
   };
 in {
   inherit (users) sam;
-  inherit (machines) nix-lab minecraft jelly radar;
+  inherit (machines) nix-lab minecraft jelly radar argus;
 }

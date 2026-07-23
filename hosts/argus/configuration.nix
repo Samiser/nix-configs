@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
     disko.nixosModules.disko
     ../../nixos-modules/disko.nix
+    ./tailscale.nix
   ];
 
   host = {

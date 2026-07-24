@@ -27,6 +27,32 @@ in
             labels.host = h;
           }) serverHosts;
         }
+        {
+          job_name = "monitoring";
+          static_configs = [
+            {
+              targets = [ "127.0.0.1:8428" ];
+              labels = {
+                host = "argus";
+                service = "victoriametrics";
+              };
+            }
+            {
+              targets = [ "127.0.0.1:9428" ];
+              labels = {
+                host = "argus";
+                service = "victorialogs";
+              };
+            }
+            {
+              targets = [ "127.0.0.1:3000" ];
+              labels = {
+                host = "argus";
+                service = "grafana";
+              };
+            }
+          ];
+        }
       ];
     };
   };

@@ -1,7 +1,6 @@
 {
   agenix,
   home-manager,
-  self,
   ...
 }: let
   keys = import ../shared-modules/keys.nix;
@@ -9,7 +8,6 @@
 in {
   nixos = [
     {_module.args = {inherit keys sharedPackages;};}
-    {system.configurationRevision = self.rev or "dirty";}
     ../nixos-modules/modules
     ../nixos-modules/profiles
     ../shared-modules/nix.nix

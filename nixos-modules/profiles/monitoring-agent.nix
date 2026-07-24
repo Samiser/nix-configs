@@ -8,12 +8,27 @@
     services.prometheus.exporters.node = {
       enable = true;
       enabledCollectors = [ "systemd" ];
-      extraFlags = [ "--collector.textfile.directory=/etc/prometheus-textfiles" ];
+      extraFlags = [ "--collector.textfile.directory=/var/lib/prometheus-textfiles" ];
     };
 
-    environment.etc."prometheus-textfiles/nixos.prom".text = ''
-      nixos_configuration_info{rev="${toString config.system.configurationRevision}"} 1
-    '';
+    systemd.tmpfiles.rules = [ "d /var/lib/prometheus-textfiles 0755 root root -" ];
+
+    systemd.services.current-system-metric = {
+      script = ''
+        printf 'nixos_current_system{path="%s"} 1\n' "$(readlink -f /run/current-system)" \
+          > /var/lib/prometheus-textfiles/current-system.prom.tmp
+        mv /var/lib/prometheus-textfiles/current-system.prom.tmp \
+          /var/lib/prometheus-textfiles/current-system.prom
+      '';
+      serviceConfig.Type = "oneshot";
+    };
+    systemd.timers.current-system-metric = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = "1m";
+        OnUnitActiveSec = "1m";
+      };
+    };
 
     services.alloy.enable = true;
     environment.etc."alloy/config.alloy".text = ''

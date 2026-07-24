@@ -68,6 +68,54 @@ in
     ];
   };
 
+  systemd.services.expected-systems-import = {
+    path = [
+      pkgs.git
+      pkgs.nix
+      pkgs.jq
+      pkgs.curl
+    ];
+    script = ''
+      rev=$(git ls-remote https://github.com/samiser/nix-configs refs/heads/main | cut -f1)
+      [ -n "$rev" ]
+      state=$STATE_DIRECTORY/last-rev
+      cache=$STATE_DIRECTORY/expected.prom
+
+      if [ ! -s "$cache" ] || [ "$(cat "$state" 2>/dev/null)" != "$rev" ]; then
+        flake="github:samiser/nix-configs/$rev"
+        hosts=$(nix eval --json "$flake#nixosConfigurations" --apply \
+          'cfgs: builtins.filter (h: cfgs.''${h}.config.host.profile.server) (builtins.attrNames cfgs)' \
+          | jq -r '.[]')
+
+        : > "$cache.tmp"
+        for h in $hosts; do
+          path=$(nix eval --raw "$flake#nixosConfigurations.$h.config.system.build.toplevel.outPath")
+          printf 'nixos_expected_system{host="%s",path="%s"} 1\n' "$h" "$path" >> "$cache.tmp"
+        done
+        mv "$cache.tmp" "$cache"
+
+        curl -fs -X POST \
+          'http://127.0.0.1:8428/api/v1/admin/tsdb/delete_series?match[]=nixos_expected_system'
+        echo "$rev" > "$state"
+      fi
+
+      curl -fs --data-binary "@$cache" \
+        'http://127.0.0.1:8428/api/v1/import/prometheus'
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      StateDirectory = "expected-systems";
+      TimeoutStartSec = "30m";
+    };
+  };
+  systemd.timers.expected-systems-import = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "2m";
+      OnUnitActiveSec = "10m";
+    };
+  };
+
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [
     3000
     9428

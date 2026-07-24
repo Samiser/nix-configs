@@ -112,7 +112,7 @@ in
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnBootSec = "2m";
-      OnUnitActiveSec = "10m";
+      OnUnitActiveSec = "2m";
     };
   };
 

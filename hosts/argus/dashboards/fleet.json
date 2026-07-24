@@ -1,0 +1,456 @@
+{
+  "uid": "fleet",
+  "title": "Fleet",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": false,
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "host",
+        "label": "Host",
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+        "query": { "query": "label_values(up{job=\"node\"}, host)", "refId": "hostVar" },
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "current": { "text": ["All"], "value": ["$__all"] }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "table",
+      "title": "Configuration Drift",
+      "description": "Checks whether hosts are running the current build from my nix-configs repo or whether they're running something else.",
+      "gridPos": { "x": 0, "y": 0, "w": 9, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+      "targets": [
+        {
+          "refId": "A",
+          "editorMode": "code",
+          "expr": "(nixos_current_system and on (host, path) last_over_time(nixos_expected_system[1d])) or (nixos_current_system * 0)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "legendFormat": "__auto"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "instance": true,
+              "job": true,
+              "path": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": { "Value": "Status", "host": "Host" }
+          }
+        }
+      ],
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [{ "desc": false, "displayName": "Host" }]
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": { "text": "diverged", "color": "red", "index": 1 },
+                "1": { "text": "matches main", "color": "green", "index": 0 }
+              }
+            }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [{ "value": null, "color": "text" }] },
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "align": "left",
+            "cellOptions": { "type": "color-text" },
+            "filterable": false,
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Host" },
+            "properties": [{ "id": "custom.width", "value": 122 }]
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Scrape Health",
+      "gridPos": { "x": 9, "y": 0, "w": 5, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "up{job=\"node\"}",
+          "instant": true,
+          "range": false,
+          "legendFormat": "{{host}}"
+        }
+      ],
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "textMode": "value_and_name",
+        "colorMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": { "text": "down", "color": "red", "index": 1 },
+                "1": { "text": "up", "color": "green", "index": 0 }
+              }
+            }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [{ "value": null, "color": "text" }] },
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Failed systemd Units",
+      "gridPos": { "x": 14, "y": 0, "w": 5, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count by (host) (node_systemd_unit_state{state=\"failed\"} == 1) or (sum by (host) (up{job=\"node\"}) * 0)",
+          "instant": true,
+          "range": false,
+          "legendFormat": "{{host}}"
+        }
+      ],
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "textMode": "value_and_name",
+        "colorMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "green" },
+              { "value": 1, "color": "red" }
+            ]
+          },
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Uptime",
+      "gridPos": { "x": 19, "y": 0, "w": 5, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "node_time_seconds - node_boot_time_seconds",
+          "instant": true,
+          "range": false,
+          "legendFormat": "{{host}}"
+        }
+      ],
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "textMode": "value_and_name",
+        "colorMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 1,
+          "thresholds": { "mode": "absolute", "steps": [{ "value": null, "color": "text" }] }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 5,
+      "type": "bargauge",
+      "title": "Disk Headroom (worst filesystem)",
+      "gridPos": { "x": 9, "y": 4, "w": 15, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "min by (host) (node_filesystem_avail_bytes{fstype!~\"tmpfs|ramfs\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|ramfs\"})",
+          "instant": true,
+          "range": false,
+          "legendFormat": "{{host}}"
+        }
+      ],
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "red" },
+              { "value": 0.1, "color": "orange" },
+              { "value": 0.2, "color": "green" }
+            ]
+          },
+          "color": { "mode": "thresholds" }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 10,
+      "type": "row",
+      "title": "CPU",
+      "collapsed": true,
+      "gridPos": { "x": 0, "y": 8, "w": 24, "h": 1 },
+      "panels": [
+        {
+          "id": 11,
+          "type": "timeseries",
+          "title": "CPU Usage",
+          "gridPos": { "x": 0, "y": 9, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "1 - avg by (host) (rate(node_cpu_seconds_total{mode=\"idle\",host=~\"$host\"}[5m]))",
+              "legendFormat": "{{host}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "percentunit", "min": 0, "max": 1 },
+            "overrides": []
+          }
+        },
+        {
+          "id": 12,
+          "type": "timeseries",
+          "title": "Pressure (stall fraction)",
+          "gridPos": { "x": 12, "y": 9, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "rate(node_pressure_cpu_waiting_seconds_total{host=~\"$host\"}[5m])",
+              "legendFormat": "{{host}} cpu"
+            },
+            {
+              "refId": "B",
+              "expr": "rate(node_pressure_memory_waiting_seconds_total{host=~\"$host\"}[5m])",
+              "legendFormat": "{{host}} memory"
+            },
+            {
+              "refId": "C",
+              "expr": "rate(node_pressure_io_waiting_seconds_total{host=~\"$host\"}[5m])",
+              "legendFormat": "{{host}} io"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "percentunit", "min": 0 },
+            "overrides": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "row",
+      "title": "Memory",
+      "collapsed": true,
+      "gridPos": { "x": 0, "y": 9, "w": 24, "h": 1 },
+      "panels": [
+        {
+          "id": 21,
+          "type": "timeseries",
+          "title": "Memory Available",
+          "gridPos": { "x": 0, "y": 10, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "node_memory_MemAvailable_bytes{host=~\"$host\"} / node_memory_MemTotal_bytes{host=~\"$host\"}",
+              "legendFormat": "{{host}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "percentunit", "min": 0, "max": 1 },
+            "overrides": []
+          }
+        },
+        {
+          "id": 22,
+          "type": "timeseries",
+          "title": "Swap Used (zram)",
+          "gridPos": { "x": 12, "y": 10, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "node_memory_SwapTotal_bytes{host=~\"$host\"} - node_memory_SwapFree_bytes{host=~\"$host\"}",
+              "legendFormat": "{{host}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "bytes", "min": 0 },
+            "overrides": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "type": "row",
+      "title": "Disk",
+      "collapsed": true,
+      "gridPos": { "x": 0, "y": 10, "w": 24, "h": 1 },
+      "panels": [
+        {
+          "id": 31,
+          "type": "timeseries",
+          "title": "Disk I/O",
+          "gridPos": { "x": 0, "y": 11, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "rate(node_disk_read_bytes_total{host=~\"$host\"}[5m])",
+              "legendFormat": "{{host}} {{device}} read"
+            },
+            {
+              "refId": "B",
+              "expr": "rate(node_disk_written_bytes_total{host=~\"$host\"}[5m])",
+              "legendFormat": "{{host}} {{device}} write"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "Bps", "min": 0 },
+            "overrides": []
+          }
+        },
+        {
+          "id": 32,
+          "type": "timeseries",
+          "title": "Filesystem Usage",
+          "gridPos": { "x": 12, "y": 11, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "1 - (node_filesystem_avail_bytes{host=~\"$host\",fstype!~\"tmpfs|ramfs\"} / node_filesystem_size_bytes{host=~\"$host\",fstype!~\"tmpfs|ramfs\"})",
+              "legendFormat": "{{host}} {{mountpoint}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "percentunit", "min": 0, "max": 1 },
+            "overrides": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "type": "row",
+      "title": "Network",
+      "collapsed": true,
+      "gridPos": { "x": 0, "y": 11, "w": 24, "h": 1 },
+      "panels": [
+        {
+          "id": 41,
+          "type": "timeseries",
+          "title": "Receive",
+          "gridPos": { "x": 0, "y": 12, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "rate(node_network_receive_bytes_total{host=~\"$host\",device!~\"lo|tailscale0\"}[5m])",
+              "legendFormat": "{{host}} {{device}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "Bps", "min": 0 },
+            "overrides": []
+          }
+        },
+        {
+          "id": 42,
+          "type": "timeseries",
+          "title": "Transmit",
+          "gridPos": { "x": 12, "y": 12, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "P4169E866C3094E38" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "rate(node_network_transmit_bytes_total{host=~\"$host\",device!~\"lo|tailscale0\"}[5m])",
+              "legendFormat": "{{host}} {{device}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "Bps", "min": 0 },
+            "overrides": []
+          }
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": "row",
+      "title": "Logs",
+      "collapsed": true,
+      "gridPos": { "x": 0, "y": 12, "w": 24, "h": 1 },
+      "panels": [
+        {
+          "id": 51,
+          "type": "logs",
+          "title": "Journal",
+          "gridPos": { "x": 0, "y": 13, "w": 24, "h": 12 },
+          "datasource": { "type": "victoriametrics-logs-datasource", "uid": "PD775F2863313E6C7" },
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "host:~\"${host:regex}\""
+            }
+          ],
+          "options": {
+            "showTime": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "enableLogDetails": true
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -53,6 +53,12 @@ in
       victoriametrics-logs-datasource
       victoriametrics-metrics-datasource
     ];
+    provision.dashboards.settings.providers = [
+      {
+        name = "nix-configs";
+        options.path = ./dashboards;
+      }
+    ];
     provision.datasources.settings.datasources = [
       {
         name = "VictoriaMetrics";

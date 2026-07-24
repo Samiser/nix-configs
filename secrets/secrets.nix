@@ -8,7 +8,7 @@ in {
   "ssc-secrets.age".publicKeys = [sam nix-lab];
   "miniflux-admin-credentials.age".publicKeys = [sam nix-lab];
   "storagebox-credentials.age".publicKeys = [sam nix-lab jelly radar];
-  "tailscale-auth-key.age".publicKeys = [sam radar argus];
+  "tailscale-auth-key.age".publicKeys = [sam radar argus minecraft jelly nix-lab];
   "grafana-secret-key.age".publicKeys = [sam argus];
   "mullvad-privkey.age".publicKeys = [sam radar];
   "markovi-discord-token.age".publicKeys = [sam nix-lab];

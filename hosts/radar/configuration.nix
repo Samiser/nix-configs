@@ -3,7 +3,6 @@
     ./hardware-configuration.nix
     disko.nixosModules.disko
     ../../nixos-modules/disko.nix
-    ./tailscale.nix
     ./radarr.nix
     ./sonarr.nix
     ./prowlarr.nix

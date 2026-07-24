@@ -4,7 +4,13 @@
   ...
 }:
 let
-  hostNames = builtins.attrNames (builtins.readDir ../../hosts);
+  serverHosts = [
+    "argus"
+    "jelly"
+    "minecraft"
+    "nix-lab"
+    "radar"
+  ];
 in
 {
   services.victoriametrics = {
@@ -19,7 +25,7 @@ in
           static_configs = map (h: {
             targets = [ "${h}:9100" ];
             labels.host = h;
-          }) hostNames;
+          }) serverHosts;
         }
       ];
     };
@@ -27,7 +33,7 @@ in
 
   services.victorialogs = {
     enable = true;
-    listenAddress = "127.0.0.1:9428";
+    listenAddress = ":9428";
     extraOptions = [ "-retentionPeriod=90d" ];
   };
 
@@ -62,10 +68,8 @@ in
     ];
   };
 
-  services.prometheus.exporters.node.enable = true;
-
   networking.firewall.interfaces."tailscale0".allowedTCPPorts = [
     3000
-    9100
+    9428
   ];
 }

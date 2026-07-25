@@ -8,7 +8,7 @@
 }: let
   i3 = config.hostConfig.i3.enable;
   hyprland = config.hostConfig.hyprland.enable;
-  server = config.host.profile.server;
+  server = config.host.profile.server or false;
 in {
   home-manager = {
     extraSpecialArgs = {inherit my-neovim;};

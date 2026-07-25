@@ -2,7 +2,8 @@
   pkgs,
   noctalia,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
     noctalia.nixosModules.default
@@ -16,12 +17,12 @@
     efi.canTouchEfiVariables = true;
   };
 
-  boot.kernelParams = ["mem_sleep_default=s2idle"];
+  boot.kernelParams = [ "mem_sleep_default=s2idle" ];
 
   hostConfig.hyprland.enable = true;
 
   services = {
-    xserver.videoDrivers = ["nvidia"];
+    xserver.videoDrivers = [ "nvidia" ];
     openssh.enable = true;
     upower.enable = true;
     closured.enable = true;
@@ -39,14 +40,14 @@
               "node.name" = "capture.mic_input1";
               "media.class" = "Stream/Input/Audio";
               "target.object" = "alsa_input.usb-Focusrite_Scarlett_8i6_USB_F854AKF1A0C0FC-00.pro-input-0";
-              "audio.position" = ["AUX0"];
+              "audio.position" = [ "AUX0" ];
               "stream.dont-remix" = true;
             };
             "playback.props" = {
               "node.name" = "mic_input1";
               "node.description" = "Mic (Input 1 mono)";
               "media.class" = "Audio/Source";
-              "audio.position" = ["MONO"];
+              "audio.position" = [ "MONO" ];
             };
           };
         }
@@ -78,7 +79,7 @@
       enable = true;
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
-      extraCompatPackages = [pkgs.proton-ge-bin];
+      extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
     gamescope.enable = true;
     gamemode.enable = true;
@@ -105,9 +106,9 @@
 
   systemd.services.tailscale-set-operator = {
     description = "Set sam as the Tailscale operator";
-    after = ["tailscaled.service"];
-    wants = ["tailscaled.service"];
-    wantedBy = ["multi-user.target"];
+    after = [ "tailscaled.service" ];
+    wants = [ "tailscaled.service" ];
+    wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.tailscale}/bin/tailscale set --operator=sam";
@@ -125,17 +126,6 @@
     nnn
     feh
     mupdf
-  ];
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-40.10.5"
-  ];
-
-  assertions = [
-    {
-      assertion = pkgs.vesktop.version == "1.6.5";
-      message = "vesktop is now ${pkgs.vesktop.version}, check whether the permittedInsecurePackages exception is still needed. https://github.com/NixOS/nixpkgs/issues/542512";
-    }
   ];
 
   fonts = {

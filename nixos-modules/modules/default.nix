@@ -11,5 +11,7 @@
     ./services/attic.nix
     ./services/github-runner.nix
     ./services/sambee-fps.nix
+    ./services/monitoring-agent.nix
+    ./services/tailscale-auth.nix
   ];
 }

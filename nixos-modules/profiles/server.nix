@@ -9,6 +9,10 @@
     boot.tmp.cleanOnBoot = true;
     zramSwap.enable = true;
 
+    services.closured.enable = true;
+    services.monitoring-agent.enable = true;
+    services.tailscale-auth.enable = true;
+
     environment.systemPackages = with pkgs; [
       ghostty.terminfo
     ];

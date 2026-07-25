@@ -1,5 +1,6 @@
 {
   agenix,
+  closured,
   home-manager,
   ...
 }: let
@@ -12,6 +13,7 @@ in {
     ../nixos-modules/profiles
     ../shared-modules/nix.nix
     agenix.nixosModules.default
+    closured.nixosModules.default
     home-manager.nixosModules.default
     {imports = [../home-manager/home.nix];}
   ];

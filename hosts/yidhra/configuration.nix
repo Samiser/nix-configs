@@ -1,13 +1,11 @@
 {
   pkgs,
   noctalia,
-  closured,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix
     noctalia.nixosModules.default
-    closured.nixosModules.default
   ];
 
   boot.loader = {

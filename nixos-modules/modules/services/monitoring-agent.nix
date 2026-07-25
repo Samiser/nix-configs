@@ -2,9 +2,14 @@
   config,
   lib,
   ...
-}:
-{
-  config = lib.mkIf config.host.profile.server {
+}: let
+  cfg = config.services.monitoring-agent;
+in {
+  options.services.monitoring-agent = {
+    enable = lib.mkEnableOption "node metrics and journal log shipping to argus";
+  };
+
+  config = lib.mkIf cfg.enable {
     services.prometheus.exporters.node = {
       enable = true;
       enabledCollectors = [ "systemd" ];

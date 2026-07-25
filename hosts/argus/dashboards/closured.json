@@ -1,0 +1,195 @@
+{
+  "title": "Closured",
+  "uid": "closured",
+  "tags": [
+    "closured",
+    "security"
+  ],
+  "schemaVersion": 39,
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "refresh": "1m",
+  "templating": {
+    "list": [
+      {
+        "name": "host",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "P4169E866C3094E38"
+        },
+        "query": "label_values(nixos_current_system, host)",
+        "includeAll": true,
+        "multi": true,
+        "refresh": 2
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Anomalous execs by host",
+      "description": "Execs outside the store, from memory, or of deleted binaries; excludes known-benign classes like NixOS security wrappers",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "PD775F2863313E6C7"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "statsRange",
+          "expr": "unit:\"closured.service\" closured.classification:in(outside, memory, deleted) host:~\"${host:regex}\" | stats by (host) count() as execs"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "stacking": {
+              "mode": "normal"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Execs by classification",
+      "description": "outside = on-disk path outside the store; memory = unlinked tmpfs (memfd-style); deleted = binary removed after exec",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "PD775F2863313E6C7"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "statsRange",
+          "expr": "unit:\"closured.service\" closured.classification:* host:~\"${host:regex}\" | stats by (closured.classification) count() as execs"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "stacking": {
+              "mode": "normal"
+            }
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 3,
+      "type": "table",
+      "title": "Executables seen",
+      "description": "Distinct anomalous executables in the selected time range",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 24,
+        "h": 10
+      },
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "PD775F2863313E6C7"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "stats",
+          "expr": "unit:\"closured.service\" closured.classification:in(outside, memory, deleted) host:~\"${host:regex}\" | replace_regexp (\"wrappers[.][^/]+/\", \"bin/\") at process.executable | stats by (host, process.executable, closured.classification, user.id) count() as execs"
+        }
+      ],
+      "options": {
+        "sortBy": [
+          {
+            "displayName": "execs",
+            "desc": true
+          }
+        ]
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true
+            },
+            "renameByName": {
+              "process.executable": "executable",
+              "closured.classification": "classification",
+              "user.id": "uid"
+            },
+            "indexByName": {
+              "host": 0,
+              "executable": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "logs",
+      "title": "Raw events",
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 24,
+        "h": 10
+      },
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "PD775F2863313E6C7"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "unit:\"closured.service\" closured.classification:in(outside, memory, deleted) host:~\"${host:regex}\" | format \"<closured.classification> <process.executable> (parent <process.name>, uid <user.id>)\" as _msg"
+        }
+      ],
+      "options": {
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending"
+      }
+    }
+  ]
+}

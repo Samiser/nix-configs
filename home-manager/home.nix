@@ -1,12 +1,14 @@
 {
   pkgs,
   config,
+  lib,
   my-neovim,
   agenix,
   ...
 }: let
   i3 = config.hostConfig.i3.enable;
   hyprland = config.hostConfig.hyprland.enable;
+  server = config.host.profile.server;
 in {
   home-manager = {
     extraSpecialArgs = {inherit my-neovim;};
@@ -15,17 +17,18 @@ in {
     backupFileExtension = "backup";
 
     users.sam = {
-      imports = [
-        agenix.homeManagerModules.default
-        ./alacritty.nix
-        ./colima.nix
-        ./ghostty.nix
-        ./git.nix
-        ./hcloud.nix
-        ./i3
-        ./neovim.nix
-        ./zsh
-      ];
+      imports =
+        [
+          agenix.homeManagerModules.default
+          ./alacritty.nix
+          ./colima.nix
+          ./ghostty.nix
+          ./git.nix
+          ./i3
+          ./neovim.nix
+          ./zsh
+        ]
+        ++ lib.optional (!server) ./hcloud.nix;
 
       home = {
         username = "sam";
@@ -39,8 +42,9 @@ in {
 
       sam = {
         zsh.enable = true;
-        git.enable = true;
+        git.enable = !server;
         neovim.enable = true;
+        neovim.minimal = server;
         ghostty.enable = pkgs.stdenv.isDarwin || (pkgs.stdenv.isLinux && hyprland);
         colima.enable = pkgs.stdenv.isDarwin;
         alacritty.enable = pkgs.stdenv.isLinux && i3;

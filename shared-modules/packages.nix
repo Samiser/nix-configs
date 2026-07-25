@@ -4,7 +4,6 @@ let
       dig
       fd
       fzf
-      git
       gotop
       htop
       jq
@@ -26,6 +25,7 @@ let
       docker-compose
       entr
       gh
+      git
       nix-tree
       nixfmt
       python3

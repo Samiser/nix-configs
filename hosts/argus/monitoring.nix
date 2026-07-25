@@ -102,7 +102,7 @@ in
 
   systemd.services.expected-systems-import = {
     path = [
-      pkgs.git
+      pkgs.gitMinimal
       pkgs.nix
       pkgs.jq
       pkgs.curl

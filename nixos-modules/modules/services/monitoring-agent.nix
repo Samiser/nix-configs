@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.services.monitoring-agent;
-in {
+in
+{
   options.services.monitoring-agent = {
     enable = lib.mkEnableOption "node metrics and journal log shipping to argus";
   };
@@ -15,7 +17,6 @@ in {
       enabledCollectors = [ "systemd" ];
       extraFlags = [
         "--collector.textfile.directory=/var/lib/prometheus-textfiles"
-        # node_systemd_service_restart_total, for spotting crash-looping units
         "--collector.systemd.enable-restarts-metrics"
       ];
     };

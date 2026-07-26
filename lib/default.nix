@@ -6,6 +6,7 @@
     inherit (hosts) nixosConfigurations;
   };
   shells = import ./shells.nix {inherit inputs;};
+  apps = import ./apps.nix {inherit inputs;};
   ci = import ./ci.nix {
     inherit (hosts) nixosConfigurations darwinConfigurations hostSystems;
     devShells = shells;
@@ -15,4 +16,5 @@ in {
   inherit (deploy) deploy;
   inherit (ci) checks ciMatrix;
   devShells = shells;
+  inherit apps;
 }

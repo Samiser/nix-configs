@@ -1,12 +1,12 @@
 {
   pkgs,
-  noctalia,
+  nixpkgs-small,
   ...
 }:
 {
   imports = [
     ./hardware-configuration.nix
-    noctalia.nixosModules.default
+    ./noctalia.nix
   ];
 
   boot.loader = {
@@ -83,7 +83,10 @@
     };
     gamescope.enable = true;
     gamemode.enable = true;
-    noctalia.enable = true;
+    noctalia = {
+      enable = true;
+      package = nixpkgs-small.legacyPackages.${pkgs.stdenv.hostPlatform.system}.noctalia;
+    };
     dconf.profiles.user.databases = [
       {
         settings."org/gnome/desktop/interface" = {

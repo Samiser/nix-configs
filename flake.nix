@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
 
     nixos-hardware = {
       url = "github:nixos/nixos-hardware/master";
@@ -31,9 +32,6 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    noctalia.url = "github:noctalia-dev/noctalia";
-
     nix-minecraft = {
       url = "github:samiser/nix-minecraft/lazymc-module";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,5 +54,5 @@
     };
   };
 
-  outputs = inputs: import ./lib {inherit inputs;};
+  outputs = inputs: import ./lib { inherit inputs; };
 }

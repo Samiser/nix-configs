@@ -32,11 +32,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784981482,
-        "narHash": "sha256-IdxGM1V9HkhFjhDHFTXv8ZE4482qYxiSC+qhlpUPr/M=",
+        "lastModified": 1785057973,
+        "narHash": "sha256-hgAR5bX9nv9j8BFHwNbyio5wCSTw2/6ktk5A+mn1Usk=",
         "owner": "samiser",
         "repo": "closured",
-        "rev": "74f5ab89bc9cf2313c481d6ae16f00e2f1c7381e",
+        "rev": "13c141bd55f7650380a8e89dbba4636807e805b4",
         "type": "github"
       },
       "original": {

@@ -1,12 +1,10 @@
 {
   pkgs,
-  nixpkgs-small,
   ...
 }:
 {
   imports = [
     ./hardware-configuration.nix
-    ./noctalia.nix
   ];
 
   boot.loader = {
@@ -83,10 +81,7 @@
     };
     gamescope.enable = true;
     gamemode.enable = true;
-    noctalia = {
-      enable = true;
-      package = nixpkgs-small.legacyPackages.${pkgs.stdenv.hostPlatform.system}.noctalia;
-    };
+    noctalia.enable = true;
     dconf.profiles.user.databases = [
       {
         settings."org/gnome/desktop/interface" = {
@@ -119,16 +114,18 @@
   };
 
   environment.systemPackages = with pkgs; [
-    ghostty
-    neovim
-    google-chrome
-    git
-    pavucontrol
-    vesktop
     claude-code
-    nnn
+    fastfetch
     feh
+    ghostty
+    git
+    google-chrome
     mupdf
+    neovim
+    nnn
+    pavucontrol
+    spotify-player
+    vesktop
   ];
 
   fonts = {

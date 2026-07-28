@@ -114,16 +114,18 @@
   };
 
   environment.systemPackages = with pkgs; [
-    ghostty
-    neovim
-    google-chrome
-    git
-    pavucontrol
-    vesktop
     claude-code
-    nnn
+    fastfetch
     feh
+    ghostty
+    git
+    google-chrome
     mupdf
+    neovim
+    nnn
+    pavucontrol
+    spotify-player
+    vesktop
   ];
 
   fonts = {

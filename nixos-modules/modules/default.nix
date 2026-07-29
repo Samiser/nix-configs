@@ -2,6 +2,7 @@
   imports = [
     ./hyprland.nix
     ./services/caddy.nix
+    ./services/storagebox.nix
     ./services/ssc.nix
     ./services/gpa-calc.nix
     ./services/miniflux.nix

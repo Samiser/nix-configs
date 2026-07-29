@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (import ../../../shared-modules/lib.nix) cloudflareTls;
+  inherit (import ../../../shared-modules/lib.nix) cloudflareTls requiresCaddy;
   cfg = config.services.ssc;
   ssc = static-site-compiler.packages.${pkgs.stdenv.hostPlatform.system}.default;
   contentDir = "/var/lib/ssc/site-content";
@@ -34,10 +34,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [{
-      assertion = config.services.caddy.enable;
-      message = "services.ssc requires caddy to be enabled";
-    }];
+    assertions = [(requiresCaddy config "ssc")];
 
     users.groups.ssc = {};
 

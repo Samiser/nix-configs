@@ -24,6 +24,6 @@ in {
     ../shared-modules/nix.nix
     agenix.darwinModules.default
     home-manager.darwinModules.default
-    {imports = [../home-manager/darwin.nix];}
+    {imports = [../home-manager/home.nix];}
   ];
 }

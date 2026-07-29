@@ -1,13 +1,14 @@
 {
   pkgs,
-  my-neovim,
   sharedPackages,
   ...
 }: {
   environment.systemPackages =
     (sharedPackages.all {inherit pkgs;})
     ++ [
-      my-neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
+      pkgs._1password-cli
+      pkgs.docker
+
       pkgs._1password-gui
       pkgs.discord
       pkgs.ghostty-bin
@@ -38,7 +39,7 @@
     home = "/Users/sam";
   };
 
-  fonts.packages = with pkgs; [nerd-fonts.jetbrains-mono];
+  fonts.packages = sharedPackages.fonts {inherit pkgs;};
 
   homebrew = {
     enable = true;
@@ -70,5 +71,4 @@
   };
 
   nixpkgs.hostPlatform = "aarch64-darwin";
-  nixpkgs.config.allowUnfree = true;
 }

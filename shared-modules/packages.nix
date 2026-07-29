@@ -13,14 +13,12 @@ let
       tree
       unzip
       wget
-      zsh
     ];
 
   dev = {pkgs}:
     with pkgs; [
       claude-code
       direnv
-      docker
       docker-compose
       entr
       gh
@@ -32,11 +30,15 @@ let
 
   desktop = {pkgs}:
     with pkgs; [
-      _1password-cli
       ffmpeg
       imagemagick
       fastfetch
       pandoc
+    ];
+
+  fonts = {pkgs}:
+    with pkgs; [
+      nerd-fonts.jetbrains-mono
     ];
 
   all = {pkgs}:
@@ -44,5 +46,5 @@ let
     ++ (dev {inherit pkgs;})
     ++ (desktop {inherit pkgs;});
 in {
-  inherit base dev desktop all;
+  inherit base dev desktop fonts all;
 }

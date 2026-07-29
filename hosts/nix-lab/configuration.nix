@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./hardware-configuration.nix
-    ./storagebox.nix
   ];
 
   host = {
@@ -14,6 +13,14 @@
 
   services = {
     caddy.enable = true;
+
+    storagebox = {
+      enable = true;
+      user = "root";
+      group = "root";
+      fileMode = "0666";
+      dirMode = "0777";
+    };
 
     ssc = {
       enable = true;

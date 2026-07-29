@@ -4,7 +4,7 @@
   ...
 }:
 let
-  inherit (import ../../../shared-modules/lib.nix) cloudflareTls;
+  inherit (import ../../../shared-modules/lib.nix) cloudflareTls requiresCaddy;
   cfg = config.services.gpa-calc;
 in {
   options.services.gpa-calc = {
@@ -30,10 +30,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [{
-      assertion = config.services.caddy.enable;
-      message = "services.gpa-calc requires caddy to be enabled";
-    }];
+    assertions = [(requiresCaddy config "gpa-calc")];
 
     virtualisation.oci-containers.containers.gpa-calc = {
       inherit (cfg) image;

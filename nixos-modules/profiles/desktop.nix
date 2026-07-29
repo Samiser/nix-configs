@@ -34,12 +34,13 @@
 
     fonts = {
       enableDefaultPackages = true;
-      packages = with pkgs; [
-        nerd-fonts.jetbrains-mono
-        noto-fonts
-        noto-fonts-color-emoji
-        font-awesome
-      ];
+      packages =
+        (sharedPackages.fonts {inherit pkgs;})
+        ++ (with pkgs; [
+          noto-fonts
+          noto-fonts-color-emoji
+          font-awesome
+        ]);
       fontconfig.defaultFonts.monospace = ["JetBrainsMono Nerd Font Mono"];
     };
 

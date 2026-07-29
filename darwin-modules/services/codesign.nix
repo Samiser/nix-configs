@@ -30,7 +30,7 @@
     borders = pkgs.jankyborders;
   };
 
-  mkWrapper = bin: pkg:
+  mkWrapper = bin:
     pkgs.writeShellScriptBin bin ''
       exec ${signDir}/${bin} "$@"
     '';
@@ -39,9 +39,9 @@ in {
     lib.mkEnableOption "stable signed copies of TCC-sensitive binaries";
 
   config = lib.mkIf cfg.enable {
-    services.yabai.package = mkWrapper "yabai" tools.yabai;
-    services.skhd.package = mkWrapper "skhd" tools.skhd;
-    services.jankyborders.package = mkWrapper "borders" tools.borders;
+    services.yabai.package = mkWrapper "yabai";
+    services.skhd.package = mkWrapper "skhd";
+    services.jankyborders.package = mkWrapper "borders";
 
     system.activationScripts.preActivation.text = ''
       mkdir -p ${signDir}

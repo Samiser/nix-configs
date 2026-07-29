@@ -4,6 +4,7 @@
   ...
 }:
 let
+  inherit (import ../../../shared-modules/lib.nix) requiresCaddy;
   cfg = config.services.miniflux-local;
 in {
   options.services.miniflux-local = {
@@ -29,10 +30,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [{
-      assertion = config.services.caddy.enable;
-      message = "services.miniflux-local requires caddy to be enabled";
-    }];
+    assertions = [(requiresCaddy config "miniflux-local")];
 
     age.secrets.miniflux-admin-credentials = {
       file = ../../../secrets/miniflux-admin-credentials.age;

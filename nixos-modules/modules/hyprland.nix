@@ -10,6 +10,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     programs.hyprland.enable = true;
+    programs.noctalia.enable = true;
 
     services.greetd = {
       enable = true;

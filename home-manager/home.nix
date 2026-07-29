@@ -6,7 +6,6 @@
   agenix,
   ...
 }: let
-  i3 = config.hostConfig.i3.enable;
   hyprland = config.hostConfig.hyprland.enable;
   server = config.host.profile.server or false;
 in {
@@ -20,11 +19,9 @@ in {
       imports =
         [
           agenix.homeManagerModules.default
-          ./alacritty.nix
           ./colima.nix
           ./ghostty.nix
           ./git.nix
-          ./i3
           ./neovim.nix
           ./zsh
         ]
@@ -47,8 +44,6 @@ in {
         neovim.minimal = server;
         ghostty.enable = pkgs.stdenv.isDarwin || (pkgs.stdenv.isLinux && hyprland);
         colima.enable = pkgs.stdenv.isDarwin;
-        alacritty.enable = pkgs.stdenv.isLinux && i3;
-        i3.enable = pkgs.stdenv.isLinux && i3;
       };
 
       launchd.agents = pkgs.lib.mkIf pkgs.stdenv.isDarwin {

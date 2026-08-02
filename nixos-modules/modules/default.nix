@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./bash-execve-check.nix
     ./hyprland.nix
     ./services/caddy.nix
     ./services/storagebox.nix

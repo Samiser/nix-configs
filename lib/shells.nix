@@ -1,7 +1,10 @@
-{inputs}: let
-  mkShell = system: let
-    pkgs = inputs.nixpkgs.legacyPackages.${system};
-  in
+{ inputs }:
+let
+  mkShell =
+    system:
+    let
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+    in
     pkgs.mkShell {
       packages = [
         inputs.agenix.packages.${system}.default
@@ -13,7 +16,8 @@
         pkgs.nixos-rebuild
       ];
     };
-in {
+in
+{
   x86_64-linux.default = mkShell "x86_64-linux";
   aarch64-darwin.default = mkShell "aarch64-darwin";
 }

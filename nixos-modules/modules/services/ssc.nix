@@ -10,7 +10,8 @@ let
   cfg = config.services.ssc;
   ssc = static-site-compiler.packages.${pkgs.stdenv.hostPlatform.system}.default;
   contentDir = "/var/lib/ssc/site-content";
-in {
+in
+{
   options.services.ssc = {
     enable = lib.mkEnableOption "static site compiler service";
 
@@ -34,9 +35,9 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [(requiresCaddy config "ssc")];
+    assertions = [ (requiresCaddy config "ssc") ];
 
-    users.groups.ssc = {};
+    users.groups.ssc = { };
 
     users.users.ssc = {
       isSystemUser = true;
@@ -54,10 +55,10 @@ in {
 
     systemd.services.ssc-build = {
       description = "Build static site with static-site-compiler";
-      after = ["network-online.target"];
-      wants = ["network-online.target"];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
 
-      path = [pkgs.git];
+      path = [ pkgs.git ];
 
       script = ''
         set -eu
@@ -84,7 +85,7 @@ in {
 
     systemd.timers.ssc-build = {
       description = "Run the ssc-build service every minute";
-      wantedBy = ["timers.target"];
+      wantedBy = [ "timers.target" ];
       timerConfig = {
         OnBootSec = "1min";
         OnUnitActiveSec = "1min";
@@ -92,7 +93,7 @@ in {
       };
     };
 
-    environment.systemPackages = [ssc];
+    environment.systemPackages = [ ssc ];
 
     services.caddy.virtualHosts."${cfg.domain} www.${cfg.domain}".extraConfig = cloudflareTls ''
       root * ${cfg.siteDir}

@@ -2,14 +2,16 @@
   pkgs,
   nix-minecraft,
   ...
-}: let
+}:
+let
   inherit (import ../../shared-modules/lib.nix) cloudflareTls;
-in {
+in
+{
   imports = [
     nix-minecraft.nixosModules.minecraft-servers
   ];
 
-  nixpkgs.overlays = [nix-minecraft.overlay];
+  nixpkgs.overlays = [ nix-minecraft.overlay ];
   services = {
     minecraft-servers = {
       enable = true;

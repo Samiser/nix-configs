@@ -3,12 +3,14 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.sambee-fps;
   pck = "/var/lib/sambee/SambeeFPS.pck";
   # ENet (UDP) listen port, from Networking/network_manager.gd.
   port = 8910;
-in {
+in
+{
   options.services.sambee-fps = {
     enable = lib.mkEnableOption "Sambee FPS dedicated Godot server";
   };
@@ -16,8 +18,8 @@ in {
   config = lib.mkIf cfg.enable {
     systemd.services.sambee-fps = {
       description = "Sambee FPS dedicated server";
-      after = ["network.target"];
-      wantedBy = ["multi-user.target"];
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
       # Only start once a build has been deployed to the shared directory.
       unitConfig.ConditionPathExists = pck;
       serviceConfig = {
@@ -31,7 +33,7 @@ in {
     };
 
     # Godot clients reach the dedicated server over ENet/UDP.
-    networking.firewall.allowedUDPPorts = [port];
+    networking.firewall.allowedUDPPorts = [ port ];
 
     # polkit must be enabled for the rule below to be consulted at all.
     security.polkit.enable = true;

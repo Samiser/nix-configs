@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.services.tailscale-auth;
-in {
+in
+{
   options.services.tailscale-auth = {
     enable = lib.mkEnableOption "automatic tailscale authentication via agenix key";
   };

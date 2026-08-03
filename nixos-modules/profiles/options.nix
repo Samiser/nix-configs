@@ -1,4 +1,4 @@
-{lib, ...}: {
+{ lib, ... }: {
   options.host = {
     deploy.enable = lib.mkEnableOption "CD deployment via deploy-rs";
     profile = {

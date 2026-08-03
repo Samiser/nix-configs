@@ -3,9 +3,11 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.sam.zsh;
-in {
+in
+{
   options.sam.zsh.enable = mkEnableOption "zsh config";
 
   config = mkIf cfg.enable {

@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.sam.services.skhd;
-in {
+in
+{
   options.sam.services.skhd.enable = lib.mkEnableOption "skhd config";
   config = lib.mkIf cfg.enable {
     services.skhd = {

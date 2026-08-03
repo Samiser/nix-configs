@@ -3,9 +3,11 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.sam.colima;
-in {
+in
+{
   options.sam.colima.enable = mkEnableOption "colima container runtime";
 
   config = mkIf cfg.enable {

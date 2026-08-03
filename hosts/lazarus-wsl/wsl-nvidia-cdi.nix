@@ -6,7 +6,7 @@
       setSocketVariable = true;
       daemon.settings = {
         features.cdi = true;
-        cdi-spec-dirs = ["/home/sam/.cdi"];
+        cdi-spec-dirs = [ "/home/sam/.cdi" ];
       };
     };
     daemon.settings = {
@@ -21,5 +21,5 @@
     };
     nvidia-container-toolkit.enable = true;
   };
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 }

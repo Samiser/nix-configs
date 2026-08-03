@@ -1,8 +1,8 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   systemd.services.flaresolverr = {
     description = "FlareSolverr - Cloudflare bypass proxy";
-    after = ["network.target"];
-    wantedBy = ["multi-user.target"];
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       Type = "simple";
@@ -19,5 +19,5 @@
     };
   };
 
-  environment.systemPackages = [pkgs.flaresolverr];
+  environment.systemPackages = [ pkgs.flaresolverr ];
 }

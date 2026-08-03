@@ -3,9 +3,10 @@
   keys,
   sharedPackages,
   ...
-}: {
+}:
+{
   environment.systemPackages =
-    (sharedPackages.base {inherit pkgs;})
+    (sharedPackages.base { inherit pkgs; })
     ++ (with pkgs; [
       pciutils
       sysstat
@@ -30,9 +31,15 @@
 
   users.users.sam = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "video" "libvirtd" "docker"];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "video"
+      "libvirtd"
+      "docker"
+    ];
     shell = pkgs.zsh;
     hashedPassword = "$6$YvQ.LsWTIYp2jkWe$brA.AICuG4BEvRBchrVmrHwe.6Mr6RgfTcwHBTXTmhjqgVP9Ql5vktY/zPWJc5Y3aEp5EYkFO0fpP/RnUU0dH0";
-    openssh.authorizedKeys.keys = [keys.sam];
+    openssh.authorizedKeys.keys = [ keys.sam ];
   };
 }

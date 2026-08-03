@@ -5,34 +5,32 @@
   my-neovim,
   agenix,
   ...
-}: let
+}:
+let
   hyprland = config.hostConfig.hyprland.enable;
   server = config.host.profile.server or false;
-in {
+in
+{
   home-manager = {
-    extraSpecialArgs = {inherit my-neovim;};
+    extraSpecialArgs = { inherit my-neovim; };
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";
 
     users.sam = {
-      imports =
-        [
-          agenix.homeManagerModules.default
-          ./colima.nix
-          ./ghostty.nix
-          ./git.nix
-          ./neovim.nix
-          ./zsh
-        ]
-        ++ lib.optional (!server) ./hcloud.nix;
+      imports = [
+        agenix.homeManagerModules.default
+        ./colima.nix
+        ./ghostty.nix
+        ./git.nix
+        ./neovim.nix
+        ./zsh
+      ]
+      ++ lib.optional (!server) ./hcloud.nix;
 
       home = {
         username = "sam";
-        homeDirectory =
-          if pkgs.stdenv.isDarwin
-          then "/Users/sam"
-          else "/home/sam";
+        homeDirectory = if pkgs.stdenv.isDarwin then "/Users/sam" else "/home/sam";
 
         stateVersion = "25.05";
       };

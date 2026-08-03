@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.storagebox;
-in {
+in
+{
   options.services.storagebox = {
     enable = lib.mkEnableOption "Hetzner storage box CIFS mount";
 
@@ -47,9 +49,12 @@ in {
 
     extraOptions = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = "Additional CIFS mount options, e.g. caching tweaks";
-      example = ["cache=loose" "actimeo=60"];
+      example = [
+        "cache=loose"
+        "actimeo=60"
+      ];
     };
   };
 
@@ -59,20 +64,19 @@ in {
     fileSystems.${cfg.mountPoint} = {
       inherit (cfg) device;
       fsType = "cifs";
-      options =
-        [
-          "credentials=${config.age.secrets.storagebox-credentials.path}"
-          "uid=${cfg.user}"
-          "gid=${cfg.group}"
-          "file_mode=${cfg.fileMode}"
-          "dir_mode=${cfg.dirMode}"
-          "x-systemd.automount"
-          "noauto"
-          "_netdev"
-        ]
-        ++ cfg.extraOptions;
+      options = [
+        "credentials=${config.age.secrets.storagebox-credentials.path}"
+        "uid=${cfg.user}"
+        "gid=${cfg.group}"
+        "file_mode=${cfg.fileMode}"
+        "dir_mode=${cfg.dirMode}"
+        "x-systemd.automount"
+        "noauto"
+        "_netdev"
+      ]
+      ++ cfg.extraOptions;
     };
 
-    environment.systemPackages = [pkgs.cifs-utils];
+    environment.systemPackages = [ pkgs.cifs-utils ];
   };
 }

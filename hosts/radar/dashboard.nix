@@ -1,4 +1,5 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   dashboardPage = pkgs.writeTextDir "index.html" ''
     <!DOCTYPE html>
     <html>
@@ -20,23 +21,29 @@
     </body>
     </html>
   '';
-in {
+in
+{
   services.nginx = {
     enable = true;
     virtualHosts."radar" = {
-      listen = [{ addr = "0.0.0.0"; port = 80; }];
+      listen = [
+        {
+          addr = "0.0.0.0";
+          port = 80;
+        }
+      ];
       root = dashboardPage;
     };
   };
 
   # Bind nginx to Tailscale interface
   systemd.services.nginx = {
-    after = ["tailscaled.service"];
-    wants = ["tailscaled.service"];
+    after = [ "tailscaled.service" ];
+    wants = [ "tailscaled.service" ];
     serviceConfig.ExecStartPre = pkgs.writeShellScript "nginx-wait-tailscale" ''
       until ${pkgs.tailscale}/bin/tailscale status &>/dev/null; do sleep 1; done
     '';
   };
 
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [80];
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 80 ];
 }

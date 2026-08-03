@@ -1,4 +1,4 @@
-{disko, ...}: {
+{ disko, ... }: {
   imports = [
     ./hardware-configuration.nix
     disko.nixosModules.disko

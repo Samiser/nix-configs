@@ -2,9 +2,10 @@
   pkgs,
   sharedPackages,
   ...
-}: {
+}:
+{
   environment.systemPackages =
-    (sharedPackages.all {inherit pkgs;})
+    (sharedPackages.all { inherit pkgs; })
     ++ [
       pkgs._1password-cli
       pkgs.docker
@@ -39,13 +40,16 @@
     home = "/Users/sam";
   };
 
-  fonts.packages = sharedPackages.fonts {inherit pkgs;};
+  fonts.packages = sharedPackages.fonts { inherit pkgs; };
 
   homebrew = {
     enable = true;
     onActivation.cleanup = "zap";
 
-    taps = ["FelixKratz/formulae" "gromgit/fuse"];
+    taps = [
+      "FelixKratz/formulae"
+      "gromgit/fuse"
+    ];
     brews = [
       "gromgit/fuse/ext4fuse-mac"
     ];
@@ -62,7 +66,11 @@
   };
 
   nix.settings = {
-    trusted-users = ["root" "sam" "@admin"];
+    trusted-users = [
+      "root"
+      "sam"
+      "@admin"
+    ];
   };
 
   system = {

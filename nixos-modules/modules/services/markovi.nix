@@ -4,9 +4,11 @@
   markovi,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.markovi;
-in {
+in
+{
   options.services.markovi = {
     enable = lib.mkEnableOption "markovi Discord bot";
 
@@ -29,9 +31,12 @@ in {
 
     systemd.services.markovi = {
       description = "Markovi Discord Bot";
-      wantedBy = ["multi-user.target"];
-      after = ["network.target" "redis-markovi.service"];
-      requires = ["redis-markovi.service"];
+      wantedBy = [ "multi-user.target" ];
+      after = [
+        "network.target"
+        "redis-markovi.service"
+      ];
+      requires = [ "redis-markovi.service" ];
 
       serviceConfig = {
         Type = "simple";

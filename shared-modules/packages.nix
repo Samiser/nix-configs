@@ -1,6 +1,8 @@
 let
-  base = {pkgs}:
-    with pkgs; [
+  base =
+    { pkgs }:
+    with pkgs;
+    [
       dig
       fd
       fzf
@@ -15,8 +17,10 @@ let
       wget
     ];
 
-  dev = {pkgs}:
-    with pkgs; [
+  dev =
+    { pkgs }:
+    with pkgs;
+    [
       claude-code
       direnv
       docker-compose
@@ -28,23 +32,33 @@ let
       python3
     ];
 
-  desktop = {pkgs}:
-    with pkgs; [
+  desktop =
+    { pkgs }:
+    with pkgs;
+    [
       ffmpeg
       imagemagick
       fastfetch
       pandoc
     ];
 
-  fonts = {pkgs}:
-    with pkgs; [
+  fonts =
+    { pkgs }:
+    with pkgs;
+    [
       nerd-fonts.jetbrains-mono
     ];
 
-  all = {pkgs}:
-    (base {inherit pkgs;})
-    ++ (dev {inherit pkgs;})
-    ++ (desktop {inherit pkgs;});
-in {
-  inherit base dev desktop fonts all;
+  all =
+    { pkgs }:
+    (base { inherit pkgs; }) ++ (dev { inherit pkgs; }) ++ (desktop { inherit pkgs; });
+in
+{
+  inherit
+    base
+    dev
+    desktop
+    fonts
+    all
+    ;
 }

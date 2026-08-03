@@ -4,7 +4,8 @@
   pkgs,
   keys,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.host.profile.server {
     boot.tmp.cleanOnBoot = true;
     zramSwap.enable = true;
@@ -14,7 +15,7 @@
       nixos-generate-config.enable = false;
     };
 
-    environment.defaultPackages = [];
+    environment.defaultPackages = [ ];
 
     boot.initrd.systemd.enable = true;
     system.etc.overlay.enable = true;
@@ -42,6 +43,6 @@
       (lib.lowPrio gitMinimal)
     ];
 
-    users.users.root.openssh.authorizedKeys.keys = [keys.sam];
+    users.users.root.openssh.authorizedKeys.keys = [ keys.sam ];
   };
 }

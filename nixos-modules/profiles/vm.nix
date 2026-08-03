@@ -1,4 +1,4 @@
-{config, lib, ...}: {
+{ config, lib, ... }: {
   config = lib.mkIf config.host.profile.vm {
     services = {
       qemuGuest.enable = true;

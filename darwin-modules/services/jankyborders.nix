@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.sam.services.jankyborders;
-in {
+in
+{
   options.sam.services.jankyborders.enable = lib.mkEnableOption "jankyborders config";
   config = lib.mkIf cfg.enable {
     services.jankyborders = {

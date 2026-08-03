@@ -6,7 +6,8 @@
 let
   inherit (import ../../../shared-modules/lib.nix) cloudflareTls requiresCaddy;
   cfg = config.services.gpa-calc;
-in {
+in
+{
   options.services.gpa-calc = {
     enable = lib.mkEnableOption "GPA calculator service";
 
@@ -30,12 +31,12 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [(requiresCaddy config "gpa-calc")];
+    assertions = [ (requiresCaddy config "gpa-calc") ];
 
     virtualisation.oci-containers.containers.gpa-calc = {
       inherit (cfg) image;
       autoStart = true;
-      ports = ["127.0.0.1:${toString cfg.port}:${toString cfg.port}"];
+      ports = [ "127.0.0.1:${toString cfg.port}:${toString cfg.port}" ];
     };
 
     services.caddy.virtualHosts.${cfg.domain}.extraConfig = cloudflareTls ''

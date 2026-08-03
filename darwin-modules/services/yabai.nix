@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.sam.services.yabai;
-in {
+in
+{
   options.sam.services.yabai.enable = lib.mkEnableOption "yabai config";
   config = lib.mkIf cfg.enable {
     services.yabai = {

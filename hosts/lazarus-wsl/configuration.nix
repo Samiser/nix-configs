@@ -1,4 +1,4 @@
-{nixos-wsl, ...}: {
+{ nixos-wsl, ... }: {
   imports = [
     nixos-wsl.nixosModules.wsl
     ./wsl-nvidia-cdi.nix

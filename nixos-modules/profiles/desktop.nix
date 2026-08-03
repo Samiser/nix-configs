@@ -4,7 +4,8 @@
   pkgs,
   sharedPackages,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.host.profile.desktop {
     hardware = {
       graphics = {
@@ -35,13 +36,13 @@
     fonts = {
       enableDefaultPackages = true;
       packages =
-        (sharedPackages.fonts {inherit pkgs;})
+        (sharedPackages.fonts { inherit pkgs; })
         ++ (with pkgs; [
           noto-fonts
           noto-fonts-color-emoji
           font-awesome
         ]);
-      fontconfig.defaultFonts.monospace = ["JetBrainsMono Nerd Font Mono"];
+      fontconfig.defaultFonts.monospace = [ "JetBrainsMono Nerd Font Mono" ];
     };
 
     programs = {
@@ -52,7 +53,7 @@
         enable = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
         remotePlay.openFirewall = true;
         dedicatedServer.openFirewall = true;
-        extraCompatPackages = [pkgs.proton-ge-bin];
+        extraCompatPackages = [ pkgs.proton-ge-bin ];
       };
       gamescope.enable = true;
       gamemode.enable = true;
@@ -71,7 +72,7 @@
     };
 
     environment.systemPackages =
-      (sharedPackages.desktop {inherit pkgs;})
+      (sharedPackages.desktop { inherit pkgs; })
       ++ (with pkgs; [
         acpi
         flat-remix-icon-theme
@@ -89,9 +90,12 @@
         wdisplays
         wf-recorder
       ])
-      ++ lib.optionals (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (with pkgs; [
-        spotify-player
-        vesktop
-      ]);
+      ++ lib.optionals (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (
+        with pkgs;
+        [
+          spotify-player
+          vesktop
+        ]
+      );
   };
 }

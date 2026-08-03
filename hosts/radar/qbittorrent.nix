@@ -2,9 +2,11 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   vpnInterface = "wg-mullvad";
-in {
+in
+{
   age.secrets.mullvad-privkey = {
     file = ../../secrets/mullvad-privkey.age;
     owner = "root";
@@ -14,13 +16,16 @@ in {
 
   # WireGuard tunnel to Mullvad
   networking.wg-quick.interfaces.${vpnInterface} = {
-    address = ["10.71.159.207/32"];
+    address = [ "10.71.159.207/32" ];
     privateKeyFile = config.age.secrets.mullvad-privkey.path;
 
     peers = [
       {
         publicKey = "2S3G7Sm9DVG6+uJtlDu4N6ed5V97sTbA5dCSkUelWyk=";
-        allowedIPs = ["0.0.0.0/0" "::/0"];
+        allowedIPs = [
+          "0.0.0.0/0"
+          "::/0"
+        ];
         endpoint = "193.138.7.137:51820";
         persistentKeepalive = 25;
       }
@@ -46,7 +51,7 @@ in {
     isSystemUser = true;
     uid = 888;
     group = "qbittorrent";
-    extraGroups = ["radarr"]; # For storagebox access
+    extraGroups = [ "radarr" ]; # For storagebox access
     home = "/var/lib/qbittorrent";
     createHome = true;
   };
@@ -55,12 +60,19 @@ in {
   # qbittorrent-nox service
   systemd.services.qbittorrent = {
     description = "qBittorrent-nox";
-    after = ["network.target" "wg-quick-${vpnInterface}.service" "tailscaled.service"];
-    wants = ["wg-quick-${vpnInterface}.service"];
-    requires = ["tailscaled.service"];
-    wantedBy = ["multi-user.target"];
+    after = [
+      "network.target"
+      "wg-quick-${vpnInterface}.service"
+      "tailscaled.service"
+    ];
+    wants = [ "wg-quick-${vpnInterface}.service" ];
+    requires = [ "tailscaled.service" ];
+    wantedBy = [ "multi-user.target" ];
 
-    path = [pkgs.tailscale pkgs.gnused];
+    path = [
+      pkgs.tailscale
+      pkgs.gnused
+    ];
 
     serviceConfig = {
       Type = "simple";
@@ -111,7 +123,7 @@ in {
     };
   };
 
-  environment.systemPackages = [pkgs.qbittorrent-nox];
+  environment.systemPackages = [ pkgs.qbittorrent-nox ];
 
   # Disable reverse path filtering for VPN interface (required for split tunneling)
   networking.firewall.checkReversePath = "loose";

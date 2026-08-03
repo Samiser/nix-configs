@@ -5,9 +5,11 @@
   my-neovim,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.sam.neovim;
-in {
+in
+{
   options.sam.neovim = {
     minimal = mkOption {
       type = types.bool;
@@ -19,8 +21,9 @@ in {
 
   config = mkIf cfg.enable {
     home.packages =
-      if cfg.minimal
-      then [my-neovim.packages."${pkgs.stdenv.hostPlatform.system}".minimal]
-      else [my-neovim.packages."${pkgs.stdenv.hostPlatform.system}".default];
+      if cfg.minimal then
+        [ my-neovim.packages."${pkgs.stdenv.hostPlatform.system}".minimal ]
+      else
+        [ my-neovim.packages."${pkgs.stdenv.hostPlatform.system}".default ];
   };
 }

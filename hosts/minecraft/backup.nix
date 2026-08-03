@@ -1,4 +1,5 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   backupDir = "/var/lib/minecraft-backups";
 
   backupScript = pkgs.writeShellScript "minecraft-backup" ''
@@ -18,7 +19,8 @@
 
     echo "Backup created: $BACKUP_FILE"
   '';
-in {
+in
+{
   systemd.services.minecraft-backup = {
     description = "Minecraft World Backup";
     serviceConfig = {
@@ -29,7 +31,7 @@ in {
 
   systemd.timers.minecraft-backup = {
     description = "Minecraft World Backup Timer";
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = "daily";
       Persistent = true;

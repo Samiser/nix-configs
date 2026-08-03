@@ -1,7 +1,8 @@
 {
   inputs,
   nixosConfigurations,
-}: let
+}:
+let
   inherit (inputs) deploy-rs;
 
   hosts = builtins.attrNames nixosConfigurations;
@@ -14,21 +15,24 @@
     };
   };
 
-  deployNodes =
-    builtins.listToAttrs
-    (builtins.filter (x: x != null)
-      (builtins.map (
-          hostname: let
-            nixosConfig = nixosConfigurations.${hostname};
-          in
-            if nixosConfig.config.host.deploy.enable
-            then {
-              name = hostname;
-              value = mkDeployNode nixosConfig;
-            }
-            else null
-        )
-        hosts));
-in {
+  deployNodes = builtins.listToAttrs (
+    builtins.filter (x: x != null) (
+      builtins.map (
+        hostname:
+        let
+          nixosConfig = nixosConfigurations.${hostname};
+        in
+        if nixosConfig.config.host.deploy.enable then
+          {
+            name = hostname;
+            value = mkDeployNode nixosConfig;
+          }
+        else
+          null
+      ) hosts
+    )
+  );
+in
+{
   deploy.nodes = deployNodes;
 }

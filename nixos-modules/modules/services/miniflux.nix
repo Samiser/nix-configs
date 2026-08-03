@@ -6,7 +6,8 @@
 let
   inherit (import ../../../shared-modules/lib.nix) requiresCaddy;
   cfg = config.services.miniflux-local;
-in {
+in
+{
   options.services.miniflux-local = {
     enable = lib.mkEnableOption "miniflux RSS reader with local caddy routing";
 
@@ -30,7 +31,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [(requiresCaddy config "miniflux-local")];
+    assertions = [ (requiresCaddy config "miniflux-local") ];
 
     age.secrets.miniflux-admin-credentials = {
       file = ../../../secrets/miniflux-admin-credentials.age;

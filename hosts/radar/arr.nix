@@ -1,8 +1,12 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   bindToTailscale = service: configFile: {
-    after = ["tailscaled.service"];
-    requires = ["tailscaled.service"];
-    path = [pkgs.tailscale pkgs.gnused];
+    after = [ "tailscaled.service" ];
+    requires = [ "tailscaled.service" ];
+    path = [
+      pkgs.tailscale
+      pkgs.gnused
+    ];
     serviceConfig.ExecStartPre = pkgs.writeShellScript "${service}-setup" ''
       # Wait for Tailscale to be ready
       until tailscale status &>/dev/null; do sleep 1; done
@@ -13,7 +17,8 @@
       fi
     '';
   };
-in {
+in
+{
   services = {
     radarr = {
       enable = true;
@@ -29,7 +34,7 @@ in {
     };
   };
 
-  users.users.sonarr.extraGroups = ["radarr"];
+  users.users.sonarr.extraGroups = [ "radarr" ];
 
   systemd.services = {
     radarr = bindToTailscale "radarr" "/var/lib/radarr/.config/Radarr/config.xml";

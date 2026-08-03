@@ -1,4 +1,4 @@
-{...}: {
+{ ... }: {
   imports = [
     ./bash-execve-check.nix
     ./hyprland.nix

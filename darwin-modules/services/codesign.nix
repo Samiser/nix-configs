@@ -18,7 +18,8 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.sam.services.codesign;
 
   signDir = "/opt/nix-signed";
@@ -30,11 +31,13 @@
     borders = pkgs.jankyborders;
   };
 
-  mkWrapper = bin:
+  mkWrapper =
+    bin:
     pkgs.writeShellScriptBin bin ''
       exec ${signDir}/${bin} "$@"
     '';
-in {
+in
+{
   options.sam.services.codesign.enable =
     lib.mkEnableOption "stable signed copies of TCC-sensitive binaries";
 
@@ -45,7 +48,9 @@ in {
 
     system.activationScripts.preActivation.text = ''
       mkdir -p ${signDir}
-      for src in ${lib.concatStringsSep " " (lib.mapAttrsToList (bin: pkg: "${pkg}/bin/${bin}") tools)}; do
+      for src in ${
+        lib.concatStringsSep " " (lib.mapAttrsToList (bin: pkg: "${pkg}/bin/${bin}") tools)
+      }; do
         name=$(basename "$src")
         dst="${signDir}/$name"
         if ! cmp -s "$src" "$dst.orig"; then

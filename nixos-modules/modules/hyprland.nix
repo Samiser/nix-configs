@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.hostConfig.hyprland;
-in {
+in
+{
   options.hostConfig.hyprland.enable = lib.mkEnableOption "Hyprland Wayland compositor";
 
   config = lib.mkIf cfg.enable {

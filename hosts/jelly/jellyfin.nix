@@ -1,6 +1,8 @@
-_: let
+_:
+let
   inherit (import ../../shared-modules/lib.nix) cloudflareTls;
-in {
+in
+{
   services.jellyfin.enable = true;
 
   services.caddy.virtualHosts."jelly.vuvs.org".extraConfig = cloudflareTls ''

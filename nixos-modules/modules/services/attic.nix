@@ -2,10 +2,12 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   inherit (import ../../../shared-modules/lib.nix) cloudflareTls requiresCaddy;
   cfg = config.services.attic-cache;
-in {
+in
+{
   options.services.attic-cache = {
     enable = lib.mkEnableOption "Attic binary cache server";
 
@@ -23,7 +25,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [(requiresCaddy config "attic-cache")];
+    assertions = [ (requiresCaddy config "attic-cache") ];
 
     age.secrets.attic-jwt-secret = {
       file = ../../../secrets/attic-jwt-secret.age;

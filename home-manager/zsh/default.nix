@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 with lib;
@@ -15,6 +16,11 @@ in
       starship.enable = true;
       direnv.enable = true;
       fzf.enable = true;
+
+      command-not-found = {
+        enable = true;
+        dbPath = "${pkgs.path}/programs.sqlite";
+      };
 
       zsh = {
         enable = true;

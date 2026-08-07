@@ -27,8 +27,10 @@ let
       entr
       gh
       git
-      nix-tree
       nixfmt
+      nixpkgs-review
+      nixpkgs-update
+      nix-tree
       python3
     ];
 

@@ -32,6 +32,11 @@ in
         username = "sam";
         homeDirectory = if pkgs.stdenv.isDarwin then "/Users/sam" else "/home/sam";
 
+        sessionVariables = {
+          EDITOR = "vim";
+          VISUAL = "vim";
+        };
+
         stateVersion = "25.05";
       };
 

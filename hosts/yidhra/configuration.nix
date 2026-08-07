@@ -6,6 +6,7 @@
     ./nvidia.nix
     ./audio.nix
     ./tailscale.nix
+    ./noctalia-greeter.nix
   ];
 
   host.profile = {
@@ -13,7 +14,15 @@
     dev = true;
   };
 
-  hostConfig.hyprland.enable = true;
+  hostConfig.hyprland = {
+    enable = true;
+    tuigreet = false;
+  };
+
+  services.displayManager.noctalia-greeter = {
+    enable = true;
+    settings.keyboard.layout = "us";
+  };
 
   services = {
     openssh.enable = true;

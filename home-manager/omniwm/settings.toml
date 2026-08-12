@@ -1,0 +1,212 @@
+[general]
+defaultLayoutType = "dwindle"
+hotkeysEnabled = true
+ipcEnabled = true
+updateChecksEnabled = false
+
+[gaps]
+size = 15.0
+
+[gaps.outer]
+top = 8.0
+bottom = 15.0
+left = 15.0
+right = 15.0
+
+[focus]
+followsMouse = true
+
+[gestures]
+mouseMoveModifierKey = "leftOption"
+mouseResizeModifierKey = "leftOption"
+
+[borders]
+enabled = true
+width = 2.0
+
+[borders.color]
+red = 0.882
+green = 0.890
+blue = 0.894
+alpha = 1.0
+
+[workspaceBar]
+enabled = true
+revealModifier = "option"
+revealHoldMilliseconds = 0.0
+
+[[workspaces]]
+id = "AD36F001-C57E-41A5-AC1D-DF5249D007F0"
+name = "1"
+layoutType = "dwindle"
+
+[workspaces.monitorAssignment]
+type = "main"
+
+[[workspaces]]
+id = "454CECD4-5E9D-4ED1-95D7-979D48817F5F"
+name = "2"
+layoutType = "dwindle"
+
+[workspaces.monitorAssignment]
+type = "main"
+
+[[workspaces]]
+id = "BEB842B5-E894-4791-9FD1-397C3CDD3538"
+name = "3"
+layoutType = "dwindle"
+
+[workspaces.monitorAssignment]
+type = "main"
+
+[[workspaces]]
+id = "248AA883-2261-4D45-943C-79C0E46A232B"
+name = "4"
+layoutType = "dwindle"
+
+[workspaces.monitorAssignment]
+type = "main"
+
+[[workspaces]]
+id = "8B8C45D6-CE9E-41D9-BD50-BE4989D5E3DE"
+name = "5"
+layoutType = "dwindle"
+
+[workspaces.monitorAssignment]
+type = "main"
+
+[[appRules]]
+bundleId = "com.apple.systempreferences"
+layout = "float"
+
+[[appRules]]
+bundleId = "org.godotengine.godot.nixpkgs"
+layout = "float"
+
+[[hotkeys]]
+binding = "LeftOption+1"
+id = "switchWorkspace.0"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+1"
+id = "moveToWorkspace.0"
+
+[[hotkeys]]
+binding = "LeftOption+2"
+id = "switchWorkspace.1"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+2"
+id = "moveToWorkspace.1"
+
+[[hotkeys]]
+binding = "LeftOption+3"
+id = "switchWorkspace.2"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+3"
+id = "moveToWorkspace.2"
+
+[[hotkeys]]
+binding = "LeftOption+4"
+id = "switchWorkspace.3"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+4"
+id = "moveToWorkspace.3"
+
+[[hotkeys]]
+binding = "LeftOption+5"
+id = "switchWorkspace.4"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+5"
+id = "moveToWorkspace.4"
+
+[[hotkeys]]
+binding = "LeftOption+H"
+id = "focus.left"
+
+[[hotkeys]]
+binding = "LeftOption+J"
+id = "focus.down"
+
+[[hotkeys]]
+binding = "LeftOption+K"
+id = "focus.up"
+
+[[hotkeys]]
+binding = "LeftOption+L"
+id = "focus.right"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+H"
+id = "move.left"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+J"
+id = "move.down"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+K"
+id = "move.up"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+L"
+id = "move.right"
+
+[[hotkeys]]
+binding = "Control+LeftOption+H"
+id = "resizeGrow.left"
+
+[[hotkeys]]
+binding = "Control+LeftOption+J"
+id = "resizeGrow.down"
+
+[[hotkeys]]
+binding = "Control+LeftOption+K"
+id = "resizeGrow.up"
+
+[[hotkeys]]
+binding = "Control+LeftOption+L"
+id = "resizeGrow.right"
+
+[[hotkeys]]
+binding = "Control+LeftOption+Shift+H"
+id = "resizeShrink.left"
+
+[[hotkeys]]
+binding = "Control+LeftOption+Shift+J"
+id = "resizeShrink.down"
+
+[[hotkeys]]
+binding = "Control+LeftOption+Shift+K"
+id = "resizeShrink.up"
+
+[[hotkeys]]
+binding = "Control+LeftOption+Shift+L"
+id = "resizeShrink.right"
+
+[[hotkeys]]
+binding = "Control+LeftOption+B"
+id = "balanceSizes"
+
+[[hotkeys]]
+binding = "LeftOption+F"
+id = "toggleFullscreen"
+
+[[hotkeys]]
+binding = "LeftOption+R"
+id = "toggleSplit"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+R"
+id = "toggleWorkspaceLayout"
+
+[[hotkeys]]
+binding = "LeftOption+Shift+A"
+id = "raiseAllFloatingWindows"
+
+[[hotkeys]]
+binding = "Control+LeftOption+P"
+id = "openCommandPalette"

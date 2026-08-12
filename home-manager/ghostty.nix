@@ -25,6 +25,7 @@ in
       }
       // optionalAttrs pkgs.stdenv.isDarwin {
         macos-titlebar-style = "hidden";
+        keybind = [ "global:opt+enter=new_window" ];
       };
     }
     (mkIf pkgs.stdenv.isLinux {

@@ -24,6 +24,7 @@ in
         ./ghostty.nix
         ./git.nix
         ./neovim.nix
+        ./omniwm
         ./zsh
       ]
       ++ lib.optional (!server) ./hcloud.nix;
@@ -47,6 +48,7 @@ in
         neovim.minimal = server;
         ghostty.enable = pkgs.stdenv.isDarwin || (pkgs.stdenv.isLinux && hyprland);
         colima.enable = pkgs.stdenv.isDarwin;
+        omniwm.enable = pkgs.stdenv.isDarwin;
       };
 
       launchd.agents = pkgs.lib.mkIf pkgs.stdenv.isDarwin {

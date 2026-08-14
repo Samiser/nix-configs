@@ -194,24 +194,6 @@
         "type": "github"
       }
     },
-    "flake-utils": {
-      "inputs": {
-        "systems": "systems_3"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -271,18 +253,18 @@
     },
     "my-neovim": {
       "inputs": {
-        "flake-utils": "flake-utils",
         "nixpkgs": [
           "nixpkgs"
         ],
-        "nvf": "nvf"
+        "nvf": "nvf",
+        "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1785201574,
-        "narHash": "sha256-KmAnJ8ZagNKRwxtzjun2nHMnq1uPchrQotuyqESwY3Q=",
+        "lastModified": 1786698839,
+        "narHash": "sha256-JUsvNVtqDyu7koCOarBeF39MrHNOjaq60ipyTzSfLGE=",
         "owner": "samiser",
         "repo": "neovim-config",
-        "rev": "b8a7daff180608a14d19adb70331bb915e6c8f75",
+        "rev": "9fba853490e2913e4bb54d1f8461078d9215edd4",
         "type": "github"
       },
       "original": {

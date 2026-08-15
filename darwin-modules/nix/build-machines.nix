@@ -32,6 +32,7 @@
           };
           cores = 4;
         };
+        programs.command-not-found.enable = false;
       };
     };
   };

@@ -9,10 +9,13 @@ let
 in
 {
   config = lib.mkIf caddyCfg.enable {
-    networking.firewall.allowedTCPPorts = [
-      80
-      443
-    ];
+    networking.firewall = {
+      allowedTCPPorts = [
+        80
+        443
+      ];
+      allowedUDPPorts = [ 443 ];
+    };
 
     age.secrets.caddy-cloudflare-key = {
       file = ../../../secrets/caddy-cloudflare-key.age;

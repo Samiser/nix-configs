@@ -29,8 +29,8 @@ let
       git
       nixfmt
       nixpkgs-review
-      nixpkgs-update
       nix-tree
+      nix-update
       python3
     ];
 

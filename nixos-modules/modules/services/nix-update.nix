@@ -1,0 +1,180 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.services.nix-update;
+
+  stateDir = "/var/lib/nix-update";
+
+  specsFile = pkgs.writeText "nix-update-specs.json" (
+    builtins.toJSON (
+      map (p: {
+        inherit (p) name versionPreference;
+      }) cfg.packages
+    )
+  );
+
+  runner = pkgs.writeShellApplication {
+    name = "nix-update-run";
+    runtimeInputs = [
+      pkgs.coreutils
+      pkgs.gh
+      pkgs.git
+      pkgs.gnused
+      pkgs.jq
+      pkgs.nix
+      pkgs.nix-update
+    ];
+    text = builtins.readFile ./nix-update-run.sh;
+  };
+in
+{
+  options.services.nix-update = {
+    enable = lib.mkEnableOption "automatic update PRs for maintained nixpkgs packages";
+
+    packages = lib.mkOption {
+      default = [ ];
+      description = "nixpkgs packages to keep updated.";
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            name = lib.mkOption {
+              type = lib.types.str;
+              description = "nixpkgs attribute path.";
+            };
+            versionPreference = lib.mkOption {
+              type = lib.types.enum [
+                "stable"
+                "unstable"
+              ];
+              default = "stable";
+              description = ''
+                Passed to `nix-update --version`. `unstable` includes versions
+                matching alpha/beta/rc/nightly.
+              '';
+            };
+          };
+        }
+      );
+    };
+
+    githubUser = lib.mkOption {
+      type = lib.types.str;
+      description = ''
+        GitHub user whose nixpkgs fork update branches are pushed to.
+      '';
+    };
+
+    tokenFile = lib.mkOption {
+      type = lib.types.path;
+      description = ''
+        File holding a classic GitHub token with repo scope.
+      '';
+    };
+
+    gitAuthor = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        description = "Name for commits.";
+      };
+      email = lib.mkOption {
+        type = lib.types.str;
+        description = "Email for commits.";
+      };
+    };
+
+    createPullRequests = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Whether to actually push branches and open pull requests.
+      '';
+    };
+
+    interval = lib.mkOption {
+      type = lib.types.str;
+      default = "hourly";
+      description = "systemd calendar expression for how often to check.";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    users.users.nix-update = {
+      isSystemUser = true;
+      group = "nix-update";
+      home = stateDir;
+    };
+    users.groups.nix-update = { };
+
+    age.secrets.nixpkgs-update-token = {
+      file = ../../../secrets/nixpkgs-update-token.age;
+      owner = "nix-update";
+      group = "nix-update";
+    };
+
+    systemd.services.nix-update = {
+      description = "Update maintained nixpkgs packages";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+
+      environment = {
+        SPECS_FILE = "${specsFile}";
+        GH_USER = cfg.githubUser;
+        TOKEN_FILE = cfg.tokenFile;
+        CREATE_PRS = lib.boolToString cfg.createPullRequests;
+        STATE_DIR = stateDir;
+        SYSTEM = pkgs.stdenv.hostPlatform.system;
+
+        HOME = stateDir;
+
+        GIT_AUTHOR_NAME = cfg.gitAuthor.name;
+        GIT_AUTHOR_EMAIL = cfg.gitAuthor.email;
+        GIT_COMMITTER_NAME = cfg.gitAuthor.name;
+        GIT_COMMITTER_EMAIL = cfg.gitAuthor.email;
+      };
+
+      # a run triggered by resume-from-suspend beats DNS coming back
+      unitConfig = {
+        StartLimitIntervalSec = "30m";
+        StartLimitBurst = 3;
+      };
+
+      serviceConfig = {
+        Type = "oneshot";
+        Restart = "on-failure";
+        RestartSec = "2m";
+        User = "nix-update";
+        Group = "nix-update";
+        ExecStart = lib.getExe runner;
+
+        StateDirectory = "nix-update";
+        StateDirectoryMode = "0700";
+        WorkingDirectory = stateDir;
+
+        Nice = 19;
+        IOSchedulingClass = "idle";
+        CPUSchedulingPolicy = "idle";
+
+        TimeoutStartSec = "6h";
+
+        PrivateTmp = true;
+        ProtectHome = true;
+        ProtectSystem = "strict";
+        NoNewPrivileges = true;
+      };
+    };
+
+    systemd.timers.nix-update = {
+      description = "Check maintained nixpkgs packages for updates";
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = cfg.interval;
+        Persistent = true;
+        RandomizedDelaySec = "5m";
+      };
+    };
+  };
+}

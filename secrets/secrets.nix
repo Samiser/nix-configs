@@ -7,6 +7,7 @@ let
     jelly
     radar
     argus
+    yidhra
     ;
 in
 {
@@ -62,5 +63,9 @@ in
   "github-runner-sambee.age".publicKeys = [
     sam
     nix-lab
+  ];
+  "nixpkgs-update-token.age".publicKeys = [
+    sam
+    yidhra
   ];
 }

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -27,6 +27,25 @@
   services = {
     openssh.enable = true;
     closured.enable = true;
+
+    nix-update = {
+      enable = true;
+      githubUser = "samiser";
+      gitAuthor = {
+        name = "Samiser";
+        email = "github@me.samiser.xyz";
+      };
+      tokenFile = config.age.secrets.nixpkgs-update-token.path;
+      packages = [
+        { name = "hyprmag"; }
+        { name = "noctalia-greeter"; }
+        {
+          name = "noctalia";
+          versionPreference = "unstable";
+        }
+      ];
+      createPullRequests = false;
+    };
   };
 
   networking.hostName = "yidhra";

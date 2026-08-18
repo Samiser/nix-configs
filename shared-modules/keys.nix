@@ -9,6 +9,7 @@ let
     jelly = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7fnOY+8QVBpGMkmd7e1SCodBu+XkV6+GfAA/iJqct8 root@jelly";
     radar = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpm+FNLZBtMWrnnNLxmnPHSO3UBMEGteYcJ2s0FihCw root@radar";
     argus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFZGVeNFpfKz6bVXGQJ92IXRfSHZb0xDX5hwyODWCID6 root@argus";
+    yidhra = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPW47AEjdjDfPNU14zvT6obEABNXrxp3/1oa4DfqfhS8 root@yidhra";
   };
 in
 {
@@ -19,5 +20,6 @@ in
     jelly
     radar
     argus
+    yidhra
     ;
 }

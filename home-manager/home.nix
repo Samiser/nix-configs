@@ -31,8 +31,7 @@ in
 
       home = {
         username = "sam";
-        homeDirectory =
-          if pkgs.stdenv.hostPlatform.hostPlatform.isDarwin then "/Users/sam" else "/home/sam";
+        homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/sam" else "/home/sam";
 
         sessionVariables = {
           EDITOR = "vim";
@@ -53,7 +52,7 @@ in
         omniwm.enable = pkgs.stdenv.hostPlatform.isDarwin;
       };
 
-      launchd.agents = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.hostPlatform.isDarwin {
+      launchd.agents = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
         activate-agenix.waitForNixStore = false;
         colima-default = {
           waitForNixStore = false;

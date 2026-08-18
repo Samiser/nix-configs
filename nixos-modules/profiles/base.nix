@@ -29,6 +29,8 @@
   users.mutableUsers = false;
   programs.zsh.enable = true;
 
+  time.timeZone = "Europe/London";
+
   users.users.sam = {
     isNormalUser = true;
     extraGroups = [

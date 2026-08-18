@@ -24,13 +24,15 @@ in
         ./ghostty.nix
         ./git.nix
         ./neovim.nix
+        ./omniwm
         ./zsh
       ]
       ++ lib.optional (!server) ./hcloud.nix;
 
       home = {
         username = "sam";
-        homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/sam" else "/home/sam";
+        homeDirectory =
+          if pkgs.stdenv.hostPlatform.hostPlatform.isDarwin then "/Users/sam" else "/home/sam";
 
         sessionVariables = {
           EDITOR = "vim";
@@ -48,9 +50,10 @@ in
         ghostty.enable =
           pkgs.stdenv.hostPlatform.isDarwin || (pkgs.stdenv.hostPlatform.isLinux && hyprland);
         colima.enable = pkgs.stdenv.hostPlatform.isDarwin;
+        omniwm.enable = pkgs.stdenv.hostPlatform.isDarwin;
       };
 
-      launchd.agents = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+      launchd.agents = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.hostPlatform.isDarwin {
         activate-agenix.waitForNixStore = false;
         colima-default = {
           waitForNixStore = false;

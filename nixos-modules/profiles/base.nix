@@ -24,8 +24,6 @@
     tailscale.enable = true;
   };
 
-  nix.package = pkgs.nixVersions.stable;
-
   users.mutableUsers = false;
   programs.zsh.enable = true;
 

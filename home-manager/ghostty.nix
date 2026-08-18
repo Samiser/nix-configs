@@ -25,6 +25,7 @@ in
       }
       // optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         macos-titlebar-style = "hidden";
+        keybind = [ "global:opt+enter=new_window" ];
       };
     }
     (mkIf pkgs.stdenv.hostPlatform.isLinux {

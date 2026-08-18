@@ -4,6 +4,7 @@ let
     system:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
+      nix = pkgs.nixVersions.latest;
     in
     pkgs.mkShell {
       packages = [
@@ -13,7 +14,8 @@ let
         pkgs.nixfmt
         pkgs.statix
         pkgs.deadnix
-        pkgs.nixos-rebuild
+        (pkgs.nixos-rebuild.override { inherit nix; })
+        nix
       ];
     };
 in

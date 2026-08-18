@@ -30,7 +30,7 @@ in
 
       home = {
         username = "sam";
-        homeDirectory = if pkgs.stdenv.isDarwin then "/Users/sam" else "/home/sam";
+        homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/sam" else "/home/sam";
 
         sessionVariables = {
           EDITOR = "vim";
@@ -45,11 +45,12 @@ in
         git.enable = !server;
         neovim.enable = true;
         neovim.minimal = server;
-        ghostty.enable = pkgs.stdenv.isDarwin || (pkgs.stdenv.isLinux && hyprland);
-        colima.enable = pkgs.stdenv.isDarwin;
+        ghostty.enable =
+          pkgs.stdenv.hostPlatform.isDarwin || (pkgs.stdenv.hostPlatform.isLinux && hyprland);
+        colima.enable = pkgs.stdenv.hostPlatform.isDarwin;
       };
 
-      launchd.agents = pkgs.lib.mkIf pkgs.stdenv.isDarwin {
+      launchd.agents = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
         activate-agenix.waitForNixStore = false;
         colima-default = {
           waitForNixStore = false;

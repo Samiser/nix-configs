@@ -23,11 +23,11 @@ in
         background-blur = true;
         custom-shader = "${./cursor_smear.glsl}";
       }
-      // optionalAttrs pkgs.stdenv.isDarwin {
+      // optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         macos-titlebar-style = "hidden";
       };
     }
-    (mkIf pkgs.stdenv.isLinux {
+    (mkIf pkgs.stdenv.hostPlatform.isLinux {
       programs.ghostty.systemd.enable = false;
       programs.ghostty.settings.theme = "noctalia";
     })

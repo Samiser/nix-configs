@@ -6,7 +6,6 @@
     ./nvidia.nix
     ./audio.nix
     ./tailscale.nix
-    ./noctalia-greeter.nix
   ];
 
   host.profile = {

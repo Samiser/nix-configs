@@ -4,15 +4,16 @@
   lib,
   my-neovim,
   agenix,
+  mango,
   ...
 }:
 let
-  hyprland = config.hostConfig.hyprland.enable;
+  desktop = config.host.profile.desktop or false;
   server = config.host.profile.server or false;
 in
 {
   home-manager = {
-    extraSpecialArgs = { inherit my-neovim; };
+    extraSpecialArgs = { inherit my-neovim mango; };
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";
@@ -24,6 +25,7 @@ in
         ./ghostty.nix
         ./git.nix
         ./neovim.nix
+        ./mango
         ./omniwm
         ./zsh
       ]
@@ -46,8 +48,8 @@ in
         git.enable = !server;
         neovim.enable = true;
         neovim.minimal = server;
-        ghostty.enable =
-          pkgs.stdenv.hostPlatform.isDarwin || (pkgs.stdenv.hostPlatform.isLinux && hyprland);
+        ghostty.enable = pkgs.stdenv.hostPlatform.isDarwin || desktop;
+        mango.enable = pkgs.stdenv.hostPlatform.isLinux && config.hostConfig.mango.enable;
         colima.enable = pkgs.stdenv.hostPlatform.isDarwin;
         omniwm.enable = pkgs.stdenv.hostPlatform.isDarwin;
       };

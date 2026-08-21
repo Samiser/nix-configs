@@ -2,6 +2,8 @@
   imports = [
     ./bash-execve-check.nix
     ./hyprland.nix
+    ./mango.nix
+    ./wayland.nix
     ./services/caddy.nix
     ./services/storagebox.nix
     ./services/ssc.nix

@@ -1,0 +1,87 @@
+Pad misaligned capture strides before handing them to pixman
+
+pixman_image_create_bits() requires the row stride to be a multiple of
+sizeof(uint32_t). wlroots hands out tightly packed 24bpp screencopy buffers
+(BGR888), whose stride is 3 * width and so is misaligned whenever the width is
+not a multiple of 4. A fractionally scaled output readily produces such a
+width: a 1728x3072 logical output at scale 1.25, inset by the 1px border
+get_area_from_screenshot() applies, captures as 3837x2157 with stride 11511,
+and detection then dies with
+
+    *** BUG ***
+    In create_bits_image_internal: The expression
+    bits == NULL || (rowstride_bytes % sizeof (uint32_t)) == 0 was false
+    err: Failed to create pixman image.
+
+Repack such buffers into a padded copy before wrapping them.
+
+--- a/src/target_detection.cpp
++++ b/src/target_detection.cpp
+@@ -7,6 +7,7 @@
+ #include <pixman.h>
+ #include <stdint.h>
+ #include <stdlib.h>
++#include <string.h>
+ #include <wayland-client.h>
+ 
+ static pixman_format_code_t get_pixman_format(enum wl_shm_format format) {
+@@ -83,11 +84,42 @@
+         width, height, stride
+     );
+ 
++    // Pixman requires the stride to be a multiple of sizeof(uint32_t), which a
++    // tightly packed 24bpp buffer is not when its width is not a multiple of 4.
++    void *padded = NULL;
++    if (stride % sizeof(uint32_t) != 0) {
++        uint32_t padded_stride =
++            (stride + sizeof(uint32_t) - 1) & ~(sizeof(uint32_t) - 1);
++
++        LOG_DEBUG(
++            "Repacking input image to an aligned stride (%d -> %d).", stride,
++            padded_stride
++        );
++
++        padded = malloc((size_t)padded_stride * height);
++        if (padded == NULL) {
++            LOG_ERR("Failed to allocate an aligned copy of the capture buffer."
++            );
++            return NULL;
++        }
++
++        for (uint32_t y = 0; y < height; y++) {
++            memcpy(
++                (char *)padded + (size_t)y * padded_stride,
++                (char *)data + (size_t)y * stride, stride
++            );
++        }
++
++        data   = padded;
++        stride = padded_stride;
++    }
++
+     pixman_image_t *in_image = pixman_image_create_bits(
+         pixman_format, width, height, (uint32_t *)data, stride
+     );
+     if (in_image == NULL) {
+         LOG_ERR("Failed to create pixman image.");
++        free(padded);
+         return NULL;
+     }
+ 
+@@ -102,6 +134,8 @@
+     );
+     if (out_image == NULL) {
+         LOG_ERR("Failed to create (out) pixman image.");
++        pixman_image_unref(in_image);
++        free(padded);
+         return NULL;
+     }
+ 
+@@ -111,6 +145,7 @@
+     );
+ 
+     pixman_image_unref(in_image);
++    free(padded);
+ 
+     return out_image;
+ }

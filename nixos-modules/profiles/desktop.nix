@@ -79,7 +79,9 @@
         ghostty
         gimp
         godot_4
-        google-chrome
+        (google-chrome.override {
+          commandLineArgs = "--disable-features=WaylandFractionalScaleV1";
+        })
         imv
         mpv
         mupdf
@@ -93,7 +95,7 @@
       ++ lib.optionals (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (
         with pkgs;
         [
-          spotify-player
+          spotify
           vesktop
         ]
       );

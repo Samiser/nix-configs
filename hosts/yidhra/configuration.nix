@@ -13,15 +13,12 @@
     dev = true;
   };
 
-  hostConfig.hyprland = {
-    enable = true;
-    tuigreet = false;
+  hostConfig = {
+    hyprland.enable = true;
+    mango.enable = true;
   };
 
-  services.displayManager.noctalia-greeter = {
-    enable = true;
-    settings.keyboard.layout = "us";
-  };
+  services.displayManager.noctalia-greeter.settings.keyboard.layout = "us";
 
   services = {
     openssh.enable = true;

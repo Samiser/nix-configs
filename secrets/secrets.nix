@@ -68,4 +68,8 @@ in
     sam
     yidhra
   ];
+  "nixpkgs-update-ssh-key.age".publicKeys = [
+    sam
+    yidhra
+  ];
 }

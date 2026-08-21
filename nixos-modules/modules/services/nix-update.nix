@@ -9,6 +9,11 @@ let
 
   stateDir = "/var/lib/nix-update";
 
+  knownHosts = pkgs.writeText "nix-update-known-hosts" ''
+    github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+    github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+  '';
+
   specsFile = pkgs.writeText "nix-update-specs.json" (
     builtins.toJSON (
       map (p: {
@@ -27,6 +32,7 @@ let
       pkgs.jq
       pkgs.nix
       pkgs.nix-update
+      pkgs.openssh
     ];
     text = builtins.readFile ./nix-update-run.sh;
   };
@@ -71,7 +77,17 @@ in
     tokenFile = lib.mkOption {
       type = lib.types.path;
       description = ''
-        File holding a classic GitHub token with repo scope.
+        File holding a classic GitHub token with public_repo scope.
+      '';
+    };
+
+    sshKeyFile = lib.mkOption {
+      type = lib.types.path;
+      description = ''
+        Private key pushing update branches to the fork. Its public half needs
+        write access on the fork; a deploy key is enough. Pushing over ssh
+        rather than https keeps the token out of the `workflow` scope that
+        github demands of tokens whose pushes carry workflow file changes.
       '';
     };
 
@@ -115,6 +131,12 @@ in
       group = "nix-update";
     };
 
+    age.secrets.nixpkgs-update-ssh-key = {
+      file = ../../../secrets/nixpkgs-update-ssh-key.age;
+      owner = "nix-update";
+      group = "nix-update";
+    };
+
     systemd.services.nix-update = {
       description = "Update maintained nixpkgs packages";
       after = [ "network-online.target" ];
@@ -129,6 +151,14 @@ in
         SYSTEM = pkgs.stdenv.hostPlatform.system;
 
         HOME = stateDir;
+
+        GIT_SSH_COMMAND = lib.concatStringsSep " " [
+          "ssh"
+          "-i ${cfg.sshKeyFile}"
+          "-o IdentitiesOnly=yes"
+          "-o UserKnownHostsFile=${knownHosts}"
+          "-o StrictHostKeyChecking=yes"
+        ];
 
         GIT_AUTHOR_NAME = cfg.gitAuthor.name;
         GIT_AUTHOR_EMAIL = cfg.gitAuthor.email;

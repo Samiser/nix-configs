@@ -35,6 +35,7 @@
         email = "github@me.samiser.xyz";
       };
       tokenFile = config.age.secrets.nixpkgs-update-token.path;
+      sshKeyFile = config.age.secrets.nixpkgs-update-ssh-key.path;
       packages = [
         { name = "hyprmag"; }
         { name = "noctalia-greeter"; }
@@ -43,7 +44,7 @@
           versionPreference = "unstable";
         }
       ];
-      createPullRequests = false;
+      createPullRequests = true;
     };
   };
 

@@ -6,8 +6,11 @@ export GH_TOKEN
 if [ ! -d "$NIXPKGS_DIR/.git" ]; then
   echo "cloning nixpkgs into $NIXPKGS_DIR (several minutes, one time only)"
   git clone --origin upstream https://github.com/NixOS/nixpkgs.git "$NIXPKGS_DIR"
-  git -C "$NIXPKGS_DIR" remote add origin "https://github.com/$GH_USER/nixpkgs.git"
 fi
+
+fork="git@github.com:$GH_USER/nixpkgs.git"
+git -C "$NIXPKGS_DIR" remote set-url origin "$fork" 2>/dev/null ||
+  git -C "$NIXPKGS_DIR" remote add origin "$fork"
 
 git -C "$NIXPKGS_DIR" fetch --quiet upstream master
 
@@ -176,7 +179,7 @@ EOF
     continue
   fi
 
-  if ! git -c credential.helper='!gh auth git-credential' push --quiet --force origin "$branch"; then
+  if ! git push --quiet --force origin "$branch"; then
     echo "$name: push failed, skipping"
     continue
   fi

@@ -31,12 +31,23 @@ in
       file = ../../../secrets/attic-jwt-secret.age;
     };
 
+    services.postgresql = {
+      enable = true;
+      ensureDatabases = [ "atticd" ];
+      ensureUsers = [
+        {
+          name = "atticd";
+          ensureDBOwnership = true;
+        }
+      ];
+    };
+
     services.atticd = {
       enable = true;
       environmentFile = config.age.secrets.attic-jwt-secret.path;
       settings = {
         listen = "127.0.0.1:${toString cfg.port}";
-        database.url = "sqlite:///var/lib/atticd/server.db?mode=rwc";
+        database.url = "postgres://atticd@localhost/atticd?host=/run/postgresql";
         storage = {
           type = "local";
           path = "/mnt/storagebox/attic";
@@ -51,6 +62,11 @@ in
           max-size = 262144;
         };
       };
+    };
+
+    systemd.services.atticd = {
+      after = [ "postgresql.service" ];
+      requires = [ "postgresql.service" ];
     };
 
     services.caddy.virtualHosts.${cfg.domain}.extraConfig = cloudflareTls ''

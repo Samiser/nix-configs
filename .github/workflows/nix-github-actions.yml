@@ -10,6 +10,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  ATTIC_ENDPOINT: https://cache.samiser.xyz
+  ATTIC_CACHE: main
+  ATTIC_JOBS: "2"
+  NIX_EXTRA_CONFIG: |
+    extra-substituters = https://cache.samiser.xyz/main
+    extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk=
+
 jobs:
   discover:
     runs-on: ubuntu-latest
@@ -19,9 +27,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
         with:
-          extra_nix_config: |
-            extra-substituters = https://cache.samiser.xyz/main https://noctalia.cachix.org
-            extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk= noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
+          extra_nix_config: ${{ env.NIX_EXTRA_CONFIG }}
       - id: discover
         name: Generate check matrix
         run: |
@@ -37,21 +43,39 @@ jobs:
 
   push-inputs:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
         with:
-          extra_nix_config: |
-            extra-substituters = https://cache.samiser.xyz/main https://noctalia.cachix.org
-            extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk= noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
+          extra_nix_config: ${{ env.NIX_EXTRA_CONFIG }}
       - name: Push flake inputs to Attic cache
+        id: push
+        env:
+          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
         run: |
           set -Eeuo pipefail
-          nix profile install --inputs-from . nixpkgs#attic-client
-          attic login cache https://cache.samiser.xyz ${{ secrets.ATTIC_TOKEN }}
-          nix flake archive --json \
-            | jq -r '[.. | .path? | strings] | unique[]' \
-            | xargs attic push main
+          nix profile add --inputs-from . nixpkgs#attic-client
+          attic login cache "$ATTIC_ENDPOINT" "$ATTIC_TOKEN"
+
+          paths=()
+          while IFS= read -r path; do
+            paths+=("$path")
+          done < <(nix flake archive --json | jq -r '[.. | .path? | strings] | unique[]')
+
+          for attempt in 1 2 3; do
+            if attic push --jobs "$ATTIC_JOBS" "$ATTIC_CACHE" "${paths[@]}"; then
+              exit 0
+            fi
+            echo "::warning::attic push failed (attempt $attempt/3)"
+            sleep $((attempt * 30))
+          done
+          exit 1
+      - name: Report cache push failure
+        if: always() && steps.push.outcome == 'failure'
+        run: |
+          echo "::warning title=Cache push failed::Pushing flake inputs to $ATTIC_ENDPOINT failed"
+          echo "⚠️ Pushing flake inputs to the Attic cache failed." >> "$GITHUB_STEP_SUMMARY"
 
   check:
     name: ${{ matrix.name }} (${{ matrix.system }})
@@ -64,10 +88,10 @@ jobs:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
         with:
-          extra_nix_config: |
-            extra-substituters = https://cache.samiser.xyz/main https://noctalia.cachix.org
-            extra-trusted-public-keys = main:xTlqL+c6HRCxNLtRdVu+TElyY+HD9WiXQn0fSetkbFk= noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
-      - name: Evaluate, build if uncached, push
+          extra_nix_config: ${{ env.NIX_EXTRA_CONFIG }}
+
+      - name: Evaluate
+        id: eval
         run: |
           set -Eeuo pipefail
           attr='.#checks."${{ matrix.system }}"."${{ matrix.name }}"'
@@ -76,14 +100,52 @@ jobs:
           out="$(jq -r '.out' <<< "$eval")"
           hash="$(basename "$out" | cut -d- -f1)"
 
-          if curl -sf -o /dev/null "https://cache.samiser.xyz/main/$hash.narinfo"; then
+          echo "drv=$drv" >> "$GITHUB_OUTPUT"
+
+          if curl -sf -o /dev/null "$ATTIC_ENDPOINT/$ATTIC_CACHE/$hash.narinfo"; then
             echo "$out already cached, nothing to do"
-            exit 0
+            echo "cached=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "cached=false" >> "$GITHUB_OUTPUT"
           fi
 
-          nix build -L --no-link "$drv^*"
+      - name: Build
+        if: steps.eval.outputs.cached == 'false'
+        run: nix build -L --no-link '${{ steps.eval.outputs.drv }}^*'
 
-          nix profile install --inputs-from . nixpkgs#attic-client
-          attic login cache https://cache.samiser.xyz ${{ secrets.ATTIC_TOKEN }}
-          attic push main "$drv"
-          nix build --no-link --print-out-paths "$drv^*" | xargs attic push main
+      - name: Push to Attic cache
+        id: push
+        if: steps.eval.outputs.cached == 'false'
+        continue-on-error: true
+        env:
+          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
+          DRV: ${{ steps.eval.outputs.drv }}
+        run: |
+          set -Eeuo pipefail
+          nix profile add --inputs-from . nixpkgs#attic-client
+          attic login cache "$ATTIC_ENDPOINT" "$ATTIC_TOKEN"
+
+          outs=()
+          while IFS= read -r out; do
+            outs+=("$out")
+          done < <(nix build --no-link --print-out-paths "$DRV^*")
+
+          push() {
+            for attempt in 1 2 3; do
+              if attic push --jobs "$ATTIC_JOBS" "$@"; then
+                return 0
+              fi
+              echo "::warning::attic push failed (attempt $attempt/3)"
+              sleep $((attempt * 30))
+            done
+            return 1
+          }
+
+          push --no-closure "$ATTIC_CACHE" "$DRV"
+          push "$ATTIC_CACHE" "${outs[@]}"
+
+      - name: Report cache push failure
+        if: always() && steps.push.outcome == 'failure'
+        run: |
+          echo "::warning title=Cache push failed::${{ matrix.name }} (${{ matrix.system }}) built successfully but the cache push failed"
+          echo "⚠️ **${{ matrix.name }} (${{ matrix.system }})** built successfully but the cache push failed." >> "$GITHUB_STEP_SUMMARY"

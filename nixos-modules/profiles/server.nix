@@ -10,6 +10,17 @@
     boot.tmp.cleanOnBoot = true;
     zramSwap.enable = true;
 
+    nix = {
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 30d";
+      };
+      optimise.automatic = true;
+    };
+
+    services.journald.extraConfig = "SystemMaxUse=500M";
+
     system.tools = {
       nixos-rebuild.enable = false;
       nixos-generate-config.enable = false;

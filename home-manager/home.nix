@@ -28,6 +28,7 @@ in
         ./mango
         ./umbriel
         ./omniwm
+        ./wl-kbptr.nix
         ./zsh
       ]
       ++ lib.optional (!server) ./hcloud.nix;
@@ -54,6 +55,7 @@ in
         umbriel.enable = pkgs.stdenv.hostPlatform.isLinux && config.hostConfig.umbriel.enable;
         colima.enable = pkgs.stdenv.hostPlatform.isDarwin;
         omniwm.enable = pkgs.stdenv.hostPlatform.isDarwin;
+        wl-kbptr.enable = pkgs.stdenv.hostPlatform.isLinux && desktop;
       };
 
       launchd.agents = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {

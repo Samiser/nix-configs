@@ -119,14 +119,27 @@ in
           "Mod+Space" = "spawn:wl-kbptr";
 
           "Mod+Shift+Q" = "window-close";
+          "Mod+F" = "window-toggle-fullscreen";
           "Mod+Shift+Space" = "window-toggle-floating";
+          "Mod+P" = "window-toggle-pinned";
           "Mod+C" = "window-center";
 
           "Mod+V" = "workspace-set-layout:toggle";
 
+          "Mod+O" = "overview-toggle";
           "Mod+Slash" = "cheatsheet-toggle";
           "Mod+Shift+C" = "config-reload";
           "Mod+Shift+E" = "session-quit";
+
+          "Mod+Left" = "window-focus-left";
+          "Mod+Right" = "window-focus-right";
+          "Mod+Up" = "window-focus-up";
+          "Mod+Down" = "window-focus-down";
+
+          "Mod+Shift+Left" = "column-move-left";
+          "Mod+Shift+Right" = "column-move-right";
+          "Mod+Shift+Up" = "window-move-up";
+          "Mod+Shift+Down" = "window-move-down";
 
           "Mod+BracketLeft" = "output-focus-left";
           "Mod+BracketRight" = "output-focus-right";

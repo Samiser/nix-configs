@@ -5,7 +5,10 @@
   ...
 }:
 let
-  compositorEnabled = config.hostConfig.hyprland.enable || config.hostConfig.mango.enable;
+  compositorEnabled =
+    config.hostConfig.hyprland.enable
+    || config.hostConfig.mango.enable
+    || config.hostConfig.umbriel.enable;
 in
 {
   config = lib.mkIf compositorEnabled {

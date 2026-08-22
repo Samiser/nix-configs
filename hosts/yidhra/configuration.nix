@@ -16,6 +16,7 @@
   hostConfig = {
     hyprland.enable = true;
     mango.enable = true;
+    umbriel.enable = true;
   };
 
   services.displayManager.noctalia-greeter.settings.keyboard.layout = "us";

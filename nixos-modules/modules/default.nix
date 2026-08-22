@@ -3,6 +3,7 @@
     ./bash-execve-check.nix
     ./hyprland.nix
     ./mango.nix
+    ./umbriel
     ./wayland.nix
     ./services/caddy.nix
     ./services/storagebox.nix
@@ -17,4 +18,6 @@
     ./services/tailscale-auth.nix
     ./services/nix-update.nix
   ];
+
+  nixpkgs.overlays = [ (import ../../pkgs/overlay.nix) ];
 }

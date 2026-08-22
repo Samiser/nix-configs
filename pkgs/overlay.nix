@@ -1,3 +1,14 @@
-final: _prev: {
-  omniwm = final.callPackage ./by-name/om/omniwm/package.nix { };
+final: prev:
+let
+  vendored =
+    name: path:
+    if prev ? ${name} then
+      throw "pkgs.${name} is in nixpkgs now, drop pkgs/by-name/*/${name} and its overlay entry"
+    else
+      final.callPackage path { };
+in
+{
+  omniwm = vendored "omniwm" ./by-name/om/omniwm/package.nix;
+  umbriel = vendored "umbriel" ./by-name/um/umbriel/package.nix;
+  xdg-desktop-portal-umbriel = vendored "xdg-desktop-portal-umbriel" ./by-name/xd/xdg-desktop-portal-umbriel/package.nix;
 }

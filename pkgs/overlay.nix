@@ -9,6 +9,4 @@ let
 in
 {
   omniwm = vendored "omniwm" ./by-name/om/omniwm/package.nix;
-  umbriel = vendored "umbriel" ./by-name/um/umbriel/package.nix;
-  xdg-desktop-portal-umbriel = vendored "xdg-desktop-portal-umbriel" ./by-name/xd/xdg-desktop-portal-umbriel/package.nix;
 }

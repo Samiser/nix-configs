@@ -1,7 +1,7 @@
 {
   lib,
   config,
-  pkgs,
+  umbriel,
   ...
 }:
 let
@@ -28,13 +28,18 @@ let
 
   workspaceKey = ws: if ws == "10" then "0" else ws;
 
+  # A bare number selects a position on the focused output, so every workspace names its own.
+  workspaceSelector = ws: "${ws}/${if builtins.elem ws landscapeWorkspaces then landscape else portrait}";
+
   workspaceBinds = listToAttrs (
-    map (ws: nameValuePair "Mod+${workspaceKey ws}" "workspace-switch:${ws}") allWorkspaces
+    map (
+      ws: nameValuePair "Mod+${workspaceKey ws}" "workspace-switch:${workspaceSelector ws}"
+    ) allWorkspaces
   );
 
   workspaceMoveBinds = listToAttrs (
     map (
-      ws: nameValuePair "Mod+Shift+${workspaceKey ws}" "window-move-to-workspace:${ws}"
+      ws: nameValuePair "Mod+Shift+${workspaceKey ws}" "window-move-to-workspace:${workspaceSelector ws}"
     ) allWorkspaces
   );
   screenshot =
@@ -42,14 +47,13 @@ let
     "spawn:mkdir -p ~/shots && f=~/shots/$(date +%Y-%m-%d_%H-%M-%S).png && grim ${grimArgs}\"$f\" && wl-copy < \"$f\"";
 in
 {
-  imports = [ ./module.nix ];
+  imports = [ umbriel.homeModules.default ];
 
   options.sam.umbriel.enable = mkEnableOption "umbriel config";
 
   config = mkIf cfg.enable {
     programs.umbriel = {
       enable = true;
-      package = pkgs.umbriel;
 
       settings = {
         include.files = [
@@ -187,6 +191,23 @@ in
               y = 32;
               anchor = "bottom_right";
             };
+          }
+          {
+            match.title = "^Picture in picture$";
+            default_floating = true;
+            opacity = 0.9;
+            default_size = [
+              720
+              405
+            ];
+            default_output = landscape;
+            default_position = {
+              x = 10;
+              y = 10;
+              anchor = "top_right";
+            };
+            default_focused = false;
+            default_pinned = true;
           }
         ];
 

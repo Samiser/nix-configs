@@ -1,13 +1,14 @@
 {
   config,
   lib,
+  umbriel,
   ...
 }:
 let
   cfg = config.hostConfig.umbriel;
 in
 {
-  imports = [ ./module.nix ];
+  imports = [ umbriel.nixosModules.default ];
 
   options.hostConfig.umbriel.enable = lib.mkEnableOption "Umbriel Wayland compositor";
 

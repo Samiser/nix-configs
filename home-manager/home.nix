@@ -5,6 +5,7 @@
   my-neovim,
   agenix,
   mango,
+  umbriel,
   ...
 }:
 let
@@ -13,7 +14,7 @@ let
 in
 {
   home-manager = {
-    extraSpecialArgs = { inherit my-neovim mango; };
+    extraSpecialArgs = { inherit my-neovim mango umbriel; };
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";

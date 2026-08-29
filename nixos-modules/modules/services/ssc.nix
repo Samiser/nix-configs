@@ -2,11 +2,12 @@
   config,
   lib,
   pkgs,
+  sharedLib,
   static-site-compiler,
   ...
 }:
 let
-  inherit (import ../../../shared-modules/lib.nix) cloudflareTls requiresCaddy;
+  inherit (sharedLib) cloudflareTls requiresCaddy;
   cfg = config.services.ssc;
   ssc = static-site-compiler.packages.${pkgs.stdenv.hostPlatform.system}.default;
   contentDir = "/var/lib/ssc/site-content";

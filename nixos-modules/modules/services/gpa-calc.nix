@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  sharedLib,
   ...
 }:
 let
-  inherit (import ../../../shared-modules/lib.nix) cloudflareTls requiresCaddy;
+  inherit (sharedLib) cloudflareTls requiresCaddy;
   cfg = config.services.gpa-calc;
 in
 {

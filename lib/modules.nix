@@ -7,10 +7,11 @@
 let
   keys = import ../shared-modules/keys.nix;
   sharedPackages = import ../shared-modules/packages.nix;
+  sharedLib = import ../shared-modules/lib.nix;
 in
 {
   nixos = [
-    { _module.args = { inherit keys sharedPackages; }; }
+    { _module.args = { inherit keys sharedPackages sharedLib; }; }
     ../nixos-modules/modules
     ../nixos-modules/profiles
     ../shared-modules/nix.nix
@@ -21,7 +22,7 @@ in
   ];
 
   darwin = [
-    { _module.args = { inherit keys sharedPackages; }; }
+    { _module.args = { inherit keys sharedPackages sharedLib; }; }
     ../darwin-modules
     ../shared-modules/nix.nix
     agenix.darwinModules.default

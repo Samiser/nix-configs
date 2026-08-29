@@ -4,35 +4,18 @@
 }:
 let
   inherit (inputs) deploy-rs;
+  inherit (inputs.nixpkgs) lib;
 
-  hosts = builtins.attrNames nixosConfigurations;
-
-  mkDeployNode = nixosConfig: {
+  mkDeployNode = _: nixosConfig: {
     hostname = nixosConfig.config.networking.hostName;
     profiles.system = {
       sshUser = "root";
       path = deploy-rs.lib.x86_64-linux.activate.nixos nixosConfig;
     };
   };
-
-  deployNodes = builtins.listToAttrs (
-    builtins.filter (x: x != null) (
-      builtins.map (
-        hostname:
-        let
-          nixosConfig = nixosConfigurations.${hostname};
-        in
-        if nixosConfig.config.host.deploy.enable then
-          {
-            name = hostname;
-            value = mkDeployNode nixosConfig;
-          }
-        else
-          null
-      ) hosts
-    )
-  );
 in
 {
-  deploy.nodes = deployNodes;
+  deploy.nodes = lib.mapAttrs mkDeployNode (
+    lib.filterAttrs (_: config: config.config.host.deploy.enable) nixosConfigurations
+  );
 }

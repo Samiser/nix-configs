@@ -12,14 +12,4 @@ let
     yidhra = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPW47AEjdjDfPNU14zvT6obEABNXrxp3/1oa4DfqfhS8 root@yidhra";
   };
 in
-{
-  inherit (users) sam;
-  inherit (machines)
-    nix-lab
-    minecraft
-    jelly
-    radar
-    argus
-    yidhra
-    ;
-}
+users // machines

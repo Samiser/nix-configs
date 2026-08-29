@@ -1,10 +1,11 @@
 {
   config,
   lib,
+  sharedLib,
   ...
 }:
 let
-  inherit (import ../../../shared-modules/lib.nix) requiresCaddy;
+  inherit (sharedLib) requiresCaddy;
   cfg = config.services.miniflux-local;
 in
 {

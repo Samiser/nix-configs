@@ -9,63 +9,35 @@ let
     argus
     yidhra
     ;
+
+  servers = [
+    nix-lab
+    minecraft
+    jelly
+    radar
+    argus
+  ];
 in
-{
-  "hcloud-token.age".publicKeys = [ sam ];
-  "caddy-cloudflare-key.age".publicKeys = [
-    sam
+builtins.mapAttrs (_: hostKeys: { publicKeys = [ sam ] ++ hostKeys; }) {
+  "hcloud-token.age" = [ ];
+  "caddy-cloudflare-key.age" = [
     nix-lab
     minecraft
     jelly
   ];
-  "ssc-secrets.age".publicKeys = [
-    sam
-    nix-lab
-  ];
-  "miniflux-admin-credentials.age".publicKeys = [
-    sam
-    nix-lab
-  ];
-  "storagebox-credentials.age".publicKeys = [
-    sam
+  "ssc-secrets.age" = [ nix-lab ];
+  "miniflux-admin-credentials.age" = [ nix-lab ];
+  "storagebox-credentials.age" = [
     nix-lab
     jelly
     radar
   ];
-  "tailscale-auth-key.age".publicKeys = [
-    sam
-    radar
-    argus
-    minecraft
-    jelly
-    nix-lab
-  ];
-  "grafana-secret-key.age".publicKeys = [
-    sam
-    argus
-  ];
-  "mullvad-privkey.age".publicKeys = [
-    sam
-    radar
-  ];
-  "markovi-discord-token.age".publicKeys = [
-    sam
-    nix-lab
-  ];
-  "attic-jwt-secret.age".publicKeys = [
-    sam
-    nix-lab
-  ];
-  "github-runner-sambee.age".publicKeys = [
-    sam
-    nix-lab
-  ];
-  "nixpkgs-update-token.age".publicKeys = [
-    sam
-    yidhra
-  ];
-  "nixpkgs-update-ssh-key.age".publicKeys = [
-    sam
-    yidhra
-  ];
+  "tailscale-auth-key.age" = servers;
+  "grafana-secret-key.age" = [ argus ];
+  "mullvad-privkey.age" = [ radar ];
+  "markovi-discord-token.age" = [ nix-lab ];
+  "attic-jwt-secret.age" = [ nix-lab ];
+  "github-runner-sambee.age" = [ nix-lab ];
+  "nixpkgs-update-token.age" = [ yidhra ];
+  "nixpkgs-update-ssh-key.age" = [ yidhra ];
 }

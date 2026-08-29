@@ -1,10 +1,11 @@
 {
   pkgs,
   nix-minecraft,
+  sharedLib,
   ...
 }:
 let
-  inherit (import ../../shared-modules/lib.nix) cloudflareTls;
+  inherit (sharedLib) cloudflareTls;
   players = {
     "real_bean" = "ba5f35d3-c04a-4ec0-820c-14172299ea41";
     "legoboomey" = "401835f5-b512-455a-9a0d-e09d9241542a";

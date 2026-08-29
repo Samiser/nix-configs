@@ -3,14 +3,13 @@
   config,
   ...
 }:
-with lib;
 let
   cfg = config.sam.colima;
 in
 {
-  options.sam.colima.enable = mkEnableOption "colima container runtime";
+  options.sam.colima.enable = lib.mkEnableOption "colima container runtime";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.colima = {
       enable = true;
       profiles.default = {

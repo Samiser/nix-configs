@@ -7,7 +7,10 @@
 }:
 {
   config = lib.mkIf config.host.profile.server {
-    boot.tmp.cleanOnBoot = true;
+    boot = {
+      tmp.cleanOnBoot = true;
+      initrd.systemd.enable = true;
+    };
     zramSwap.enable = true;
 
     nix = {
@@ -19,35 +22,37 @@
       optimise.automatic = true;
     };
 
-    services.journald.extraConfig = "SystemMaxUse=500M";
-
-    system.tools = {
-      nixos-rebuild.enable = false;
-      nixos-generate-config.enable = false;
+    system = {
+      etc.overlay.enable = true;
+      tools = {
+        nixos-rebuild.enable = false;
+        nixos-generate-config.enable = false;
+      };
     };
 
     environment.defaultPackages = [ ];
-
-    boot.initrd.systemd.enable = true;
-    system.etc.overlay.enable = true;
-    services.userborn.enable = true;
     documentation.info.enable = false;
 
-    services.openssh.hostKeys = [
-      {
-        path = "/var/lib/ssh/ssh_host_ed25519_key";
-        type = "ed25519";
-      }
-      {
-        path = "/var/lib/ssh/ssh_host_rsa_key";
-        type = "rsa";
-        bits = 4096;
-      }
-    ];
+    services = {
+      journald.extraConfig = "SystemMaxUse=500M";
+      userborn.enable = true;
 
-    services.closured.enable = true;
-    services.monitoring-agent.enable = true;
-    services.tailscale-auth.enable = true;
+      openssh.hostKeys = [
+        {
+          path = "/var/lib/ssh/ssh_host_ed25519_key";
+          type = "ed25519";
+        }
+        {
+          path = "/var/lib/ssh/ssh_host_rsa_key";
+          type = "rsa";
+          bits = 4096;
+        }
+      ];
+
+      closured.enable = true;
+      monitoring-agent.enable = true;
+      tailscale-auth.enable = true;
+    };
 
     environment.systemPackages = with pkgs; [
       ghostty.terminfo

@@ -11,10 +11,6 @@ let
     ;
 in
 {
-  "nomad-samba-credentials.age".publicKeys = [
-    sam
-    nix-lab
-  ];
   "hcloud-token.age".publicKeys = [ sam ];
   "caddy-cloudflare-key.age".publicKeys = [
     sam

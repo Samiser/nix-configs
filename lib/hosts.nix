@@ -10,13 +10,13 @@ let
 
   systemTypes = {
     darwin = {
-      defaultSystem = "aarch64-darwin";
+      system = "aarch64-darwin";
       builder = nix-darwin.lib.darwinSystem;
       configFile = "darwin-configuration.nix";
       commonModules = modules.darwin;
     };
     nixos = {
-      defaultSystem = "x86_64-linux";
+      system = "x86_64-linux";
       builder = nixpkgs.lib.nixosSystem;
       configFile = "configuration.nix";
       commonModules = modules.nixos;
@@ -24,31 +24,27 @@ let
   };
 
   getSystemType =
-    hostPath:
+    hostname:
     let
-      files = builtins.attrNames (builtins.readDir hostPath);
+      files = builtins.attrNames (builtins.readDir "${hostsDir}/${hostname}");
     in
     if builtins.elem "configuration.nix" files then
       "nixos"
     else if builtins.elem "darwin-configuration.nix" files then
       "darwin"
     else
-      null;
-
-  hostSystem =
-    hostname: systemType:
-    if builtins.pathExists ../hosts/${hostname}/system.nix then
-      (import ../hosts/${hostname}/system.nix).system
-    else
-      systemType.defaultSystem;
+      throw "hosts/${hostname} has neither configuration.nix nor darwin-configuration.nix";
 
   mkSystem =
-    hostname: systemType:
-    let
-      inherit (systemType) builder configFile commonModules;
-    in
+    hostname:
+    {
+      system,
+      builder,
+      configFile,
+      commonModules,
+    }:
     builder {
-      system = hostSystem hostname systemType;
+      inherit system;
       specialArgs = inputs;
       modules = commonModules ++ [
         ../hosts/${hostname}/${configFile}
@@ -58,7 +54,7 @@ let
   allConfigs = builtins.map (
     hostname:
     let
-      systemType = getSystemType "${hostsDir}/${hostname}";
+      systemType = getSystemType hostname;
     in
     {
       inherit systemType;
@@ -73,7 +69,7 @@ let
   hostSystems = builtins.listToAttrs (
     builtins.map (hostname: {
       name = hostname;
-      value = hostSystem hostname systemTypes.${getSystemType "${hostsDir}/${hostname}"};
+      value = systemTypes.${getSystemType hostname}.system;
     }) hosts
   );
 in

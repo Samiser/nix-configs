@@ -3,14 +3,13 @@
   config,
   ...
 }:
-with lib;
 let
   cfg = config.sam.git;
 in
 {
-  options.sam.git.enable = mkEnableOption "git config";
+  options.sam.git.enable = lib.mkEnableOption "git config";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
       settings.user = {

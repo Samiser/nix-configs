@@ -46,6 +46,8 @@ in
         stateVersion = "25.05";
       };
 
+      manual.manpages.enable = false;
+
       sam = {
         zsh.enable = true;
         git.enable = !server;

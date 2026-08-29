@@ -31,7 +31,10 @@
     };
 
     environment.defaultPackages = [ ];
-    documentation.info.enable = false;
+    documentation = {
+      info.enable = false;
+      nixos.enable = false;
+    };
 
     services = {
       journald.extraConfig = "SystemMaxUse=500M";

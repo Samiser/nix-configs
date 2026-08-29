@@ -14,6 +14,8 @@ let
         pkgs.nixfmt
         pkgs.statix
         pkgs.deadnix
+        pkgs.nix-fast-build
+        pkgs.nix-eval-jobs
         (pkgs.nixos-rebuild.override { inherit nix; })
         nix
       ];

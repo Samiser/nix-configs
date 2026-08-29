@@ -1,17 +1,9 @@
 {
   config,
   pkgs,
+  serverHostNames,
   ...
 }:
-let
-  serverHosts = [
-    "argus"
-    "jelly"
-    "minecraft"
-    "nix-lab"
-    "radar"
-  ];
-in
 {
   age.secrets.grafana-secret-key = {
     file = ../../secrets/grafana-secret-key.age;
@@ -31,7 +23,7 @@ in
             static_configs = map (h: {
               targets = [ "${h}:9100" ];
               labels.host = h;
-            }) serverHosts;
+            }) serverHostNames;
           }
           {
             job_name = "monitoring";

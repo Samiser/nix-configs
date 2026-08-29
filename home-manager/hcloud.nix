@@ -4,10 +4,12 @@
   ...
 }:
 {
-  age.secrets.hcloud-token = {
-    file = ../secrets/hcloud-token.age;
-    path = "${config.home.homeDirectory}/.config/hcloud/cli.toml";
-  };
+  age.secrets.hcloud-token.file = ../secrets/hcloud-token.age;
 
-  home.packages = [ pkgs.hcloud ];
+  home.packages = [
+    (pkgs.writeShellScriptBin "hcloud" ''
+      HCLOUD_TOKEN=$(cat ${config.age.secrets.hcloud-token.path}) \
+        exec ${pkgs.hcloud}/bin/hcloud "$@"
+    '')
+  ];
 }

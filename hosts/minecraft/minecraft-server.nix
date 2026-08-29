@@ -51,8 +51,8 @@ in
 
         symlinks = {
           "plugins/dead-chest.jar" = pkgs.fetchurl {
-            url = "https://mediafilez.forgecdn.net/files/6999/10/dead-chest-4.23.0.jar";
-            sha256 = "sha256-5bp7Uuxpr0LH5Oy/9f4SWDzpQ4QW7kXSzID+l4lFdWE=";
+            url = "https://cdn.modrinth.com/data/pKqnV03Y/versions/mBSgqYZH/dead-chest-4.30.0.jar";
+            sha256 = "sha256-iMbxkSxw7koTzLrUcVpX44ohjqaT6PYI/9StO/RZcF4=";
           };
           "plugins/bluemap.jar" = pkgs.fetchurl {
             url = "https://github.com/BlueMap-Minecraft/BlueMap/releases/download/v5.15/bluemap-5.15-paper.jar";
@@ -75,11 +75,22 @@ in
           "plugins/BlueMap/core.conf" = pkgs.writeText "core.conf" ''
             accept-download: true
           '';
+          "plugins/BlueMap/maps/world_nether.conf" = pkgs.writeText "world_nether.conf" ''
+            world: "world"
+            dimension: "minecraft:the_nether"
+            sorting: 100
+          '';
+          "plugins/BlueMap/maps/world_the_end.conf" = pkgs.writeText "world_the_end.conf" ''
+            world: "world"
+            dimension: "minecraft:the_end"
+            sorting: 200
+          '';
         };
 
         files = {
           "plugins/DeadChest/config.yml".value = {
-            DeadChestDuration = 0;
+            chest."duration-seconds" = 0;
+            updates."auto-check" = false;
           };
         };
 

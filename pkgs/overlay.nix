@@ -9,4 +9,5 @@ let
 in
 {
   omniwm = vendored "omniwm" ./by-name/om/omniwm/package.nix;
+  way-secure = vendored "way-secure" ./by-name/wa/way-secure/package.nix;
 }

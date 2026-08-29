@@ -1,17 +1,29 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
-  cfg = config.sam.services.omniwm;
+  cfg = config.services.omniwm;
 in
 {
-  imports = [ ./module.nix ];
+  options.services.omniwm = {
+    enable = lib.mkEnableOption "the OmniWM window manager";
 
-  options.sam.services.omniwm.enable = lib.mkEnableOption "omniwm config";
+    package = lib.mkPackageOption pkgs "omniwm" { };
+  };
 
   config = lib.mkIf cfg.enable {
-    services.omniwm.enable = true;
+    environment.systemPackages = [ cfg.package ];
+
+    launchd.user.agents.omniwm = {
+      serviceConfig = {
+        ProgramArguments = [ "${cfg.package}/Applications/OmniWM.app/Contents/MacOS/OmniWM" ];
+        KeepAlive = true;
+        RunAtLoad = true;
+      };
+      managedBy = "services.omniwm.enable";
+    };
   };
 }

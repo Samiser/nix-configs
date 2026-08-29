@@ -1,9 +1,5 @@
 { ... }: {
   imports = [
-    ./hyprland.nix
-    ./mango.nix
-    ./umbriel
-    ./wayland.nix
     ./services/caddy.nix
     ./services/storagebox.nix
     ./services/ssc.nix

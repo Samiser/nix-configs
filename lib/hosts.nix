@@ -48,8 +48,13 @@ let
       specialArgs = inputs;
       modules = commonModules ++ [
         ../hosts/${hostname}/${configFile}
+        { _module.args = { inherit serverHostNames; }; }
       ];
     };
+
+  serverHostNames = builtins.attrNames (
+    nixpkgs.lib.filterAttrs (_: c: c.config.host.profile.server) (filterConfigs "nixos")
+  );
 
   allConfigs = builtins.map (
     hostname:

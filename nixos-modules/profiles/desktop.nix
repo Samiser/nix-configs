@@ -3,9 +3,16 @@
   lib,
   pkgs,
   sharedPackages,
+  mango,
+  umbriel,
   ...
 }:
 {
+  imports = [
+    mango.nixosModules.mango
+    umbriel.nixosModules.default
+  ];
+
   config = lib.mkIf config.host.profile.desktop {
     hardware = {
       graphics = {
@@ -31,7 +38,24 @@
         pulse.enable = true;
         jack.enable = true;
       };
+
+      displayManager.noctalia-greeter.enable = true;
     };
+
+    xdg.portal.wlr.settings.screencast = {
+      chooser_type = "dmenu";
+      chooser_cmd = "${pkgs.fuzzel}/bin/fuzzel -d -l 10 -p 'Select a source to share: '";
+    };
+
+    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+    nixpkgs.overlays = [
+      (_final: prev: {
+        wl-kbptr = prev.wl-kbptr.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [ ./wl-kbptr-pixman-stride.patch ];
+        });
+      })
+    ];
 
     fonts = {
       enableDefaultPackages = true;
@@ -46,6 +70,11 @@
     };
 
     programs = {
+      hyprland.enable = true;
+      mango.enable = true;
+      umbriel.enable = true;
+      noctalia.enable = true;
+
       _1password.enable = true;
       _1password-gui.enable = true;
 
@@ -82,6 +111,7 @@
         (google-chrome.override {
           commandLineArgs = "--disable-features=WaylandFractionalScaleV1";
         })
+        grim
         imv
         mpv
         mupdf
@@ -89,8 +119,11 @@
         obsidian
         pavucontrol
         playerctl
+        slurp
         wdisplays
         wf-recorder
+        wl-clipboard
+        wl-kbptr
       ])
       ++ lib.optionals (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (
         with pkgs;

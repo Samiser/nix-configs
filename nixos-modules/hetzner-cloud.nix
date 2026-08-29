@@ -1,4 +1,5 @@
 {
+  disko,
   lib,
   modulesPath,
   ...
@@ -6,6 +7,8 @@
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    disko.nixosModules.disko
+    ./disko.nix
   ];
 
   boot.loader.grub = {

@@ -1,8 +1,6 @@
-{ disko, ... }: {
+_: {
   imports = [
-    ./hardware-configuration.nix
-    disko.nixosModules.disko
-    ../../nixos-modules/disko.nix
+    ../../nixos-modules/hetzner-cloud.nix
     ./monitoring.nix
   ];
 

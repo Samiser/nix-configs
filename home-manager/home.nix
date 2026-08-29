@@ -30,6 +30,7 @@ in
         ./umbriel
         ./omniwm
         ./wl-kbptr.nix
+        ./wlrun.nix
         ./zsh
       ]
       ++ lib.optional (!server) ./hcloud.nix;
@@ -59,6 +60,7 @@ in
         colima.enable = pkgs.stdenv.hostPlatform.isDarwin;
         omniwm.enable = pkgs.stdenv.hostPlatform.isDarwin;
         wl-kbptr.enable = pkgs.stdenv.hostPlatform.isLinux && desktop;
+        wlrun.enable = pkgs.stdenv.hostPlatform.isLinux && desktop;
       };
 
       launchd.agents = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {

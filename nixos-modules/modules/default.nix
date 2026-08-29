@@ -1,6 +1,5 @@
 { ... }: {
   imports = [
-    ./bash-execve-check.nix
     ./hyprland.nix
     ./mango.nix
     ./umbriel

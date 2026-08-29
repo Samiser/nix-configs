@@ -10,12 +10,16 @@ let
   wlrun = pkgs.writeShellScriptBin "wlrun" ''
     set -eu
     app_id=""
-    if [ "''${1:-}" = "-a" ]; then
-      app_id=$2
-      shift 2
-    fi
+    sandbox=""
+    while [ $# -gt 0 ]; do
+      case $1 in
+        -a) app_id=$2; shift 2 ;;
+        -s) sandbox=1; shift ;;
+        *) break ;;
+      esac
+    done
     if [ $# -lt 1 ]; then
-      echo "usage: wlrun [-a app-id] <command...>" >&2
+      echo "usage: wlrun [-a app-id] [-s] <command...>" >&2
       exit 1
     fi
     [ -n "$app_id" ] || app_id=''${1##*/}
@@ -44,7 +48,37 @@ let
       exit 1
     }
 
-    WAYLAND_DISPLAY=''${sock##*/} "$@"
+    if [ -z "$sandbox" ]; then
+      WAYLAND_DISPLAY=''${sock##*/} "$@"
+      exit
+    fi
+
+    app_home="$HOME/.local/share/wlrun/$app_id"
+    mkdir -p "$app_home"
+    opts=(
+      --unshare-all --share-net --die-with-parent
+      --proc /proc --dev /dev --tmpfs /tmp
+      --dev-bind-try /dev/dri /dev/dri
+      --ro-bind-try /sys/dev/char /sys/dev/char
+      --ro-bind-try /sys/devices /sys/devices
+      --ro-bind-try /sys/class /sys/class
+      --ro-bind-try /sys/bus /sys/bus
+      --ro-bind /nix /nix
+      --ro-bind /etc /etc
+      --ro-bind /run/current-system /run/current-system
+      --tmpfs "$XDG_RUNTIME_DIR"
+      --bind "$sock" "$XDG_RUNTIME_DIR/wayland-0"
+      --bind-try "$XDG_RUNTIME_DIR/pipewire-0" "$XDG_RUNTIME_DIR/pipewire-0"
+      --bind-try "$XDG_RUNTIME_DIR/bus" "$XDG_RUNTIME_DIR/bus"
+      --bind "$app_home" "$HOME"
+      --chdir "$HOME"
+      --setenv WAYLAND_DISPLAY wayland-0
+      --unsetenv DISPLAY --unsetenv UMBRIEL_SOCKET
+    )
+    for dev in /dev/nvidia*; do
+      [ -e "$dev" ] && opts+=( --dev-bind "$dev" "$dev" )
+    done
+    ${pkgs.bubblewrap}/bin/bwrap "''${opts[@]}" "$@"
   '';
 in
 {

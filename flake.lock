@@ -509,7 +509,8 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
         "static-site-compiler": "static-site-compiler",
-        "umbriel": "umbriel"
+        "umbriel": "umbriel",
+        "waypak": "waypak"
       }
     },
     "scenefx": {
@@ -667,6 +668,26 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "waypak": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788055140,
+        "narHash": "sha256-KIFC1xROHG/CcRAMMHQdYyS98u6McAh8c+z7k3SONKQ=",
+        "owner": "samiser",
+        "repo": "waypak",
+        "rev": "7738f4a7bb26987cdd61822c7b7ac3892dc25541",
+        "type": "github"
+      },
+      "original": {
+        "owner": "samiser",
+        "repo": "waypak",
         "type": "github"
       }
     },

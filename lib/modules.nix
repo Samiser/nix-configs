@@ -2,6 +2,7 @@
   agenix,
   closured,
   home-manager,
+  waypak,
   ...
 }:
 let
@@ -17,6 +18,7 @@ in
     ../shared-modules/nix.nix
     agenix.nixosModules.default
     closured.nixosModules.default
+    waypak.nixosModules.default
     home-manager.nixosModules.default
     { imports = [ ../home-manager/home.nix ]; }
   ];

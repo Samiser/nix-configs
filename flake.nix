@@ -62,6 +62,10 @@
       url = "git+https://github.com/noctalia-dev/umbriel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    waypak = {
+      url = "github:samiser/waypak";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs: import ./lib { inherit inputs; };

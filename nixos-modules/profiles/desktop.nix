@@ -116,7 +116,6 @@
         mpv
         mupdf
         nnn
-        obsidian
         pavucontrol
         playerctl
         slurp
@@ -124,13 +123,17 @@
         wf-recorder
         wl-clipboard
         wl-kbptr
-      ])
-      ++ lib.optionals (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (
-        with pkgs;
-        [
-          spotify
-          vesktop
-        ]
-      );
+      ]);
+
+    waypak.apps = {
+      obsidian = {
+        package = pkgs.obsidian;
+        binds = [ "$HOME/notes" ];
+      };
+    }
+    // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system == "x86_64-linux") {
+      spotify.package = pkgs.spotify;
+      vesktop.package = pkgs.vesktop;
+    };
   };
 }

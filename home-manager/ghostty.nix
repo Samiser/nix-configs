@@ -23,6 +23,7 @@ in
             background-opacity = 0.8;
             background-blur = true;
             custom-shader = "${./cursor_smear.glsl}";
+            custom-shader-animation = "always";
           }
           // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
             macos-titlebar-style = "hidden";

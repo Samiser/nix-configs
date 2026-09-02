@@ -543,11 +543,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788361591,
-        "narHash": "sha256-26Y0ADugjA0+vDz8T5/Ms9Q/7joIAYIR9Kc4Y+phTzM=",
+        "lastModified": 1788366395,
+        "narHash": "sha256-zEctrXRqCTgVmmj6YrBBfIpRtimz1zVh0cRhooFzEFU=",
         "owner": "samiser",
         "repo": "static-site-compiler",
-        "rev": "3e9a3f5deda061fe70683cff62d044a0ab04426c",
+        "rev": "741bdaeeecd4b76be16dd4a20abaf341c5ecc6f0",
         "type": "github"
       },
       "original": {

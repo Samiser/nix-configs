@@ -13,6 +13,4 @@
     ./services/tailscale-auth.nix
     ./services/nix-update.nix
   ];
-
-  nixpkgs.overlays = [ (import ../../pkgs/overlay.nix) ];
 }

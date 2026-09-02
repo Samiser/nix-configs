@@ -78,6 +78,7 @@ in
           --blog-posts "${contentDir}/blog-posts" \
           --dive-log "${contentDir}/dives.uddf" \
           --secrets "${config.age.secrets.ssc-secrets.path}" \
+          --base-url "https://${cfg.domain}" \
           --out "${cfg.siteDir}"
 
         echo "ssc build complete"

@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  osConfig,
   umbriel,
   ...
 }:
@@ -65,12 +66,15 @@ in
           autostart = [
             "noctalia"
             "tailscale systray"
+            "clipse-listener"
           ];
           xwayland = true;
           show_cheatsheet = false;
         };
 
         environment.XCURSOR_SIZE = "24";
+
+        security_context_rule = osConfig.waypak.securityContextRules;
 
         appearance = {
           corner_radius = 0;
@@ -104,7 +108,10 @@ in
         };
 
         input = {
-          keyboard.layout = "us";
+          keyboard = {
+            layout = "us";
+            options = "compose:menu";
+          };
           focus.follows_mouse = true;
           cursor = {
             hide_when_typing = true;
@@ -121,6 +128,7 @@ in
           "Mod+Comma" = "spawn:noctalia msg settings-toggle";
           "Mod+N" = "spawn:noctalia msg panel-toggle control-center";
           "Mod+Space" = "spawn:wl-kbptr";
+          "Mod+X" = "spawn:${terminal} --class=com.samiser.clipse -e clipse";
 
           "Mod+Shift+Q" = "window-close";
           "Mod+F" = "window-toggle-fullscreen";
@@ -170,6 +178,18 @@ in
         // workspaceMoveBinds;
 
         window_rule = [
+          {
+            match.app_id = "^com\\.samiser\\.clipse$";
+            default_floating = true;
+            default_size = [
+              800
+              900
+            ];
+            default_position = {
+              x = 0;
+              y = 0;
+            };
+          }
           {
             match.app_id = "^dev.noctalia.Noctalia$";
             default_floating = true;

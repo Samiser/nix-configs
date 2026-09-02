@@ -126,6 +126,7 @@
       ]);
 
     waypak.apps = {
+      clipse.package = pkgs.clipse;
       obsidian = {
         package = pkgs.obsidian;
         binds = [ "$HOME/notes" ];
@@ -133,7 +134,15 @@
     }
     // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system == "x86_64-linux") {
       spotify.package = pkgs.spotify;
-      vesktop.package = pkgs.vesktop;
+      vesktop = {
+        package = pkgs.vesktop;
+        binds = [ "$HOME/Downloads" ];
+        # noctalia writes its vesktop theme to the host config dir
+        roBinds = [
+          "$HOME/Pictures"
+          "$HOME/.config/vesktop/themes"
+        ];
+      };
     };
   };
 }

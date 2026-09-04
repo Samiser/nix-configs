@@ -378,6 +378,22 @@
         "type": "github"
       }
     },
+    "nix-security-tracker": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788504254,
+        "narHash": "sha256-Sm1qsykA1lVvGABp0Bqg4gGg3/B8v3lzuguKeC3VSeQ=",
+        "owner": "samiser",
+        "repo": "nix-security-tracker",
+        "rev": "ba0ff95285fe899fc61cc6c93fb414d58eb865cd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "samiser",
+        "repo": "nix-security-tracker",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "inputs": {
         "nixpkgs": [
@@ -505,6 +521,7 @@
         "my-neovim": "my-neovim",
         "nix-darwin": "nix-darwin",
         "nix-minecraft": "nix-minecraft",
+        "nix-security-tracker": "nix-security-tracker",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",

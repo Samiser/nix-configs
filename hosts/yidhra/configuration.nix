@@ -13,6 +13,8 @@
     dev = true;
   };
 
+  nix-security-tracker-dev-environment.enable = true;
+
   services.displayManager.noctalia-greeter.settings.keyboard.layout = "us";
 
   services = {

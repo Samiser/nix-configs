@@ -66,6 +66,10 @@
       url = "github:samiser/waypak";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-security-tracker = {
+      url = "github:samiser/nix-security-tracker";
+      flake = false;
+    };
   };
 
   outputs = inputs: import ./lib { inherit inputs; };

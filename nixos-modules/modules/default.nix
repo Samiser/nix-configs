@@ -12,6 +12,5 @@
     ./services/monitoring-agent.nix
     ./services/tailscale-auth.nix
     ./services/nix-update.nix
-    ./services/nix-security-tracker-dev.nix
   ];
 }

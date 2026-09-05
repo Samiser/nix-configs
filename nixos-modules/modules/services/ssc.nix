@@ -2,11 +2,12 @@
   config,
   lib,
   pkgs,
+  sharedLib,
   static-site-compiler,
   ...
 }:
 let
-  inherit (import ../../../shared-modules/lib.nix) cloudflareTls requiresCaddy;
+  inherit (sharedLib) cloudflareTls requiresCaddy;
   cfg = config.services.ssc;
   ssc = static-site-compiler.packages.${pkgs.stdenv.hostPlatform.system}.default;
   contentDir = "/var/lib/ssc/site-content";
@@ -77,6 +78,7 @@ in
           --blog-posts "${contentDir}/blog-posts" \
           --dive-log "${contentDir}/dives.uddf" \
           --secrets "${config.age.secrets.ssc-secrets.path}" \
+          --base-url "https://${cfg.domain}" \
           --out "${cfg.siteDir}"
 
         echo "ssc build complete"

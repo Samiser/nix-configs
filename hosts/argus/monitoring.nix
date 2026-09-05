@@ -1,103 +1,97 @@
 {
   config,
   pkgs,
+  serverHostNames,
   ...
 }:
-let
-  serverHosts = [
-    "argus"
-    "jelly"
-    "minecraft"
-    "nix-lab"
-    "radar"
-  ];
-in
 {
-  services.victoriametrics = {
-    enable = true;
-    listenAddress = "127.0.0.1:8428";
-    retentionPeriod = "1y";
-    prometheusConfig = {
-      global.scrape_interval = "30s";
-      scrape_configs = [
-        {
-          job_name = "node";
-          static_configs = map (h: {
-            targets = [ "${h}:9100" ];
-            labels.host = h;
-          }) serverHosts;
-        }
-        {
-          job_name = "monitoring";
-          static_configs = [
-            {
-              targets = [ "127.0.0.1:8428" ];
-              labels = {
-                host = "argus";
-                service = "victoriametrics";
-              };
-            }
-            {
-              targets = [ "127.0.0.1:9428" ];
-              labels = {
-                host = "argus";
-                service = "victorialogs";
-              };
-            }
-            {
-              targets = [ "127.0.0.1:3000" ];
-              labels = {
-                host = "argus";
-                service = "grafana";
-              };
-            }
-          ];
-        }
-      ];
-    };
-  };
-
-  services.victorialogs = {
-    enable = true;
-    listenAddress = ":9428";
-    extraOptions = [ "-retentionPeriod=90d" ];
-  };
-
   age.secrets.grafana-secret-key = {
     file = ../../secrets/grafana-secret-key.age;
     owner = "grafana";
   };
 
-  services.grafana = {
-    enable = true;
-    settings.server = {
-      http_addr = "0.0.0.0";
-      http_port = 3000;
+  services = {
+    victoriametrics = {
+      enable = true;
+      listenAddress = "127.0.0.1:8428";
+      retentionPeriod = "1y";
+      prometheusConfig = {
+        global.scrape_interval = "30s";
+        scrape_configs = [
+          {
+            job_name = "node";
+            static_configs = map (h: {
+              targets = [ "${h}:9100" ];
+              labels.host = h;
+            }) serverHostNames;
+          }
+          {
+            job_name = "monitoring";
+            static_configs = [
+              {
+                targets = [ "127.0.0.1:8428" ];
+                labels = {
+                  host = "argus";
+                  service = "victoriametrics";
+                };
+              }
+              {
+                targets = [ "127.0.0.1:9428" ];
+                labels = {
+                  host = "argus";
+                  service = "victorialogs";
+                };
+              }
+              {
+                targets = [ "127.0.0.1:3000" ];
+                labels = {
+                  host = "argus";
+                  service = "grafana";
+                };
+              }
+            ];
+          }
+        ];
+      };
     };
-    settings.security.secret_key = "$__file{${config.age.secrets.grafana-secret-key.path}}";
-    declarativePlugins = with pkgs.grafanaPlugins; [
-      victoriametrics-logs-datasource
-      victoriametrics-metrics-datasource
-    ];
-    provision.dashboards.settings.providers = [
-      {
-        name = "nix-configs";
-        options.path = ./dashboards;
-      }
-    ];
-    provision.datasources.settings.datasources = [
-      {
-        name = "VictoriaMetrics";
-        type = "prometheus";
-        url = "http://127.0.0.1:8428";
-        isDefault = true;
-      }
-      {
-        name = "VictoriaLogs";
-        type = "victoriametrics-logs-datasource";
-        url = "http://127.0.0.1:9428";
-      }
-    ];
+
+    victorialogs = {
+      enable = true;
+      listenAddress = ":9428";
+      extraOptions = [ "-retentionPeriod=90d" ];
+    };
+
+    grafana = {
+      enable = true;
+      settings.server = {
+        http_addr = "0.0.0.0";
+        http_port = 3000;
+      };
+      settings.security.secret_key = "$__file{${config.age.secrets.grafana-secret-key.path}}";
+      declarativePlugins = with pkgs.grafanaPlugins; [
+        victoriametrics-logs-datasource
+        victoriametrics-metrics-datasource
+      ];
+      provision.dashboards.settings.providers = [
+        {
+          name = "nix-configs";
+          options.path = ./dashboards;
+        }
+      ];
+      provision.datasources.settings.datasources = [
+        {
+          name = "VictoriaMetrics";
+          type = "prometheus";
+          url = "http://127.0.0.1:8428";
+          isDefault = true;
+        }
+        {
+          name = "VictoriaLogs";
+          type = "victoriametrics-logs-datasource";
+          url = "http://127.0.0.1:9428";
+        }
+      ];
+    };
   };
 
   systemd.services.expected-systems-import = {

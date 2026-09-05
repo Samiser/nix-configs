@@ -26,11 +26,7 @@
       pkgs.iina
     ];
 
-  sam = {
-    services = {
-      omniwm.enable = true;
-    };
-  };
+  services.omniwm.enable = true;
 
   users.users.sam = {
     name = "sam";

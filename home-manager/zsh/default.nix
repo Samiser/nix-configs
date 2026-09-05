@@ -4,14 +4,13 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.sam.zsh;
 in
 {
-  options.sam.zsh.enable = mkEnableOption "zsh config";
+  options.sam.zsh.enable = lib.mkEnableOption "zsh config";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs = {
       starship.enable = true;
       direnv.enable = true;

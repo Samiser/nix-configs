@@ -36,14 +36,5 @@ in
     };
   };
 
-  # Bind nginx to Tailscale interface
-  systemd.services.nginx = {
-    after = [ "tailscaled.service" ];
-    wants = [ "tailscaled.service" ];
-    serviceConfig.ExecStartPre = pkgs.writeShellScript "nginx-wait-tailscale" ''
-      until ${pkgs.tailscale}/bin/tailscale status &>/dev/null; do sleep 1; done
-    '';
-  };
-
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 80 ];
 }

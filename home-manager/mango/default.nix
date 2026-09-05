@@ -4,8 +4,15 @@
   mango,
   ...
 }:
-with lib;
 let
+  inherit (lib)
+    concatMap
+    hm
+    mkEnableOption
+    mkIf
+    range
+    ;
+
   cfg = config.sam.mango;
 
   terminal = "ghostty";

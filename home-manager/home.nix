@@ -46,14 +46,16 @@ in
         stateVersion = "25.05";
       };
 
+      manual.manpages.enable = false;
+
       sam = {
         zsh.enable = true;
         git.enable = !server;
         neovim.enable = true;
         neovim.minimal = server;
         ghostty.enable = pkgs.stdenv.hostPlatform.isDarwin || desktop;
-        mango.enable = pkgs.stdenv.hostPlatform.isLinux && config.hostConfig.mango.enable;
-        umbriel.enable = pkgs.stdenv.hostPlatform.isLinux && config.hostConfig.umbriel.enable;
+        mango.enable = pkgs.stdenv.hostPlatform.isLinux && desktop;
+        umbriel.enable = pkgs.stdenv.hostPlatform.isLinux && desktop;
         colima.enable = pkgs.stdenv.hostPlatform.isDarwin;
         omniwm.enable = pkgs.stdenv.hostPlatform.isDarwin;
         wl-kbptr.enable = pkgs.stdenv.hostPlatform.isLinux && desktop;

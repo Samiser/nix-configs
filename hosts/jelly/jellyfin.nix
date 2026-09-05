@@ -1,6 +1,6 @@
-_:
+{ sharedLib, ... }:
 let
-  inherit (import ../../shared-modules/lib.nix) cloudflareTls;
+  inherit (sharedLib) cloudflareTls;
 in
 {
   services.jellyfin.enable = true;

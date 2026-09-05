@@ -5,21 +5,20 @@
   my-neovim,
   ...
 }:
-with lib;
 let
   cfg = config.sam.neovim;
 in
 {
   options.sam.neovim = {
-    minimal = mkOption {
-      type = types.bool;
+    minimal = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable the minimal Neovim configuration.";
     };
-    enable = mkEnableOption "Enable Neovim integration.";
+    enable = lib.mkEnableOption "Enable Neovim integration.";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home.packages =
       if cfg.minimal then
         [ my-neovim.packages."${pkgs.stdenv.hostPlatform.system}".minimal ]

@@ -1,10 +1,18 @@
 {
   pkgs,
   nix-minecraft,
+  sharedLib,
   ...
 }:
 let
-  inherit (import ../../shared-modules/lib.nix) cloudflareTls;
+  inherit (sharedLib) cloudflareTls;
+  players = {
+    "real_bean" = "ba5f35d3-c04a-4ec0-820c-14172299ea41";
+    "legoboomey" = "401835f5-b512-455a-9a0d-e09d9241542a";
+    "leafeater69" = "58312496-a917-4a6b-94ba-5fdc56af610b";
+    "AbbiePlum" = "500488ec-1774-4f91-b89e-fce1a4569165";
+    "Nightshroud" = "933c09bb-2de6-44a7-a9a2-866d48bf71ec";
+  };
 in
 {
   imports = [
@@ -33,26 +41,13 @@ in
           level-seed = "lol";
         };
 
-        whitelist = {
-          "real_bean" = "ba5f35d3-c04a-4ec0-820c-14172299ea41";
-          "legoboomey" = "401835f5-b512-455a-9a0d-e09d9241542a";
-          "leafeater69" = "58312496-a917-4a6b-94ba-5fdc56af610b";
-          "AbbiePlum" = "500488ec-1774-4f91-b89e-fce1a4569165";
-          "Nightshroud" = "933c09bb-2de6-44a7-a9a2-866d48bf71ec";
-        };
-
-        operators = {
-          "real_bean" = "ba5f35d3-c04a-4ec0-820c-14172299ea41";
-          "legoboomey" = "401835f5-b512-455a-9a0d-e09d9241542a";
-          "leafeater69" = "58312496-a917-4a6b-94ba-5fdc56af610b";
-          "AbbiePlum" = "500488ec-1774-4f91-b89e-fce1a4569165";
-          "Nightshroud" = "933c09bb-2de6-44a7-a9a2-866d48bf71ec";
-        };
+        whitelist = players;
+        operators = players;
 
         symlinks = {
           "plugins/dead-chest.jar" = pkgs.fetchurl {
-            url = "https://mediafilez.forgecdn.net/files/6999/10/dead-chest-4.23.0.jar";
-            sha256 = "sha256-5bp7Uuxpr0LH5Oy/9f4SWDzpQ4QW7kXSzID+l4lFdWE=";
+            url = "https://cdn.modrinth.com/data/pKqnV03Y/versions/mBSgqYZH/dead-chest-4.30.0.jar";
+            sha256 = "sha256-iMbxkSxw7koTzLrUcVpX44ohjqaT6PYI/9StO/RZcF4=";
           };
           "plugins/bluemap.jar" = pkgs.fetchurl {
             url = "https://github.com/BlueMap-Minecraft/BlueMap/releases/download/v5.15/bluemap-5.15-paper.jar";
@@ -75,11 +70,22 @@ in
           "plugins/BlueMap/core.conf" = pkgs.writeText "core.conf" ''
             accept-download: true
           '';
+          "plugins/BlueMap/maps/world_nether.conf" = pkgs.writeText "world_nether.conf" ''
+            world: "world"
+            dimension: "minecraft:the_nether"
+            sorting: 100
+          '';
+          "plugins/BlueMap/maps/world_the_end.conf" = pkgs.writeText "world_the_end.conf" ''
+            world: "world"
+            dimension: "minecraft:the_end"
+            sorting: 200
+          '';
         };
 
         files = {
           "plugins/DeadChest/config.yml".value = {
-            DeadChestDuration = 0;
+            chest."duration-seconds" = 0;
+            updates."auto-check" = false;
           };
         };
 

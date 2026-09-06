@@ -3,6 +3,7 @@
   config,
   osConfig,
   umbriel,
+  waypak,
   ...
 }:
 let
@@ -30,7 +31,8 @@ let
   workspaceKey = ws: if ws == "10" then "0" else ws;
 
   # A bare number selects a position on the focused output, so every workspace names its own.
-  workspaceSelector = ws: "${ws}/${if builtins.elem ws landscapeWorkspaces then landscape else portrait}";
+  workspaceSelector =
+    ws: "${ws}/${if builtins.elem ws landscapeWorkspaces then landscape else portrait}";
 
   workspaceBinds = listToAttrs (
     map (
@@ -57,7 +59,7 @@ in
       enable = true;
 
       settings = {
-        include.files = [
+        include.optional.files = [
           "noctalia.toml"
           "local.toml"
         ];
@@ -74,11 +76,10 @@ in
 
         environment.XCURSOR_SIZE = "24";
 
-        security_context_rule = osConfig.waypak.securityContextRules;
+        security_context_rule = waypak.lib.toUmbrielRules osConfig.waypak.waylandGrants;
 
         appearance = {
           corner_radius = 0;
-          animation_ms = 300;
         };
 
         layout = {

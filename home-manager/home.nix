@@ -6,6 +6,7 @@
   agenix,
   mango,
   umbriel,
+  waypak,
   ...
 }:
 let
@@ -14,7 +15,7 @@ let
 in
 {
   home-manager = {
-    extraSpecialArgs = { inherit my-neovim mango umbriel; };
+    extraSpecialArgs = { inherit my-neovim mango umbriel waypak; };
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";

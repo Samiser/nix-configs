@@ -677,11 +677,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788649977,
-        "narHash": "sha256-bcvpuL/gKw33uslDP5/IkM4e5q0lqvWB25N2XKDgoDk=",
+        "lastModified": 1788698571,
+        "narHash": "sha256-GLhWj0bOVn+VgxkdaX2Q5v5G2mUbtTyfta8c9WMiKok=",
         "owner": "samiser",
         "repo": "waypak",
-        "rev": "f78388bd78500a73f92715c9e1dd515617cbefb5",
+        "rev": "75bc263500dc527397f15ac89815b7f1f8096af8",
         "type": "github"
       },
       "original": {

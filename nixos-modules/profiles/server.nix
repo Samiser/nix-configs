@@ -37,7 +37,7 @@
     };
 
     services = {
-      journald.extraConfig = "SystemMaxUse=500M";
+      journald.settings.Journal.SystemMaxUse = "500M";
       userborn.enable = true;
 
       openssh.hostKeys = [

@@ -1,15 +1,6 @@
+{ lib, pkgs, ... }:
 {
-  lib,
-  config,
-  ...
-}:
-let
-  cfg = config.sam.omniwm;
-in
-{
-  options.sam.omniwm.enable = lib.mkEnableOption "omniwm config";
-
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
     xdg.configFile."omniwm/settings.toml" = {
       source = ./settings.toml;
       force = true;

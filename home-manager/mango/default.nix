@@ -1,19 +1,17 @@
 {
   lib,
   config,
-  mango,
+  pkgs,
+  osConfig,
   ...
 }:
 let
   inherit (lib)
     concatMap
     hm
-    mkEnableOption
     mkIf
     range
     ;
-
-  cfg = config.sam.mango;
 
   terminal = "ghostty";
   browser = "google-chrome-stable";
@@ -46,11 +44,7 @@ let
     "mkdir -p ~/shots && f=~/shots/$(date +%Y-%m-%d_%H-%M-%S).png && grim ${grimArgs}\"$f\" && wl-copy < \"$f\"";
 in
 {
-  imports = [ mango.hmModules.mango ];
-
-  options.sam.mango.enable = mkEnableOption "mango config";
-
-  config = mkIf cfg.enable {
+  config = mkIf (pkgs.stdenv.hostPlatform.isLinux && osConfig.host.profile.desktop) {
     home.activation.reloadMango = hm.dag.entryAfter [ "linkGeneration" ] ''
       if [[ ! -v DRY_RUN ]]; then
         for sock in /run/user/$(id -u)/mango-*.sock; do

@@ -1,14 +1,6 @@
-{
-  config,
-  lib,
-  pkgs,
-  sharedPackages,
-  ...
-}:
+{ config, lib, ... }:
 {
   config = lib.mkIf config.host.profile.dev {
-    environment.systemPackages = sharedPackages.dev { inherit pkgs; };
-
     virtualisation.docker.enable = true;
   };
 }

@@ -1,15 +1,11 @@
 {
   lib,
-  config,
+  pkgs,
+  osConfig,
   ...
 }:
-let
-  cfg = config.sam.wl-kbptr;
-in
 {
-  options.sam.wl-kbptr.enable = lib.mkEnableOption "wl-kbptr config";
-
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (pkgs.stdenv.hostPlatform.isLinux && osConfig.host.profile.desktop) {
     xdg.configFile."wl-kbptr/config".text = ''
       [general]
       modes=floating,click

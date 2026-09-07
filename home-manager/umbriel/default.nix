@@ -1,21 +1,16 @@
 {
   lib,
-  config,
+  pkgs,
   osConfig,
-  umbriel,
-  waypak,
   ...
 }:
 let
   inherit (lib)
     listToAttrs
-    mkEnableOption
     mkIf
     nameValuePair
     range
     ;
-
-  cfg = config.sam.umbriel;
 
   terminal = "ghostty";
   browser = "google-chrome-stable";
@@ -50,11 +45,7 @@ let
     "spawn:mkdir -p ~/shots && f=~/shots/$(date +%Y-%m-%d_%H-%M-%S).png && grim ${grimArgs}\"$f\" && wl-copy < \"$f\"";
 in
 {
-  imports = [ umbriel.homeModules.default ];
-
-  options.sam.umbriel.enable = mkEnableOption "umbriel config";
-
-  config = mkIf cfg.enable {
+  config = mkIf (pkgs.stdenv.hostPlatform.isLinux && osConfig.host.profile.desktop) {
     programs.umbriel = {
       enable = true;
 
@@ -75,8 +66,6 @@ in
         };
 
         environment.XCURSOR_SIZE = "24";
-
-        security_context_rule = waypak.lib.toUmbrielRules osConfig.waypak.waylandGrants;
 
         appearance = {
           corner_radius = 0;

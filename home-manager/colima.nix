@@ -1,15 +1,6 @@
+{ lib, pkgs, ... }:
 {
-  lib,
-  config,
-  ...
-}:
-let
-  cfg = config.sam.colima;
-in
-{
-  options.sam.colima.enable = lib.mkEnableOption "colima container runtime";
-
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
     services.colima = {
       enable = true;
       profiles.default = {

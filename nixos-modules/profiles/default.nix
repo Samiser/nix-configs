@@ -1,6 +1,5 @@
 { ... }: {
   imports = [
-    ./options.nix
     ./base.nix
     ./desktop.nix
     ./dev.nix

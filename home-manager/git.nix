@@ -1,15 +1,6 @@
+{ lib, osConfig, ... }:
 {
-  lib,
-  config,
-  ...
-}:
-let
-  cfg = config.sam.git;
-in
-{
-  options.sam.git.enable = lib.mkEnableOption "git config";
-
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (!osConfig.host.profile.server) {
     programs.git = {
       enable = true;
       settings.user = {

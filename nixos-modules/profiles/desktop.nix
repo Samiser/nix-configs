@@ -2,9 +2,9 @@
   config,
   lib,
   pkgs,
-  sharedPackages,
   mango,
   umbriel,
+  waypak,
   ...
 }:
 {
@@ -59,13 +59,11 @@
 
     fonts = {
       enableDefaultPackages = true;
-      packages =
-        (sharedPackages.fonts { inherit pkgs; })
-        ++ (with pkgs; [
-          noto-fonts
-          noto-fonts-color-emoji
-          font-awesome
-        ]);
+      packages = with pkgs; [
+        noto-fonts
+        noto-fonts-color-emoji
+        font-awesome
+      ];
       fontconfig.defaultFonts.monospace = [ "JetBrainsMono Nerd Font Mono" ];
     };
 
@@ -100,30 +98,31 @@
       ];
     };
 
-    environment.systemPackages =
-      (sharedPackages.desktop { inherit pkgs; })
-      ++ (with pkgs; [
-        acpi
-        flat-remix-icon-theme
-        ghostty
-        gimp
-        godot_4
-        (google-chrome.override {
-          commandLineArgs = "--disable-features=WaylandFractionalScaleV1";
-        })
-        grim
-        imv
-        mpv
-        mupdf
-        nnn
-        pavucontrol
-        playerctl
-        slurp
-        wdisplays
-        wf-recorder
-        wl-clipboard
-        wl-kbptr
-      ]);
+    environment.systemPackages = with pkgs; [
+      acpi
+      flat-remix-icon-theme
+      ghostty
+      gimp
+      (google-chrome.override {
+        commandLineArgs = "--disable-features=WaylandFractionalScaleV1";
+      })
+      grim
+      imv
+      mpv
+      mupdf
+      nnn
+      pavucontrol
+      playerctl
+      slurp
+      wdisplays
+      wf-recorder
+      wl-clipboard
+      wl-kbptr
+    ];
+
+    # sandboxed apps need the compositor to re-grant these wayland globals
+    home-manager.users.sam.programs.umbriel.settings.security_context_rule =
+      waypak.lib.toUmbrielRules config.waypak.waylandGrants;
 
     waypak.apps = {
       clipse.package = pkgs.clipse;

@@ -1,21 +1,20 @@
 {
   pkgs,
-  config,
-  lib,
   my-neovim,
   agenix,
   mango,
   umbriel,
-  waypak,
   ...
 }:
-let
-  desktop = config.host.profile.desktop or false;
-  server = config.host.profile.server or false;
-in
 {
+  nixpkgs.overlays = [
+    (_final: prev: {
+      my-neovim = my-neovim.packages.${prev.stdenv.hostPlatform.system}.default;
+      my-neovim-minimal = my-neovim.packages.${prev.stdenv.hostPlatform.system}.minimal;
+    })
+  ];
+
   home-manager = {
-    extraSpecialArgs = { inherit my-neovim mango umbriel waypak; };
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";
@@ -23,17 +22,19 @@ in
     users.sam = {
       imports = [
         agenix.homeManagerModules.default
+        mango.hmModules.mango
+        umbriel.homeModules.default
         ./colima.nix
         ./ghostty.nix
         ./git.nix
+        ./hcloud.nix
         ./neovim.nix
         ./mango
         ./umbriel
         ./omniwm
         ./wl-kbptr.nix
         ./zsh
-      ]
-      ++ lib.optional (!server) ./hcloud.nix;
+      ];
 
       home = {
         username = "sam";
@@ -48,19 +49,6 @@ in
       };
 
       manual.manpages.enable = false;
-
-      sam = {
-        zsh.enable = true;
-        git.enable = !server;
-        neovim.enable = true;
-        neovim.minimal = server;
-        ghostty.enable = pkgs.stdenv.hostPlatform.isDarwin || desktop;
-        mango.enable = pkgs.stdenv.hostPlatform.isLinux && desktop;
-        umbriel.enable = pkgs.stdenv.hostPlatform.isLinux && desktop;
-        colima.enable = pkgs.stdenv.hostPlatform.isDarwin;
-        omniwm.enable = pkgs.stdenv.hostPlatform.isDarwin;
-        wl-kbptr.enable = pkgs.stdenv.hostPlatform.isLinux && desktop;
-      };
 
       launchd.agents = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
         activate-agenix.waitForNixStore = false;

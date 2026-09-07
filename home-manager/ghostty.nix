@@ -1,16 +1,11 @@
 {
   lib,
   pkgs,
-  config,
+  osConfig,
   ...
 }:
-let
-  cfg = config.sam.ghostty;
-in
 {
-  options.sam.ghostty.enable = lib.mkEnableOption "ghostty config";
-
-  config = lib.mkIf cfg.enable (
+  config = lib.mkIf osConfig.host.profile.desktop (
     lib.mkMerge [
       {
         programs.ghostty = {

@@ -1,30 +1,27 @@
+{ pkgs, ... }:
 {
-  pkgs,
-  sharedPackages,
-  ...
-}:
-{
-  environment.systemPackages =
-    (sharedPackages.all { inherit pkgs; })
-    ++ [
-      pkgs._1password-cli
-      pkgs.docker
+  host.profile = {
+    desktop = true;
+    dev = true;
+  };
 
-      pkgs._1password-gui
-      pkgs.discord
-      pkgs.ghostty-bin
-      pkgs.godot
-      pkgs.google-chrome
-      pkgs.obsidian
-      pkgs.prismlauncher
-      pkgs.spotify
-    ]
-    ++ [
-      # macos specific
-      pkgs.utm
-      pkgs.raycast
-      pkgs.iina
-    ];
+  environment.systemPackages = [
+    pkgs._1password-cli
+    pkgs.docker
+
+    pkgs._1password-gui
+    pkgs.discord
+    pkgs.ghostty-bin
+    pkgs.google-chrome
+    pkgs.obsidian
+    pkgs.prismlauncher
+    pkgs.spotify
+
+    # macos specific
+    pkgs.utm
+    pkgs.raycast
+    pkgs.iina
+  ];
 
   services.omniwm.enable = true;
 
@@ -32,8 +29,6 @@
     name = "sam";
     home = "/Users/sam";
   };
-
-  fonts.packages = sharedPackages.fonts { inherit pkgs; };
 
   homebrew = {
     enable = true;

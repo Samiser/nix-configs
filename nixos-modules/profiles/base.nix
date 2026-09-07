@@ -1,17 +1,14 @@
 {
   pkgs,
   keys,
-  sharedPackages,
   ...
 }:
 {
-  environment.systemPackages =
-    (sharedPackages.base { inherit pkgs; })
-    ++ (with pkgs; [
-      pciutils
-      sysstat
-      tcpdump
-    ]);
+  environment.systemPackages = with pkgs; [
+    pciutils
+    sysstat
+    tcpdump
+  ];
 
   services = {
     openssh = {

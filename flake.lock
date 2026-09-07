@@ -264,11 +264,11 @@
         "scenefx": "scenefx"
       },
       "locked": {
-        "lastModified": 1788596127,
-        "narHash": "sha256-GM0TNxqLLiqL73qo+HZlDXDhcjdqbs2ySrvhbxIrI/M=",
+        "lastModified": 1788750374,
+        "narHash": "sha256-+bWqw7q+e/BlDBxxmp6QjozeExndbxelT6YqaGCr+nE=",
         "owner": "mangowm",
         "repo": "mango",
-        "rev": "c62e01c303b8e19598df0b0b7cd16e466a71fc21",
+        "rev": "55d54edea8ec4c6d5a463f47d5565790dd72c2a5",
         "type": "github"
       },
       "original": {
@@ -639,11 +639,11 @@
         "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel"
       },
       "locked": {
-        "lastModified": 1788657953,
-        "narHash": "sha256-N6xcOXVPC0kBvG70Ak5HfQZy4tWVfOeb12VT+NC2mqc=",
+        "lastModified": 1788749410,
+        "narHash": "sha256-huuCkj92IDZOilQdxgX3R+6a0xpT6PLOLn+Qz4CYDBs=",
         "ref": "refs/heads/main",
-        "rev": "c0dc6e65b113dcd8756278fc141d635fc11ca295",
-        "revCount": 834,
+        "rev": "035ec0c4b8117fa58ed40c21d77e93e367d7c7eb",
+        "revCount": 843,
         "type": "git",
         "url": "https://github.com/noctalia-dev/umbriel"
       },
@@ -677,11 +677,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788698571,
-        "narHash": "sha256-GLhWj0bOVn+VgxkdaX2Q5v5G2mUbtTyfta8c9WMiKok=",
+        "lastModified": 1788732362,
+        "narHash": "sha256-F+zxkgLtdg56ouWAppfLA2wPag14M4Q0eQLcGJlpfQo=",
         "owner": "samiser",
         "repo": "waypak",
-        "rev": "75bc263500dc527397f15ac89815b7f1f8096af8",
+        "rev": "4a68a29f1db97e67a46a7987effcd78d3170aa20",
         "type": "github"
       },
       "original": {
